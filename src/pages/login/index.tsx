@@ -2,10 +2,14 @@ import React from 'react';
 import * as S from './style';
 import Logo from '../../assets/logo.svg';
 import GoogleIcon from '../../assets/icon/google-logo.png'
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  
   const handleGoogleLogin = () => {
     console.log('Google 로그인');
+    navigate('/profile');
   };
 
   return (

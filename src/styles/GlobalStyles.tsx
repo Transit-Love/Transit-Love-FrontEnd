@@ -45,14 +45,7 @@ export const GlobalStyles = () => (
       }
 
 
-      @font-face {
-        font-family: 'Ownglyph PDH';
-        font-style: normal;
-        font-weight: 400;
-        font-display: swap;
-        src: local('Ownglyph PDH'), 
-             url('https://fonts.googleapis.com/css2?family=Ownglyph+PDH:wght@400&display=swap');
-      }
+      @import url('https://fonts.googleapis.com/css2?family=Ownglyph+PDH:wght@400&display=swap');
     `}
   />
 )
