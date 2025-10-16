@@ -101,7 +101,7 @@ const ChatListPage: React.FC = () => {
             <img
               src={MessageCircleIcon}
               alt="메시지"
-              style={{ width: "24px", height: "24px", cursor: "pointer" }}
+              style={{ width: "19px", height: "19px", cursor: "pointer" }}
             />
           </S.UserCard>
         </S.CoupleSection>
@@ -143,8 +143,8 @@ const ChatListPage: React.FC = () => {
                   src={MessageCircleFilledIcon}
                   alt="메시지"
                   style={{
-                    width: "24px",
-                    height: "24px",
+                    width: "19px",
+                    height: "19px",
                     cursor: "pointer",
                     opacity: user.hasMessage ? 0.5 : 1,
                   }}
