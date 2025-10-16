@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/countdown" element={<CountdownPage />} />
-        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chatList" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
