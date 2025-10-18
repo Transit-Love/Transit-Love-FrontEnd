@@ -7,7 +7,8 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import LoginPage from "./pages/login";
 import ProfilePage from "./pages/profile";
 import CountdownPage from "./pages/countdown";
-import ChatPage from "./pages/chatList";
+import ChatListPage from "./pages/chatList";
+import ChatPage from "./pages/chat";
 
 createRoot(document.getElementById("root")!).render(
   <RecoilRoot>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/countdown" element={<CountdownPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat-list" element={<ChatListPage />} />
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
