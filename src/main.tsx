@@ -9,6 +9,7 @@ import ProfilePage from "./pages/profile";
 import CountdownPage from "./pages/countdown";
 import ChatListPage from "./pages/chatList";
 import ChatPage from "./pages/chat";
+import LastChoice from "./pages/lastChoice";
 
 createRoot(document.getElementById("root")!).render(
   <RecoilRoot>
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/countdown" element={<CountdownPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat-list" element={<ChatListPage />} />
+        <Route path="/last-choice" element={<LastChoice />} />
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
