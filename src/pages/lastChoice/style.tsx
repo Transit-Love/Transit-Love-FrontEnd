@@ -39,8 +39,8 @@ export const NavBar = styled.div`
 `;
 
 export const BackButton = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 7px;
+  height: 14px;
   position: absolute;
   left: 0;
   cursor: pointer;
