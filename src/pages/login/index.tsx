@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
 
   const handleGoogleLogin = () => {
     console.log("Google 로그인");
-    navigate("/last-choice");
+    navigate("/final-result");
   };
 
   return (
