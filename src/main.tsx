@@ -8,6 +8,7 @@ import LoginPage from "./pages/login";
 import ProfilePage from "./pages/profile";
 import CountdownPage from "./pages/countdown";
 import ChatListPage from "./pages/chatList";
+import AdminParticipantsPage from "./pages/admin/participants";
 import ChatPage from "./pages/chat";
 import LastChoice from "./pages/lastChoice";
 import FinalResultPage from "./pages/finalResult";
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/countdown" element={<CountdownPage />} />
+        <Route path="/admin/participants" element={<AdminParticipantsPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat-list" element={<ChatListPage />} />
         <Route path="/last-choice" element={<LastChoice />} />
