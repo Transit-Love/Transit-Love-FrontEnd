@@ -5,8 +5,7 @@ import Back from '../../assets/back.png';
 import Avatar1 from '../../assets/icon/avatar1.png';
 import Heart from '../../assets/icon/heart.svg';
 import Users from '../../assets/icon/users.svg';
-import MessageCircle from '../../assets/icon/message-circle.svg';
-import NavBar from '../../components/NavBar.tsx';
+import NavBar from '../../components/NavBar';
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();

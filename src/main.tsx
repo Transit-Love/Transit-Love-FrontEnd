@@ -15,6 +15,7 @@ import ChatPage from "./pages/chat";
 import MessagePage from "./pages/message";
 import LastChoice from "./pages/lastChoice";
 import FinalResultPage from "./pages/finalResult";
+import AdminFinalResultPage from "./pages/admin/finalResult";
 
 createRoot(document.getElementById("root")!).render(
   <RecoilRoot>
@@ -33,6 +34,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/message" element={<MessagePage />} />
         <Route path="/last-choice" element={<LastChoice />} />
         <Route path="/final-result" element={<FinalResultPage />} />
+        <Route path="/admin/final-result" element={<AdminFinalResultPage />} />
       </Routes>
     </BrowserRouter>
   </RecoilRoot>

@@ -8,7 +8,7 @@ import Avatar1 from "../../assets/icon/avatar1.png";
 import Avatar2 from "../../assets/icon/avatar2.png";
 import Avatar3 from "../../assets/icon/avatar3.png";
 import Avatar4 from "../../assets/icon/avatar4.png";
-import NavBar from "../../components/NavBar.tsx";
+import NavBar from "../../components/NavBar";
 import { useNavigate } from "react-router-dom";
 
 interface OtherUser {
