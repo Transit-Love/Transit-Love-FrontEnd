@@ -6,7 +6,7 @@ import PhoneIcon from "../../assets/icon/phone.svg";
 import MoreVerticalIcon from "../../assets/icon/more-vertical.svg";
 import PlusIcon from "../../assets/icon/plus.svg";
 import SendIcon from "../../assets/icon/send.svg";
-import NavBar from "../../components/NavBar.tsx";
+import NavBar from "../../components/NavBar";
 
 const ChatPage: React.FC = () => {
   const [message, setMessage] = useState("");

@@ -3,7 +3,7 @@ import * as S from './style';
 import { useNavigate } from 'react-router-dom';
 import Back from '../../../assets/back.png'
 import Back2 from '../../../assets/back2.png'
-import NavBar from '../../../components/NavBar.tsx';
+import NavBar from '../../../components/NavBar';
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();

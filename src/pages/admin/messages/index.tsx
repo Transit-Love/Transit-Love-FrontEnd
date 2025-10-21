@@ -2,6 +2,7 @@ import React from 'react';
 import * as S from './style';
 import { useNavigate } from 'react-router-dom';
 import Back from '../../../assets/back.png';
+import AdminNavBar from '../../../components/AdminNavBar';
 
 const AdminMessagesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -78,6 +79,8 @@ const AdminMessagesPage: React.FC = () => {
           ))}
         </S.MessageList>
       </S.Section>
+
+      <AdminNavBar />
     </S.Container>
   );
 };

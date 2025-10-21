@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as S from './style';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar.tsx';
+import NavBar from '../../components/NavBar';
 
 const CountdownPage: React.FC = () => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import Back from '../../../assets/back.png';
 import Heart from '../../../assets/icon/heart.svg';
 import AdminNavBar from '../../../components/AdminNavBar';
 
-const AdminParticipantsPage: React.FC = () => {
+const AdminFinalResultPage: React.FC = () => {
   const navigate = useNavigate();
 
   const couples = [
@@ -81,4 +81,4 @@ const AdminParticipantsPage: React.FC = () => {
   );
 };
 
-export default AdminParticipantsPage;
+export default AdminFinalResultPage;
