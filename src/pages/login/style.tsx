@@ -98,6 +98,21 @@ export const InfoText = styled.div`
   z-index: 3;
 `;
 
+export const AdminText = styled.div`
+  position: absolute;
+  left: 79px;
+  top: 760px;
+  width: 231px;
+  height: 20px;
+  font-family: 'Ownglyph PDH', inherit;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2em;
+  color: #000000;
+  z-index: 3;
+  cursor: pointer;
+`;
+
 export const Underline = styled.div`
   position: absolute;
   left: 77px;
