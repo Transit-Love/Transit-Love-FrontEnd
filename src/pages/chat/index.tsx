@@ -6,6 +6,7 @@ import PhoneIcon from "../../assets/icon/phone.svg";
 import MoreVerticalIcon from "../../assets/icon/more-vertical.svg";
 import PlusIcon from "../../assets/icon/plus.svg";
 import SendIcon from "../../assets/icon/send.svg";
+import NavBar from "../../components/NavBar.tsx";
 
 const ChatPage: React.FC = () => {
   const [message, setMessage] = useState("");
@@ -66,29 +67,6 @@ const ChatPage: React.FC = () => {
 
         <S.MessageRow>
           <S.SmallAvatar src={Avatar1} alt="프로필" />
-          <S.MessageContent>
-            <S.MessageBubble>
-              <S.MessageText>
-                혹시 어떤 영화를 좋아하세요? 프로필에서 영화광이라고 하셨는데!
-              </S.MessageText>
-            </S.MessageBubble>
-            <S.TimeStamp>오후 2:33</S.TimeStamp>
-          </S.MessageContent>
-        </S.MessageRow>
-
-        <S.MessageRowRight>
-          <S.MessageContent>
-            <S.MessageBubbleSent>
-              <S.MessageTextSent>
-                마블 영화를 정말 좋아해요! 혹시 어벤져스 보셨나요?
-              </S.MessageTextSent>
-            </S.MessageBubbleSent>
-            <S.TimeStampRight>오후 2:35</S.TimeStampRight>
-          </S.MessageContent>
-        </S.MessageRowRight>
-
-        <S.MessageRow>
-          <S.SmallAvatar src={Avatar1} alt="프로필" />
           <div style={{ width: "120px" }}>
             <S.TypingBubble>
               <S.TypingDots>
@@ -122,6 +100,8 @@ const ChatPage: React.FC = () => {
           </S.SendButton>
         </S.InputRow>
       </S.InputContainer>
+
+      <NavBar />
     </S.ChatPageContainer>
   );
 };
