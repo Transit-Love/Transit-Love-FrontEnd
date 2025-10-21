@@ -8,6 +8,8 @@ import Avatar1 from "../../assets/icon/avatar1.png";
 import Avatar2 from "../../assets/icon/avatar2.png";
 import Avatar3 from "../../assets/icon/avatar3.png";
 import Avatar4 from "../../assets/icon/avatar4.png";
+import NavBar from "../../components/NavBar.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface OtherUser {
   id: number;
@@ -18,6 +20,8 @@ interface OtherUser {
 }
 
 const ChatListPage: React.FC = () => {
+  const navigate = useNavigate();
+  
   const otherUsers: OtherUser[] = [
     {
       id: 1,
@@ -102,6 +106,7 @@ const ChatListPage: React.FC = () => {
               src={MessageCircleIcon}
               alt="메시지"
               style={{ width: "19px", height: "19px", cursor: "pointer" }}
+              onClick={() => navigate('/chat')}
             />
           </S.UserCard>
         </S.CoupleSection>
@@ -148,12 +153,15 @@ const ChatListPage: React.FC = () => {
                     cursor: "pointer",
                     opacity: user.hasMessage ? 0.5 : 1,
                   }}
+                  onClick={() => navigate('/chat')}
                 />
               </S.UserCard>
             ))}
           </div>
         </S.CoupleSection>
       </div>
+
+      <NavBar />
     </S.ChatContainer>
   );
 };

@@ -6,6 +6,7 @@ import { RecoilRoot } from "recoil";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import LoginPage from "./pages/login";
 import ProfilePage from "./pages/profile";
+import ProfileSettingPage from "./pages/profile/setting";
 import CountdownPage from "./pages/countdown";
 import ChatListPage from "./pages/chatList";
 import AdminParticipantsPage from "./pages/admin/participants";
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/setting" element={<ProfileSettingPage />} />
         <Route path="/countdown" element={<CountdownPage />} />
         <Route path="/admin/participants" element={<AdminParticipantsPage />} />
         <Route path="/admin/messages" element={<AdminMessagesPage />} />

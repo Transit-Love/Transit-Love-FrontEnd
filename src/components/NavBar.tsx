@@ -1,0 +1,71 @@
+import React from 'react';
+import styled from '@emotion/styled';
+import { Link, useLocation } from 'react-router-dom';
+import HomeIcon from '../assets/icon/home.png';
+import MessageIcon from '../assets/icon/message.png';
+import ProfileIcon from '../assets/icon/profile.png';
+
+const Bar = styled.nav`
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 390px;
+  height: 67px;
+  background: #FFFFFF;
+  border-top: 1px solid #E5E5E5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const Items = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 57px;
+`;
+
+const Item = styled(Link)<{ active?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 49px;
+  border-radius: 12px;
+  background: ${({ active }) => (active ? 'rgba(250, 176, 184, 0.24)' : 'transparent')};
+`;
+
+const Icon = styled.img<{ active?: boolean }>`
+  width: 24px;
+  height: 24px;
+  opacity: ${({ active }) => (active ? 1 : 0.6)};
+`;
+
+const NavBar: React.FC = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const isCountdown = pathname === '/countdown' || pathname === '/';
+  const isChatList = pathname === '/chat-list';
+  const isProfile = pathname === '/profile';
+
+  return (
+    <Bar>
+      <Items>
+        <Item to="/countdown" active={isCountdown} aria-label="home">
+          <Icon src={HomeIcon} active={isCountdown} />
+        </Item>
+        <Item to="/chat-list" active={isChatList} aria-label="message">
+          <Icon src={MessageIcon} active={isChatList} />
+        </Item>
+        <Item to="/profile" active={isProfile} aria-label="profile">
+          <Icon src={ProfileIcon} active={isProfile} />
+        </Item>
+      </Items>
+    </Bar>
+  );
+};
+
+export default NavBar;
