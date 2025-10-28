@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { Link, useLocation } from 'react-router-dom';
-import FinalResultIcon from '../assets/icon/profile.png';
-import HomeIcon from '../assets/icon/home.png';
-import MessageIcon from '../assets/icon/message.svg';
+import React from "react";
+import styled from "@emotion/styled";
+import { Link, useLocation } from "react-router-dom";
+import FinalResultIcon from "../assets/icon/profile.png";
+import HomeIcon from "../assets/icon/home.png";
+import MessageIcon from "../assets/icon/message.svg";
 
 const Bar = styled.nav`
   position: fixed;
@@ -13,8 +13,8 @@ const Bar = styled.nav`
   width: 100%;
   max-width: 390px;
   height: 67px;
-  background: #FFFFFF;
-  border-top: 1px solid #E5E5E5;
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,14 +27,15 @@ const Items = styled.div`
   gap: 11px;
 `;
 
-const Item = styled(Link) <{ active?: boolean }>`
+const Item = styled(Link)<{ active?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 68px;
   height: 49px;
   border-radius: 12px;
-  background: ${({ active }) => (active ? 'rgba(250, 176, 184, 0.24)' : 'transparent')};
+  background: ${({ active }) =>
+    active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
 `;
 
 const Icon = styled.img<{ active?: boolean }>`
@@ -44,29 +45,36 @@ const Icon = styled.img<{ active?: boolean }>`
 `;
 
 const AdminNavBar: React.FC = () => {
-    const location = useLocation();
-    const pathname = location.pathname;
+  const location = useLocation();
+  const pathname = location.pathname;
 
-    const isParticipants = pathname === '/admin/participants';
-    const isMessages = pathname === '/admin/messages';
-    const isFinalResult = pathname === '/admin/final-result';
+  const isParticipants = pathname === "/admin/participants";
+  const isMessages = pathname === "/admin/messages";
+  const isFinalResult = pathname === "/admin/final-result";
 
-
-    return (
-        <Bar>
-            <Items>
-                <Item to="/admin/final-result" active={isFinalResult} aria-label="final-result">
-                    <Icon src={HomeIcon} active={isFinalResult} />
-                </Item>
-                <Item to="/admin/messages" active={isMessages} aria-label="messages">
-                    <Icon src={MessageIcon} active={isMessages} />
-                </Item>
-                <Item to="/admin/participants" active={isParticipants} aria-label="participants">
-                    <Icon src={FinalResultIcon} active={isParticipants} />
-                </Item>
-            </Items>
-        </Bar>
-    );
+  return (
+    <Bar>
+      <Items>
+        <Item
+          to="/admin/final-result"
+          active={isFinalResult}
+          aria-label="final-result"
+        >
+          <Icon src={HomeIcon} active={isFinalResult} />
+        </Item>
+        <Item to="/admin/messages" active={isMessages} aria-label="messages">
+          <Icon src={MessageIcon} active={isMessages} />
+        </Item>
+        <Item
+          to="/admin/participants"
+          active={isParticipants}
+          aria-label="participants"
+        >
+          <Icon src={FinalResultIcon} active={isParticipants} />
+        </Item>
+      </Items>
+    </Bar>
+  );
 };
 
 export default AdminNavBar;
