@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const Container = styled.div`
   width: 100%;
@@ -10,10 +10,12 @@ export const Container = styled.div`
   padding-bottom: 60px;
 
   @media (min-width: 391px) {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const BackgroundImage = styled.div`
@@ -22,12 +24,14 @@ export const BackgroundImage = styled.div`
   top: -2px;
   width: 423.93px;
   height: 909.16px;
-  background-image: url('/background.svg');
+  background-image: url("/background.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 1;
-  @media (min-width: 391px) { display: none; }
+  @media (min-width: 391px) {
+    display: none;
+  }
 `;
 
 export const Header = styled.div`
@@ -36,7 +40,7 @@ export const Header = styled.div`
   top: 0;
   width: 390px;
   height: 100px;
-  background: #FFC6B6;
+  background: #ffc6b6;
   z-index: 200;
   display: flex;
   flex-direction: column;
@@ -66,11 +70,12 @@ export const IconButton = styled.button`
 `;
 
 export const HeaderTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const StatusIcons = styled.div`
@@ -112,7 +117,8 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 20px;
   line-height: 0.96em;
@@ -131,8 +137,8 @@ export const CoupleCard = styled.div`
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: #FFFFFF;
-  border: 1px solid #FAB0B8;
+  background: #ffffff;
+  border: 1px solid #fab0b8;
   border-radius: 16px;
 `;
 
@@ -151,7 +157,8 @@ export const Avatar = styled.img`
 `;
 
 export const Name = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;

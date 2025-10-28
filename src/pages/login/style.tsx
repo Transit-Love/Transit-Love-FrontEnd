@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const LoginContainer = styled.div`
   width: 390px;
@@ -9,7 +9,7 @@ export const LoginContainer = styled.div`
   margin: 0 auto;
 
   @media (min-width: 391px) {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
   }
@@ -21,7 +21,7 @@ export const LogoText = styled.div`
   top: 277px;
   width: 111px;
   height: 24px;
-  font-family: 'Ownglyph PDH', inherit;
+  font-family: "Ownglyph PDH", inherit;
   font-weight: 400;
   font-size: 20px;
   line-height: 1.2em;
@@ -53,7 +53,7 @@ export const GoogleLoginFrame = styled.div`
   top: 663px;
   width: 318px;
   height: 52px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 10px;
   z-index: 3;
 `;
@@ -76,7 +76,7 @@ export const GoogleText = styled.div`
   transform: translateY(-50%);
   width: 106px;
   height: 20px;
-  font-family: 'Ownglyph PDH', inherit;
+  font-family: "Ownglyph PDH", inherit;
   font-weight: 400;
   font-size: 20px;
   line-height: 0.96em;
@@ -90,7 +90,7 @@ export const InfoText = styled.div`
   top: 733px;
   width: 231px;
   height: 20px;
-  font-family: 'Ownglyph PDH', inherit;
+  font-family: "Ownglyph PDH", inherit;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
@@ -104,7 +104,7 @@ export const AdminText = styled.div`
   top: 760px;
   width: 231px;
   height: 20px;
-  font-family: 'Ownglyph PDH', inherit;
+  font-family: "Ownglyph PDH", inherit;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
