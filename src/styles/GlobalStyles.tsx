@@ -1,4 +1,4 @@
-import { Global, css } from '@emotion/react'
+import { Global, css } from "@emotion/react";
 
 export const GlobalStyles = () => (
   <Global
@@ -10,7 +10,8 @@ export const GlobalStyles = () => (
       }
 
       body {
-        font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
@@ -19,7 +20,7 @@ export const GlobalStyles = () => (
         width: 100vw;
         max-width: 100vw;
         height: 100vh;
-        background: #FFFFFF;
+        background: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -30,7 +31,7 @@ export const GlobalStyles = () => (
       /* 모바일에서만 배경 이미지 */
       @media (max-width: 390px) {
         #root {
-          background-image: url('/background.svg');
+          background-image: url("/background.svg");
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
@@ -40,13 +41,11 @@ export const GlobalStyles = () => (
       /* 웹 크기에서 흰색 배경 */
       @media (min-width: 391px) {
         #root {
-          background: #FFFFFF;
+          background: #ffffff;
         }
       }
 
-
-      @import url('https://fonts.googleapis.com/css2?family=Ownglyph+PDH:wght@400&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Ownglyph+PDH:wght@400&display=swap");
     `}
   />
-)
-
+);
