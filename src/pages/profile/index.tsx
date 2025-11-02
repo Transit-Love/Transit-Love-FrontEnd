@@ -1,28 +1,28 @@
-import React from 'react';
-import * as S from './style';
-import { useNavigate } from 'react-router-dom';
-import Back from '../../assets/back.png';
-import Avatar1 from '../../assets/icon/avatar1.png';
-import Heart from '../../assets/icon/heart.svg';
-import Users from '../../assets/icon/users.svg';
-import NavBar from '../../components/NavBar';
+import React from "react";
+import * as S from "./style";
+import { useNavigate } from "react-router-dom";
+import Back from "../../assets/back.png";
+import Avatar1 from "../../assets/icon/avatar1.png";
+import Heart from "../../assets/icon/heart.svg";
+import Users from "../../assets/icon/users.svg";
+import NavBar from "../../components/NavBar";
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const keywords = ['ENFP', '영화광', '운동', '우웅?'];
-  
+  const keywords = ["ENFP", "영화광", "운동", "우웅?"];
+
   const balanceResults = [
     {
       icon: Heart,
-      category: '연애 스타일',
-      result: '설레는 연애'
+      category: "연애 스타일",
+      result: "설레는 연애",
     },
     {
       icon: Users,
-      category: '연애 경험',
-      result: '능숙한 편'
-    }
+      category: "연애 경험",
+      result: "능숙한 편",
+    },
   ];
 
   return (
@@ -53,9 +53,7 @@ const ProfilePage: React.FC = () => {
         <S.SectionTitle>이런 사람이에요</S.SectionTitle>
         <S.KeywordsGrid>
           {keywords.map((keyword, index) => (
-            <S.KeywordTag key={index}>
-              {keyword}
-            </S.KeywordTag>
+            <S.KeywordTag key={index}>{keyword}</S.KeywordTag>
           ))}
         </S.KeywordsGrid>
       </S.KeywordsSection>

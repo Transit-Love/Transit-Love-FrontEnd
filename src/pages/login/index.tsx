@@ -30,7 +30,9 @@ const LoginPage: React.FC = () => {
 
       <S.InfoText>학교 계정으로 로그인하셔야 참여가 가능합니다.</S.InfoText>
       <S.Underline />
-      <S.AdminText onClick={() => navigate("/admin/messages")}>어드민 페이지</S.AdminText>
+      <S.AdminText onClick={() => navigate("/admin/messages")}>
+        어드민 페이지
+      </S.AdminText>
     </S.LoginContainer>
   );
 };
