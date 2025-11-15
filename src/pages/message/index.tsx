@@ -32,8 +32,6 @@ const MessagePage: React.FC = () => {
   };
 
   const handlePersonSelect = () => {
-    // TODO: 사람 선택 모달 또는 페이지로 이동
-    // 임시로 예시 이름 설정
     setSelectedPerson("너도 아라를 아라?");
   };
 
