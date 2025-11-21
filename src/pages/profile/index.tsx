@@ -6,24 +6,30 @@ import Avatar1 from "../../assets/icon/avatar1.png";
 import Heart from "../../assets/icon/heart.svg";
 import Users from "../../assets/icon/users.svg";
 import NavBar from "../../components/NavBar";
+import type { Profile } from "../../types/profile";
+import { BalanceItem } from "../../components/BalanceItem";
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const keywords = ["ENFP", "영화광", "운동", "우웅?"];
-
-  const balanceResults = [
-    {
-      icon: Heart,
-      category: "연애 스타일",
-      result: "설레는 연애",
-    },
-    {
-      icon: Users,
-      category: "연애 경험",
-      result: "능숙한 편",
-    },
-  ];
+  // Profile 타입 기반 데이터 예시
+  const profile: Profile = {
+    avatar: Avatar1,
+    name: "너도 아라를 아라?",
+    keywords: ["ENFP", "영화광", "운동", "우웅?"],
+    balanceResults: [
+      {
+        icon: Heart,
+        category: "연애 스타일",
+        result: "설레는 연애",
+      },
+      {
+        icon: Users,
+        category: "연애 경험",
+        result: "능숙한 편",
+      },
+    ],
+  };
 
   return (
     <S.ProfileContainer>
@@ -42,17 +48,17 @@ const ProfilePage: React.FC = () => {
 
       <S.AvatarSection>
         <S.AvatarContainer>
-          <S.Avatar src={Avatar1} alt="프로필" />
+          <S.Avatar src={profile.avatar} alt="프로필" />
         </S.AvatarContainer>
         <S.ProfileInfo>
-          <S.ProfileName>너도 아라를 아라?</S.ProfileName>
+          <S.ProfileName>{profile.name}</S.ProfileName>
         </S.ProfileInfo>
       </S.AvatarSection>
 
       <S.KeywordsSection>
         <S.SectionTitle>이런 사람이에요</S.SectionTitle>
         <S.KeywordsGrid>
-          {keywords.map((keyword, index) => (
+          {profile.keywords.map((keyword, index) => (
             <S.KeywordTag key={index}>{keyword}</S.KeywordTag>
           ))}
         </S.KeywordsGrid>
@@ -61,14 +67,13 @@ const ProfilePage: React.FC = () => {
       <S.BalanceResults>
         <S.SectionTitle>밸런스게임 결과</S.SectionTitle>
         <S.BalanceItems>
-          {balanceResults.map((item, index) => (
-            <S.BalanceItem key={index}>
-              <S.BalanceIcon src={item.icon} alt={item.category} />
-              <S.BalanceText>
-                <S.BalanceCategory>{item.category}</S.BalanceCategory>
-                <S.BalanceResult>{item.result}</S.BalanceResult>
-              </S.BalanceText>
-            </S.BalanceItem>
+          {profile.balanceResults.map((item, index) => (
+            <BalanceItem
+              key={index}
+              icon={item.icon}
+              category={item.category}
+              result={item.result}
+            />
           ))}
         </S.BalanceItems>
       </S.BalanceResults>

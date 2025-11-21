@@ -4,12 +4,18 @@ import { useNavigate } from "react-router-dom";
 import Back from "../../../assets/back.png";
 import Back2 from "../../../assets/back2.png";
 import NavBar from "../../../components/NavBar";
+import type { Profile } from "../../../types/profile";
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("귀여운곰돌이");
+  // Profile 타입을 활용한 상태 관리
+  const [profile, setProfile] = useState<Profile>({
+    avatar: "", // 추후 이미지 업로드 기능과 연동
+    name: "귀여운곰돌이",
+    keywords: [],
+    balanceResults: [],
+  });
   const [mbti, setMbti] = useState("ENFP");
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: number | null;
@@ -53,7 +59,7 @@ const ProfileSettingPage: React.FC = () => {
     },
   ];
 
-  const availableKeywords = [
+  const availableKeywords: string[] = [
     "영화광",
     "ENFP",
     "게임러버",
@@ -67,10 +73,16 @@ const ProfileSettingPage: React.FC = () => {
   ];
 
   const handleKeywordToggle = (keyword: string) => {
-    if (selectedKeywords.includes(keyword)) {
-      setSelectedKeywords(selectedKeywords.filter((k) => k !== keyword));
-    } else if (selectedKeywords.length < 4) {
-      setSelectedKeywords([...selectedKeywords, keyword]);
+    if (profile.keywords.includes(keyword)) {
+      setProfile({
+        ...profile,
+        keywords: profile.keywords.filter((k) => k !== keyword),
+      });
+    } else if (profile.keywords.length < 4) {
+      setProfile({
+        ...profile,
+        keywords: [...profile.keywords, keyword],
+      });
     }
   };
 
@@ -88,7 +100,25 @@ const ProfileSettingPage: React.FC = () => {
   };
 
   const handleNextStep = () => {
-    console.log("다음 단계로 이동");
+    // 밸런스게임 결과를 Profile 타입에 맞게 저장
+    const balanceResults = balanceGameQuestions
+      .map((q, idx) => {
+        const selectedIdx = selectedAnswers[idx];
+        if (selectedIdx === null || selectedIdx === undefined) return null;
+        const option = q.options[selectedIdx];
+        return {
+          icon: option.icon,
+          category: q.question,
+          result: option.text,
+        };
+      })
+      .filter(Boolean);
+    setProfile({
+      ...profile,
+      name: profile.name,
+      balanceResults: balanceResults as Profile["balanceResults"],
+    });
+    // 실제 저장 로직 추가 가능 (예: recoil, 서버 전송 등)
     navigate("/countdown");
   };
 
@@ -112,9 +142,9 @@ const ProfileSettingPage: React.FC = () => {
         <S.SectionTitle>닉네임</S.SectionTitle>
         <S.InputField>
           <S.InputText
-            value={nickname}
+            value={profile.name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setNickname(e.target.value)
+              setProfile({ ...profile, name: e.target.value })
             }
             placeholder="귀여운곰돌이"
           />
@@ -190,7 +220,7 @@ const ProfileSettingPage: React.FC = () => {
           {availableKeywords.map((keyword, index) => (
             <S.KeywordButton
               key={index}
-              selected={selectedKeywords.includes(keyword)}
+              selected={profile.keywords.includes(keyword)}
               onClick={() => handleKeywordToggle(keyword)}
             >
               {keyword}
