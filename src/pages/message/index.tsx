@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as S from './style';
 import { useNavigate } from 'react-router-dom';
-import Back from '../../assets/back.png';
+import PageHeader from '../../components/PageHeader';
 
 const MessagePage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,27 +35,12 @@ const MessagePage: React.FC = () => {
     <S.MessageContainer>
       <S.BackgroundImage />
       
-      <S.Header>
-        <S.NavBar>
-          <S.BackButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.BackButton>
-          <S.HeaderTitle>속마음 문자</S.HeaderTitle>
-        </S.NavBar>
-        
-        <S.TimerInfo>
-          <S.TimerText>23:42에 종료</S.TimerText>
-          <S.TimeLeft>
-            <S.TimeLeftText>1시간 18분 남음</S.TimeLeftText>
-          </S.TimeLeft>
-        </S.TimerInfo>
-      </S.Header>
-
-      <S.StatusIcons />
-      <S.TimeDisplay />
+      <PageHeader 
+        title="속마음 문자" 
+        subtitle="23:42에 종료 • 1시간 18분 남음"
+      />
 
       <S.InfoCard>
-        <S.InfoIcon />
         <S.InfoText>
           <S.InfoTitle>속마음 문자는 단 한 번만 보낼 수 있어요</S.InfoTitle>
           <S.InfoDescription>상대방이 누구인지 알 수 없도록 익명으로 전송됩니다</S.InfoDescription>

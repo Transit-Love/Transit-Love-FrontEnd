@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import * as S from './style';
 import { useNavigate } from 'react-router-dom';
-import Back from '../../../assets/back.png'
-import Back2 from '../../../assets/back2.png'
 import NavBar from '../../../components/NavBar';
+import PageHeader from '../../../components/PageHeader';
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ const ProfileSettingPage: React.FC = () => {
   const [mbti, setMbti] = useState('ENFP');
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number | null}>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number | null }>({});
 
   const balanceGameQuestions = [
     {
@@ -52,7 +51,7 @@ const ProfileSettingPage: React.FC = () => {
   ];
 
   const availableKeywords = [
-    '영화광', 'ENFP', '게임러버', '독서광', '여행러버', 
+    '영화광', 'ENFP', '게임러버', '독서광', '여행러버',
     '음식러버', '운동러버', '음악러버', '예술러버', '반려동물러버'
   ];
 
@@ -85,23 +84,12 @@ const ProfileSettingPage: React.FC = () => {
   return (
     <S.ProfileContainer>
       <S.BackgroundImage />
-      
-      <S.Header>
-        <S.NavBar>
-          <S.BackButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.BackButton>
-          <S.HeaderTitle>프로필 설정</S.HeaderTitle>
-        </S.NavBar>
-      </S.Header>
 
-      <S.StatusIcons />
-      <S.TimeDisplay />
-
+      <PageHeader title="프로필 설정" backgroundColor="#fab0b8" showBackButton={false} />
       <S.NicknameSection>
         <S.SectionTitle>닉네임</S.SectionTitle>
         <S.InputField>
-          <S.InputText 
+          <S.InputText
             value={nickname}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNickname(e.target.value)}
             placeholder="귀여운곰돌이"
@@ -113,7 +101,7 @@ const ProfileSettingPage: React.FC = () => {
       <S.MBTISection>
         <S.SectionTitle>MBTI</S.SectionTitle>
         <S.InputField>
-          <S.InputText 
+          <S.InputText
             value={mbti}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMbti(e.target.value)}
             placeholder="ENFP"
@@ -127,19 +115,19 @@ const ProfileSettingPage: React.FC = () => {
           <S.SectionTitle>밸런스게임</S.SectionTitle>
           <S.SectionDescription>당신의 연애 스타일을 알려주세요 (5문제)</S.SectionDescription>
         </S.SectionHeader>
-        
+
         <S.QuestionCard>
           <S.QuestionHeader>
             <S.QuestionNumber>{currentQuestion + 1}</S.QuestionNumber>
             <S.ArrowButton onClick={handleNextQuestion}>
-              <img src={Back2} alt="arrow" />
+              {/* <img src={Back2} alt="arrow" /> */}
             </S.ArrowButton>
           </S.QuestionHeader>
-          
+
           <S.QuestionContent>
             <S.QuestionText>{balanceGameQuestions[currentQuestion].question}</S.QuestionText>
             {balanceGameQuestions[currentQuestion].options.map((option, index) => (
-              <S.OptionButton 
+              <S.OptionButton
                 key={index}
                 selected={selectedAnswers[currentQuestion] === index}
                 onClick={() => handleAnswerSelect(currentQuestion, index)}
@@ -157,7 +145,7 @@ const ProfileSettingPage: React.FC = () => {
           <S.SectionTitle>키워드 선택</S.SectionTitle>
           <S.SectionDescription>당신을 표현하는 키워드를 선택하세요. (최대 4개)</S.SectionDescription>
         </S.SectionHeader>
-        
+
         <S.KeywordsGrid>
           {availableKeywords.map((keyword, index) => (
             <S.KeywordButton

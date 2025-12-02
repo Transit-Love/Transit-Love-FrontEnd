@@ -2,7 +2,7 @@ import React from "react";
 import * as S from "./style";
 import Avatar1 from "../../assets/icon/avatar1.png";
 import Avatar2 from "../../assets/icon/avatar2.png";
-import BackIcon from "../../assets/back.png";
+import PageHeader from "../../components/PageHeader";
 import MessageCircleIcon from "../../assets/icon/white-message-circle.svg";
 import HeartIcon from "../../assets/icon/heart.svg";
 import CheckCircleIcon from "../../assets/icon/check-circle.svg";
@@ -21,16 +21,11 @@ const FinalChoicePage: React.FC = () => {
 
   return (
     <S.FinalChoiceContainer>
-      <S.Header>
-        <S.NavBar>
-          <S.BackButton src={BackIcon} alt="뒤로가기" />
-          <S.HeaderTitle>마지막 선택</S.HeaderTitle>
-        </S.NavBar>
-        <S.TimerInfo>
-          <S.TimerText>23:59에 종료</S.TimerText>
-          <S.TimeLeft>1시간 1분 남음</S.TimeLeft>
-        </S.TimerInfo>
-      </S.Header>
+      <PageHeader 
+        title="마지막 선택" 
+        subtitle="23:59에 종료 • 1시간 1분 남음"
+        backgroundColor="#fab0b8"
+      />
 
       {/* 현재 매칭 상대 섹션 */}
       <S.ContentSection style={{ top: "158px" }}>

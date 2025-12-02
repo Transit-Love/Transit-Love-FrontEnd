@@ -16,6 +16,7 @@ import MessagePage from "./pages/message";
 import LastChoice from "./pages/lastChoice";
 import FinalResultPage from "./pages/finalResult";
 import AdminFinalResultPage from "./pages/admin/finalResult";
+import OAuth2Redirect from "./pages/oauth2/redirect";
 
 createRoot(document.getElementById("root")!).render(
   <RecoilRoot>
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/oauth2/redirect" element={<OAuth2Redirect />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/setting" element={<ProfileSettingPage />} />
         <Route path="/countdown" element={<CountdownPage />} />
