@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const CountdownContainer = styled.div`
   width: 100%;
@@ -10,7 +10,7 @@ export const CountdownContainer = styled.div`
   padding-bottom: 60px;
 
   @media (min-width: 391px) {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 `;
@@ -21,7 +21,7 @@ export const BackgroundImage = styled.div`
   top: -2px;
   width: 423.93px;
   height: 909.16px;
-  background-image: url('/background.svg');
+  background-image: url("/background.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -67,12 +67,13 @@ export const ContentWrapper = styled.div`
 `;
 
 export const Title = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 40px;
   line-height: 0.54em;
   text-align: center;
-  color: #FFC6B6;
+  color: #ffc6b6;
 `;
 
 export const TimerDisplay = styled.div`
@@ -89,7 +90,7 @@ export const TimeBox = styled.div`
   align-items: center;
   gap: 8px;
   padding: 20px 16px;
-  background: #FAB0B8;
+  background: #fab0b8;
   border: 2px solid rgba(255, 255, 255, 0.19);
   border-radius: 16px;
   min-width: 80px;
@@ -98,11 +99,12 @@ export const TimeBox = styled.div`
 `;
 
 export const TimeNumber = styled.div`
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 800;
   font-size: 36px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
   width: 48px;
   text-align: center;
   display: flex;
@@ -111,19 +113,21 @@ export const TimeNumber = styled.div`
 `;
 
 export const TimeLabel = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const TimeSeparator = styled.div`
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 800;
   font-size: 36px;
   line-height: 1.2em;
-  color: #FAB0B8;
+  color: #fab0b8;
 `;
 
 export const InfoCard = styled.div`
@@ -153,19 +157,21 @@ export const InfoTextWrapper = styled.div`
 `;
 
 export const InfoTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const InfoDescription = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const InfoSection = styled.div`
@@ -185,12 +191,13 @@ export const ParticipantsInfo = styled.div`
 `;
 
 export const ParticipantsTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
   text-align: center;
-  color: #FFC6B6;
+  color: #ffc6b6;
 `;
 
 export const ParticipantsCount = styled.div`
@@ -211,17 +218,19 @@ export const UsersIcon = styled.div`
 `;
 
 export const ParticipantsNumber = styled.div`
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 800;
   font-size: 20px;
   line-height: 1.2em;
-  color: #FFC6B6;
+  color: #ffc6b6;
 `;
 
 export const ParticipantsStatus = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
-  color: #DFD1EA;
+  color: #dfd1ea;
 `;

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const ProfileContainer = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ export const ProfileContainer = styled.div`
   padding-bottom: 100px;
 
   @media (min-width: 391px) {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -26,7 +26,7 @@ export const BackgroundImage = styled.div`
   top: -2px;
   width: 423.93px;
   height: 909.16px;
-  background-image: url('/background.svg');
+  background-image: url("/background.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -41,7 +41,7 @@ export const Header = styled.div`
   position: absolute;
   width: 390px;
   height: 5.5rem;
-  background: #FAB0B8;
+  background: #fab0b8;
   z-index: 200;
   display: flex;
   flex-direction: column;
@@ -69,11 +69,12 @@ export const BackButton = styled.button`
 `;
 
 export const HeaderTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 24px;
   line-height: 0.9em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const StatusIcons = styled.div`
@@ -114,7 +115,7 @@ export const AvatarContainer = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 60px;
-  background: #F8FAFC;
+  background: #f8fafc;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,7 +137,8 @@ export const ProfileInfo = styled.div`
 `;
 
 export const ProfileName = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 24px;
   line-height: 1.2em;
@@ -155,7 +157,8 @@ export const KeywordsSection = styled.div`
 `;
 
 export const SectionTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2em;
@@ -174,13 +177,14 @@ export const KeywordTag = styled.div`
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: #FAB0B8;
+  background: #fab0b8;
   border-radius: 20px;
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const BalanceResults = styled.div`
@@ -206,8 +210,8 @@ export const BalanceItem = styled.div`
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: #F8FAFC;
-  border: 1px solid #FAB0B8;
+  background: #f8fafc;
+  border: 1px solid #fab0b8;
   border-radius: 12px;
 `;
 
@@ -224,15 +228,17 @@ export const BalanceText = styled.div`
 `;
 
 export const BalanceCategory = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.2em;
-  color: #6B7280;
+  color: #6b7280;
 `;
 
 export const BalanceResult = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
@@ -261,7 +267,7 @@ export const ChatButton = styled.button`
   gap: 4px;
   width: 100%;
   height: 48px;
-  background: #FAB0B8;
+  background: #fab0b8;
   border-radius: 20px;
   border: none;
   cursor: pointer;
@@ -278,9 +284,10 @@ export const MessageIcon = styled.img`
 `;
 
 export const ChatButtonText = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;

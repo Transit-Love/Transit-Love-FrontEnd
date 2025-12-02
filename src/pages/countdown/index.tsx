@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import * as S from './style';
-import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
+import React, { useState, useEffect } from "react";
+import * as S from "./style";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../../components/NavBar";
 
 const CountdownPage: React.FC = () => {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState({
     hours: 2,
     minutes: 35,
-    seconds: 42
+    seconds: 42,
   });
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(prevTime => {
+      setTimeLeft((prevTime) => {
         let { hours, minutes, seconds } = prevTime;
-        
+
         if (seconds > 0) {
           seconds--;
         } else if (minutes > 0) {
@@ -28,10 +28,10 @@ const CountdownPage: React.FC = () => {
         } else {
           // 시간이 다 되면 매칭 페이지로 이동
           clearInterval(timer);
-          navigate('/matching');
+          navigate("/matching");
           return prevTime;
         }
-        
+
         return { hours, minutes, seconds };
       });
     }, 1000);
@@ -40,7 +40,7 @@ const CountdownPage: React.FC = () => {
   }, [navigate]);
 
   const formatTime = (num: number) => {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   };
 
   return (
@@ -49,7 +49,7 @@ const CountdownPage: React.FC = () => {
 
       <S.ContentWrapper>
         <S.Title>곧 매칭이 시작됩니다!</S.Title>
-        
+
         <S.TimerDisplay>
           <S.TimeBox>
             <S.TimeNumber>{formatTime(timeLeft.hours)}</S.TimeNumber>
@@ -71,7 +71,9 @@ const CountdownPage: React.FC = () => {
           <S.SparklesIcon>✨</S.SparklesIcon>
           <S.InfoTextWrapper>
             <S.InfoTitle>매칭 준비 중...</S.InfoTitle>
-            <S.InfoDescription>곧 운명의 상대를 만날 수 있어요</S.InfoDescription>
+            <S.InfoDescription>
+              곧 운명의 상대를 만날 수 있어요
+            </S.InfoDescription>
           </S.InfoTextWrapper>
         </S.InfoCard>
 

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const MessageContainer = styled.div`
   width: 100%;
@@ -10,10 +10,10 @@ export const MessageContainer = styled.div`
   padding-bottom: 100px;
 
   @media (min-width: 391px) {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -25,7 +25,7 @@ export const BackgroundImage = styled.div`
   top: -2px;
   width: 423.93px;
   height: 909.16px;
-  background-image: url('/background.svg');
+  background-image: url("/background.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -42,7 +42,7 @@ export const Header = styled.div`
   top: 0px;
   width: 390px;
   height: 122px;
-  background: #FAB0B8;
+  background: #fab0b8;
   z-index: 200;
   display: flex;
   flex-direction: column;
@@ -71,11 +71,12 @@ export const BackButton = styled.button`
 `;
 
 export const HeaderTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 24px;
   line-height: 0.9em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const TimerInfo = styled.div`
@@ -87,11 +88,12 @@ export const TimerInfo = styled.div`
 `;
 
 export const TimerText = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.085em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const TimeLeft = styled.div`
@@ -103,33 +105,34 @@ export const TimeLeft = styled.div`
 export const ClockIcon = styled.div`
   width: 16px;
   height: 16px;
-  
+
   &::before {
-    content: '';
+    content: "";
     display: block;
     width: 13.33px;
     height: 13.33px;
-    border: 1.33px solid #FFE5B4;
+    border: 1.33px solid #ffe5b4;
     border-radius: 50%;
     margin: 1.33px;
   }
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 2.67px;
     height: 5.33px;
-    background: #FFE5B4;
+    background: #ffe5b4;
     margin: 8px 0 0 8px;
   }
 `;
 
 export const TimeLeftText = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.085em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const StatusIcons = styled.div`
@@ -159,7 +162,7 @@ export const InfoCard = styled.div`
   left: 24px;
   top: 146px;
   width: 342px;
-  background: #DFD1EA;
+  background: #dfd1ea;
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -172,23 +175,23 @@ export const InfoCard = styled.div`
 export const InfoIcon = styled.div`
   width: 24px;
   height: 24px;
-  
+
   &::before {
-    content: '';
+    content: "";
     display: block;
     width: 20px;
     height: 20px;
-    border: 2px solid #FFFFFF;
+    border: 2px solid #ffffff;
     border-radius: 50%;
     margin: 2px;
   }
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 0;
     height: 4px;
-    border-left: 2px solid #FFFFFF;
+    border-left: 2px solid #ffffff;
     margin: 12px 0 0 12px;
   }
 `;
@@ -201,7 +204,8 @@ export const InfoText = styled.div`
 `;
 
 export const InfoTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 20px;
   line-height: 0.96em;
@@ -209,7 +213,8 @@ export const InfoTitle = styled.div`
 `;
 
 export const InfoDescription = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 15px;
   line-height: 1.12em;
@@ -235,7 +240,8 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 20px;
   line-height: 1.2em;
@@ -246,16 +252,17 @@ export const CountBadge = styled.div`
   display: flex;
   align-items: center;
   padding: 6px 12px;
-  background: #FAB0B8;
+  background: #fab0b8;
   border-radius: 16px;
 `;
 
 export const CountText = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.085em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const MessagesList = styled.div`
@@ -270,8 +277,8 @@ export const MessageCard = styled.div`
   flex-direction: column;
   gap: 12px;
   padding: 20px;
-  background: #F8FAFC;
-  border: 1px solid #FAB0B8;
+  background: #f8fafc;
+  border: 1px solid #fab0b8;
   border-radius: 16px;
 `;
 
@@ -283,23 +290,26 @@ export const MessageHeader = styled.div`
 `;
 
 export const SenderName = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.2em;
-  color: #6B7280;
+  color: #6b7280;
 `;
 
 export const MessageTime = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.2em;
-  color: #6B7280;
+  color: #6b7280;
 `;
 
 export const MessageContent = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
@@ -318,7 +328,8 @@ export const SendSection = styled.div`
 `;
 
 export const SendTitle = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 20px;
   line-height: 1.2em;
@@ -331,8 +342,8 @@ export const PersonSelectCard = styled.div`
   align-items: center;
   width: 342px;
   padding: 4px 20px;
-  background: #F8FAFC;
-  border: 1px solid #FAB0B8;
+  background: #f8fafc;
+  border: 1px solid #fab0b8;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -355,15 +366,17 @@ export const PersonSelectHeader = styled.div`
 `;
 
 export const PersonSelectLabel = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.4em;
-  color: #6B7280;
+  color: #6b7280;
 `;
 
 export const PersonSelectMessage = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.37em;
@@ -376,14 +389,14 @@ export const ChevronIcon = styled.div`
   align-items: center;
   gap: 10px;
   padding: 7px 11px;
-  
+
   &::before {
-    content: '';
+    content: "";
     display: block;
     width: 8px;
     height: 4px;
-    border-right: 2px solid #FAB0B8;
-    border-bottom: 2px solid #FAB0B8;
+    border-right: 2px solid #fab0b8;
+    border-bottom: 2px solid #fab0b8;
     transform: rotate(45deg);
   }
 `;
@@ -393,18 +406,19 @@ export const MessageInput = styled.div`
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background: #F8FAFC;
-  border: 1px solid #FAB0B8;
+  background: #f8fafc;
+  border: 1px solid #fab0b8;
   border-radius: 16px;
   height: 86px;
 `;
 
 export const MessagePlaceholder = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.2em;
-  color: #6B7280;
+  color: #6b7280;
 `;
 
 export const MessageTextarea = styled.textarea`
@@ -412,7 +426,8 @@ export const MessageTextarea = styled.textarea`
   height: 100%;
   border: none;
   background: transparent;
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2em;
@@ -421,7 +436,7 @@ export const MessageTextarea = styled.textarea`
   resize: none;
 
   &::placeholder {
-    color: #6B7280;
+    color: #6b7280;
   }
 `;
 
@@ -433,11 +448,12 @@ export const CharacterCount = styled.div`
 `;
 
 export const CharacterCountText = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.2em;
-  color: #9CA3AF;
+  color: #9ca3af;
 `;
 
 export const SendButton = styled.button`
@@ -447,7 +463,7 @@ export const SendButton = styled.button`
   transform: translateX(-50%);
   width: 342px;
   height: 36px;
-  background: #FAB0B8;
+  background: #fab0b8;
   border-radius: 20px;
   border: none;
   display: flex;
@@ -466,23 +482,24 @@ export const SendButton = styled.button`
 export const SendIcon = styled.div`
   width: 16px;
   height: 16px;
-  
+
   &::before {
-    content: '';
+    content: "";
     display: block;
     width: 7.29px;
     height: 7.29px;
-    border-right: 2px solid #FFFFFF;
-    border-bottom: 2px solid #FFFFFF;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
     transform: rotate(-45deg);
     margin: 7.28px 0 0 1.43px;
   }
 `;
 
 export const SendButtonText = styled.div`
-  font-family: 'Ownglyph PDH', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.2em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
