@@ -2,11 +2,13 @@ import styled from "@emotion/styled";
 
 export const ChatPageContainer = styled.div`
   width: 390px;
-  height: 844px;
+  min-height: 100vh;
   background: #f9fafb;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: 391px) {
     background: #ffffff;
@@ -16,16 +18,13 @@ export const ChatPageContainer = styled.div`
 
 export const ChatHeader = styled.div`
   display: flex;
-  width: 390px;
-  height: 80px;
+  width: 100%;
   padding: 24px 24px 16px 24px;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   background: var(--Color-2, #ffc6b6);
-  position: absolute;
-  top: 44px;
-  left: 0;
+  flex-shrink: 0;
 `;
 
 export const HeaderContent = styled.div`
@@ -94,12 +93,9 @@ export const MessagesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 390px;
-  height: 640px;
+  width: 100%;
+  flex: 1;
   padding: 16px;
-  position: absolute;
-  top: 124px;
-  left: 0;
   overflow-y: auto;
 `;
 
@@ -243,14 +239,12 @@ export const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 390px;
-  height: 80px;
+  width: 100%;
   padding: 16px;
   background: #fff;
   border-top: 1px solid #e5e7eb;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  flex-shrink: 0;
+  margin-bottom: 67px;
 `;
 
 export const InputRow = styled.div`

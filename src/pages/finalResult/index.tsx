@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./style";
 import Avatar from "../../assets/icon/avatar1.png";
-import BackIcon from "../../assets/back.png";
+import PageHeader from "../../components/PageHeader";
 import FrameIcon from "../../assets/icon/frame.svg";
 import HeartIcon from "../../assets/icon/heart-result.svg";
 import UsersIcon from "../../assets/icon/users.svg";
@@ -24,15 +24,11 @@ const FinalResultPage: React.FC = () => {
 
   return (
     <S.FinalResultContainer>
-      <S.Header>
-        <S.HeaderContent>
-          <S.NavBar>
-            <S.BackButton src={BackIcon} alt="뒤로가기" />
-            <S.HeaderTitle>최종 결과</S.HeaderTitle>
-          </S.NavBar>
-          <S.HeaderSubtitle>당신을 선택한 상대</S.HeaderSubtitle>
-        </S.HeaderContent>
-      </S.Header>
+      <PageHeader 
+        title="최종 결과" 
+        subtitle="당신을 선택한 상대"
+        backgroundColor="#fab0b8"
+      />
 
       <S.InfoCard>
         <S.InfoIcon src={FrameIcon} alt="축하" />

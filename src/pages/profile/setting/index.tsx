@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import * as S from "./style";
-import { useNavigate } from "react-router-dom";
-import Back from "../../../assets/back.png";
-import Back2 from "../../../assets/back2.png";
-import NavBar from "../../../components/NavBar";
-import type { Profile } from "../../../types/profile";
+import React, { useState } from 'react';
+import * as S from './style';
+import { useNavigate } from 'react-router-dom';
+import NavBar from '../../../components/NavBar';
+import PageHeader from '../../../components/PageHeader';
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -126,6 +124,8 @@ const ProfileSettingPage: React.FC = () => {
     <S.ProfileContainer>
       <S.BackgroundImage />
 
+      <PageHeader title="프로필 설정" backgroundColor="#fab0b8" showBackButton={false} />
+
       <S.Header>
         <S.NavBar>
           <S.BackButton onClick={() => navigate(-1)}>
@@ -176,13 +176,15 @@ const ProfileSettingPage: React.FC = () => {
           </S.SectionDescription>
         </S.SectionHeader>
 
+
         <S.QuestionCard>
           <S.QuestionHeader>
             <S.QuestionNumber>{currentQuestion + 1}</S.QuestionNumber>
             <S.ArrowButton onClick={handleNextQuestion}>
-              <img src={Back2} alt="arrow" />
+              {/* <img src={Back2} alt="arrow" /> */}
             </S.ArrowButton>
           </S.QuestionHeader>
+
 
           <S.QuestionContent>
             <S.QuestionText>
@@ -215,6 +217,7 @@ const ProfileSettingPage: React.FC = () => {
             당신을 표현하는 키워드를 선택하세요. (최대 4개)
           </S.SectionDescription>
         </S.SectionHeader>
+
 
         <S.KeywordsGrid>
           {availableKeywords.map((keyword, index) => (

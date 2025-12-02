@@ -38,28 +38,13 @@ const MessagePage: React.FC = () => {
   return (
     <S.MessageContainer>
       <S.BackgroundImage />
-
-      <S.Header>
-        <S.NavBar>
-          <S.BackButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.BackButton>
-          <S.HeaderTitle>속마음 문자</S.HeaderTitle>
-        </S.NavBar>
-
-        <S.TimerInfo>
-          <S.TimerText>23:42에 종료</S.TimerText>
-          <S.TimeLeft>
-            <S.TimeLeftText>1시간 18분 남음</S.TimeLeftText>
-          </S.TimeLeft>
-        </S.TimerInfo>
-      </S.Header>
-
-      <S.StatusIcons />
-      <S.TimeDisplay />
+      
+      <PageHeader 
+        title="속마음 문자" 
+        subtitle="23:42에 종료 • 1시간 18분 남음"
+      />
 
       <S.InfoCard>
-        <S.InfoIcon />
         <S.InfoText>
           <S.InfoTitle>속마음 문자는 단 한 번만 보낼 수 있어요</S.InfoTitle>
           <S.InfoDescription>

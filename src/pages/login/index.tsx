@@ -3,13 +3,13 @@ import * as S from "./style";
 import Logo from "../../assets/logo.svg";
 import GoogleIcon from "../../assets/icon/google-logo.png";
 import { useNavigate } from "react-router-dom";
+import authService from "../../api/authService";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
-    console.log("Google 로그인");
-    navigate("/profile/setting");
+    authService.loginWithGoogle();
   };
 
   return (

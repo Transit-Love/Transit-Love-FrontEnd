@@ -1,0 +1,117 @@
+import React from 'react';
+import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
+import BackIcon from '../assets/back.png';
+
+interface PageHeaderProps {
+  title: string;
+  subtitle?: string;
+  showBackButton?: boolean;
+  backgroundColor?: string;
+  onBackClick?: () => void;
+}
+
+const PageHeader: React.FC<PageHeaderProps> = ({
+  title,
+  subtitle,
+  showBackButton = true,
+  backgroundColor = '#fab0b8',
+  onBackClick,
+}) => {
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    if (onBackClick) {
+      onBackClick();
+    } else {
+      navigate(-1);
+    }
+  };
+
+  return (
+    <HeaderContainer backgroundColor={backgroundColor}>
+      <HeaderContent>
+        {showBackButton && (
+          <BackButton onClick={handleBackClick}>
+            <img src={BackIcon} alt="뒤로가기" />
+          </BackButton>
+        )}
+        <HeaderTitle hasBackButton={showBackButton}>{title}</HeaderTitle>
+      </HeaderContent>
+      {subtitle && (
+        <SubtitleSection>
+          <SubtitleText>{subtitle}</SubtitleText>
+        </SubtitleSection>
+      )}
+    </HeaderContainer>
+  );
+};
+
+export default PageHeader;
+
+const HeaderContainer = styled.div<{ backgroundColor: string }>`
+  display: flex;
+  width: 390px;
+  padding: 42px 24px 16px 24px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  background: ${({ backgroundColor }) => backgroundColor};
+`;
+
+const HeaderContent = styled.div`
+  display: flex;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  position: relative;
+`;
+
+const BackButton = styled.button`
+  position: absolute;
+  left: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 7px;
+    height: 14px;
+  }
+`;
+
+const HeaderTitle = styled.span<{ hasBackButton: boolean }>`
+  color: #fff;
+  font-family: 'Ownglyph PDH';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21.6px;
+  text-align: center;
+`;
+
+const SubtitleSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+`;
+
+const SubtitleText = styled.span`
+  color: #fff;
+  font-family: 'Ownglyph PDH';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16.8px;
+  text-align: center;
+`;

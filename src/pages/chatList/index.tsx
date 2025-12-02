@@ -2,13 +2,13 @@ import React from "react";
 import * as S from "./style";
 import MessageCircleIcon from "../../assets/icon/message-circle.svg";
 import MessageCircleFilledIcon from "../../assets/icon/message-circle-filled.svg";
-import ChevronLeftIcon from "../../assets/back.png";
 import InfoIcon from "../../assets/icon/Info.png";
 import Avatar1 from "../../assets/icon/avatar1.png";
 import Avatar2 from "../../assets/icon/avatar2.png";
 import Avatar3 from "../../assets/icon/avatar3.png";
 import Avatar4 from "../../assets/icon/avatar4.png";
 import NavBar from "../../components/NavBar";
+import PageHeader from "../../components/PageHeader";
 import { useNavigate } from "react-router-dom";
 
 interface OtherUser {
@@ -48,28 +48,23 @@ const ChatListPage: React.FC = () => {
 
   return (
     <S.ChatContainer>
-      <S.ChatHeader>
-        <S.HeaderTitle>
+      <PageHeader 
+        title="채팅" 
+        backgroundColor="#FFC6B6"
+      />
+      
+      <S.HeaderInfo>
+        <S.InfoCard>
           <img
-            src={ChevronLeftIcon}
-            alt="뒤로가기"
-            style={{ width: "7px", height: "14px", cursor: "pointer" }}
+            src={InfoIcon}
+            alt="정보"
+            style={{ width: "16px", height: "16px" }}
           />
-          <S.TitleText>채팅</S.TitleText>
-        </S.HeaderTitle>
-        <S.HeaderInfo>
-          <S.InfoDiv>
-            <img
-              src={InfoIcon}
-              alt="정보"
-              style={{ width: "16px", height: "16px" }}
-            />
-            <S.InfoText>
-              다른 참가자와는 짧은 대화만 가능합니다 (30분)
-            </S.InfoText>
-          </S.InfoDiv>
-        </S.HeaderInfo>
-      </S.ChatHeader>
+          <S.InfoText>
+            다른 참가자와는 짧은 대화만 가능합니다 (30분)
+          </S.InfoText>
+        </S.InfoCard>
+      </S.HeaderInfo>
 
       <div
         style={{

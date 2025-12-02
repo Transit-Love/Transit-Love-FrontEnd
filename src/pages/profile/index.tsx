@@ -1,11 +1,11 @@
-import React from "react";
-import * as S from "./style";
-import { useNavigate } from "react-router-dom";
-import Back from "../../assets/back.png";
-import Avatar1 from "../../assets/icon/avatar1.png";
-import Heart from "../../assets/icon/heart.svg";
-import Users from "../../assets/icon/users.svg";
-import NavBar from "../../components/NavBar";
+import React from 'react';
+import * as S from './style';
+import { useNavigate } from 'react-router-dom';
+import Avatar1 from '../../assets/icon/avatar1.png';
+import Heart from '../../assets/icon/heart.svg';
+import Users from '../../assets/icon/users.svg';
+import NavBar from '../../components/NavBar';
+import PageHeader from '../../components/PageHeader';
 import type { Profile } from "../../types/profile";
 import { BalanceItem } from "../../components/BalanceItem";
 
@@ -34,16 +34,8 @@ const ProfilePage: React.FC = () => {
   return (
     <S.ProfileContainer>
       <S.BackgroundImage />
-      <S.Header>
-        <S.NavBar>
-          <S.BackButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.BackButton>
-          <S.HeaderTitle>내 프로필</S.HeaderTitle>
-        </S.NavBar>
-      </S.Header>
+      <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
 
-      <S.StatusIcons />
       <S.TimeDisplay />
 
       <S.AvatarSection>

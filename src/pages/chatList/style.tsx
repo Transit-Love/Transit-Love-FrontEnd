@@ -2,11 +2,12 @@ import styled from "@emotion/styled";
 
 export const ChatContainer = styled.div`
   width: 390px;
-  height: 844px;
+  min-height: 100vh;
   background: transparent;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   margin: 0 auto;
+  padding-bottom: 80px;
 
   @media (min-width: 391px) {
     background: #ffffff;
@@ -14,45 +15,19 @@ export const ChatContainer = styled.div`
   }
 `;
 
-export const ChatHeader = styled.div`
-  display: flex;
-  width: 390px;
-  height: 144px;
-  padding: 42px 24px 16px 24px;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
-  background: var(--Color-2, #ffc6b6);
-`;
-
-export const HeaderTitle = styled.div`
-  display: flex;
-  height: 28px;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  align-self: stretch;
-  position: relative;
-`;
-
-export const TitleText = styled.span`
-  color: #fff;
-  font-family: "Ownglyph PDH";
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21.6px; /* 120% */
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
 export const HeaderInfo = styled.div`
+  width: 390px;
+  padding: 0 24px 16px 24px;
+  background: var(--Color-2, #ffc6b6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const InfoCard = styled.div`
   display: flex;
   padding: 8px 16px;
-  flex-direction: column;
   align-items: center;
   gap: 8px;
   align-self: stretch;

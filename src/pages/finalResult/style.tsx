@@ -2,11 +2,12 @@ import styled from "@emotion/styled";
 
 export const FinalResultContainer = styled.div`
   width: 390px;
-  height: 844px;
+  min-height: 100vh;
   background: #f9fafb;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   margin: 0 auto;
+  padding-bottom: 40px;
 
   @media (min-width: 391px) {
     background: #ffffff;

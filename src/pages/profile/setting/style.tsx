@@ -92,7 +92,8 @@ export const HeaderTitle = styled.div`
   font-weight: 400;
   font-size: 24px;
   line-height: 0.9em;
-  color: #ffffff;
+  margin-left: 8rem;
+  color: #FFFFFF;
 `;
 
 export const StatusIcons = styled.div`
