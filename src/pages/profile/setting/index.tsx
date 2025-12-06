@@ -3,21 +3,19 @@ import * as S from './style';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../../components/NavBar';
 import PageHeader from '../../../components/PageHeader';
+import profileService from '../../../api/profileService';
+import type { CreateProfileRequest } from '../../../api/profileService';
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
-  // Profile 타입을 활용한 상태 관리
-  const [profile, setProfile] = useState<Profile>({
-    avatar: "", // 추후 이미지 업로드 기능과 연동
-    name: "귀여운곰돌이",
-    keywords: [],
-    balanceResults: [],
-  });
-  const [mbti, setMbti] = useState("ENFP");
+  const [nickname, setNickname] = useState("");
+  const [mbti, setMbti] = useState("");
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: number | null;
   }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const balanceGameQuestions = [
     {
@@ -71,16 +69,10 @@ const ProfileSettingPage: React.FC = () => {
   ];
 
   const handleKeywordToggle = (keyword: string) => {
-    if (profile.keywords.includes(keyword)) {
-      setProfile({
-        ...profile,
-        keywords: profile.keywords.filter((k) => k !== keyword),
-      });
-    } else if (profile.keywords.length < 4) {
-      setProfile({
-        ...profile,
-        keywords: [...profile.keywords, keyword],
-      });
+    if (selectedKeywords.includes(keyword)) {
+      setSelectedKeywords(selectedKeywords.filter((k) => k !== keyword));
+    } else if (selectedKeywords.length < 4) {
+      setSelectedKeywords([...selectedKeywords, keyword]);
     }
   };
 
@@ -95,29 +87,90 @@ const ProfileSettingPage: React.FC = () => {
       ...prev,
       [questionIndex]: optionIndex,
     }));
+    
+    // 답변 선택 후 자동으로 다음 질문으로 이동
+    if (questionIndex < balanceGameQuestions.length - 1) {
+      setTimeout(() => {
+        setCurrentQuestion(questionIndex + 1);
+      }, 300);
+    }
   };
 
-  const handleNextStep = () => {
-    // 밸런스게임 결과를 Profile 타입에 맞게 저장
-    const balanceResults = balanceGameQuestions
-      .map((q, idx) => {
-        const selectedIdx = selectedAnswers[idx];
-        if (selectedIdx === null || selectedIdx === undefined) return null;
-        const option = q.options[selectedIdx];
-        return {
-          icon: option.icon,
-          category: q.question,
-          result: option.text,
-        };
-      })
-      .filter(Boolean);
-    setProfile({
-      ...profile,
-      name: profile.name,
-      balanceResults: balanceResults as Profile["balanceResults"],
-    });
-    // 실제 저장 로직 추가 가능 (예: recoil, 서버 전송 등)
-    navigate("/countdown");
+  const handleNextStep = async () => {
+    // 유효성 검사
+    if (!nickname.trim()) {
+      alert('닉네임을 입력해주세요.');
+      return;
+    }
+    
+    if (nickname.length > 50) {
+      alert('닉네임은 50자 이하로 입력해주세요.');
+      return;
+    }
+
+    if (selectedKeywords.length === 0) {
+      alert('키워드를 최소 1개 이상 선택해주세요.');
+      return;
+    }
+
+    // 모든 밸런스게임 답변이 있는지 확인
+    const allAnswered = balanceGameQuestions.every((_, idx) => 
+      selectedAnswers[idx] !== null && selectedAnswers[idx] !== undefined
+    );
+
+    if (!allAnswered) {
+      alert('모든 밸런스게임 질문에 답변해주세요.');
+      return;
+    }
+
+    // MBTI 형식 검증 (선택사항)
+    if (mbti && mbti.length !== 4) {
+      alert('MBTI는 4자로 입력해주세요. (예: ENFP)');
+      return;
+    }
+
+    // API 요청 데이터 생성
+    const balanceGameAnswers = balanceGameQuestions.map((_, idx) => ({
+      balanceGameId: idx + 1, // 실제 balanceGameId는 백엔드에서 제공되는 ID를 사용해야 함
+      selectedOption: (selectedAnswers[idx] as number) + 1, // 0-based index를 1-based로 변환
+    }));
+
+    // 키워드 ID는 임시로 인덱스+1을 사용 (실제로는 백엔드에서 제공되는 ID를 사용해야 함)
+    const keywordIds = selectedKeywords.map((keyword) => 
+      availableKeywords.indexOf(keyword) + 1
+    );
+
+    const profileData: CreateProfileRequest = {
+      nickname: nickname.trim(),
+      mbti: mbti || undefined,
+      keywordIds,
+      balanceGameAnswers,
+    };
+
+    setIsLoading(true);
+
+    try {
+      const createdProfile = await profileService.createProfile(profileData);
+      console.log('프로필 생성 성공:', createdProfile);
+      alert('프로필이 생성되었습니다!');
+      navigate("/countdown");
+    } catch (error: any) {
+      console.error('프로필 생성 실패:', error);
+      
+      if (error.response?.status === 409) {
+        alert('이미 프로필이 존재합니다. 수정 페이지로 이동합니다.');
+        // 필요시 수정 페이지로 이동하거나 수정 API 호출
+      } else if (error.response?.status === 400) {
+        alert(error.response?.data?.message || '입력 정보를 확인해주세요.');
+      } else if (error.response?.status === 401) {
+        alert('로그인이 필요합니다.');
+        navigate('/login');
+      } else {
+        alert('프로필 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -125,32 +178,20 @@ const ProfileSettingPage: React.FC = () => {
       <S.BackgroundImage />
 
       <PageHeader title="프로필 설정" backgroundColor="#fab0b8" showBackButton={false} />
-
-      <S.Header>
-        <S.NavBar>
-          <S.BackButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.BackButton>
-          <S.HeaderTitle>프로필 설정</S.HeaderTitle>
-        </S.NavBar>
-      </S.Header>
-
-      <S.StatusIcons />
-      <S.TimeDisplay />
-
       <S.NicknameSection>
         <S.SectionTitle>닉네임</S.SectionTitle>
         <S.InputField>
           <S.InputText
-            value={profile.name}
+            value={nickname}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setProfile({ ...profile, name: e.target.value })
+              setNickname(e.target.value)
             }
-            placeholder="귀여운곰돌이"
+            placeholder="닉네임을 입력하세요"
+            maxLength={50}
           />
         </S.InputField>
         <S.InputDescription>
-          다른 사람들에게 보여질 이름이에요. (10글자 이하)
+          다른 사람들에게 보여질 이름이에요. (최대 50자)
         </S.InputDescription>
       </S.NicknameSection>
 
@@ -162,7 +203,7 @@ const ProfileSettingPage: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setMbti(e.target.value)
             }
-            placeholder="ENFP"
+            placeholder="MBTI를 입력하세요 (예: ENFP)"
           />
         </S.InputField>
         <S.InputDescription>자신의 MBTI를 입력해주세요.</S.InputDescription>
@@ -179,10 +220,12 @@ const ProfileSettingPage: React.FC = () => {
 
         <S.QuestionCard>
           <S.QuestionHeader>
-            <S.QuestionNumber>{currentQuestion + 1}</S.QuestionNumber>
-            <S.ArrowButton onClick={handleNextQuestion}>
-              {/* <img src={Back2} alt="arrow" /> */}
-            </S.ArrowButton>
+            <S.QuestionNumber>{currentQuestion + 1} / {balanceGameQuestions.length}</S.QuestionNumber>
+            {currentQuestion < balanceGameQuestions.length - 1 && (
+              <S.ArrowButton onClick={handleNextQuestion}>
+                다음 →
+              </S.ArrowButton>
+            )}
           </S.QuestionHeader>
 
 
@@ -223,7 +266,7 @@ const ProfileSettingPage: React.FC = () => {
           {availableKeywords.map((keyword, index) => (
             <S.KeywordButton
               key={index}
-              selected={profile.keywords.includes(keyword)}
+              selected={selectedKeywords.includes(keyword)}
               onClick={() => handleKeywordToggle(keyword)}
             >
               {keyword}
@@ -232,8 +275,8 @@ const ProfileSettingPage: React.FC = () => {
         </S.KeywordsGrid>
       </S.KeywordsSection>
 
-      <S.NextButton onClick={handleNextStep}>
-        <S.NextButtonText>완료</S.NextButtonText>
+      <S.NextButton onClick={handleNextStep} disabled={isLoading}>
+        <S.NextButtonText>{isLoading ? '저장 중...' : '완료'}</S.NextButtonText>
       </S.NextButton>
 
       <NavBar />

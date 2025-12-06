@@ -20,22 +20,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleBackClick = () => {
-    if (onBackClick) {
-      onBackClick();
-    } else {
-      navigate(-1);
-    }
-  };
-
   return (
     <HeaderContainer backgroundColor={backgroundColor}>
       <HeaderContent>
-        {showBackButton && (
-          <BackButton onClick={handleBackClick}>
-            <img src={BackIcon} alt="뒤로가기" />
-          </BackButton>
-        )}
         <HeaderTitle hasBackButton={showBackButton}>{title}</HeaderTitle>
       </HeaderContent>
       {subtitle && (
@@ -51,7 +38,8 @@ export default PageHeader;
 
 const HeaderContainer = styled.div<{ backgroundColor: string }>`
   display: flex;
-  width: 390px;
+  width: 100%;
+  max-width: 390px;
   padding: 42px 24px 16px 24px;
   flex-direction: column;
   justify-content: flex-end;
@@ -59,6 +47,7 @@ const HeaderContainer = styled.div<{ backgroundColor: string }>`
   gap: 16px;
   flex-shrink: 0;
   background: ${({ backgroundColor }) => backgroundColor};
+  margin: 0 auto;
 `;
 
 const HeaderContent = styled.div`

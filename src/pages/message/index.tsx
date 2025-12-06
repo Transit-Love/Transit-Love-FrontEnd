@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import * as S from "./style";
 import { useNavigate } from "react-router-dom";
-import Back from "../../assets/back.png";
+import PageHeader from "../../components/PageHeader";
+import NavBar from "../../components/NavBar";
 
 const MessagePage: React.FC = () => {
   const navigate = useNavigate();
@@ -106,6 +107,8 @@ const MessagePage: React.FC = () => {
       <S.SendButton onClick={handleSendMessage}>
         <S.SendButtonText>속마음 문자 전송하기</S.SendButtonText>
       </S.SendButton>
+
+      <NavBar />
     </S.MessageContainer>
   );
 };
