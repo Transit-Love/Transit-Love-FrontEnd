@@ -35,9 +35,6 @@ const ProfilePage: React.FC = () => {
     <S.ProfileContainer>
       <S.BackgroundImage />
       <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
-
-      <S.TimeDisplay />
-
       <S.AvatarSection>
         <S.AvatarContainer>
           <S.Avatar src={profile.avatar} alt="프로필" />
