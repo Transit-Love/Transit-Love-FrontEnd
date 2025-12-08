@@ -385,19 +385,20 @@ export const PersonSelectMessage = styled.div`
 
 export const ChevronIcon = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 7px 11px;
+  width: 24px;
+  height: 24px;
 
   &::before {
     content: "";
     display: block;
     width: 8px;
-    height: 4px;
+    height: 8px;
     border-right: 2px solid #fab0b8;
     border-bottom: 2px solid #fab0b8;
     transform: rotate(45deg);
+    margin-top: -4px;
   }
 `;
 
@@ -458,11 +459,11 @@ export const CharacterCountText = styled.div`
 
 export const SendButton = styled.button`
   position: fixed;
-  bottom: 24px;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%);
   width: 342px;
-  height: 36px;
+  height: 48px;
   background: #fab0b8;
   border-radius: 20px;
   border: none;
@@ -502,4 +503,68 @@ export const SendButtonText = styled.div`
   font-size: 18px;
   line-height: 1.2em;
   color: #ffffff;
+`;
+
+export const EmptyMessage = styled.div`
+  padding: 40px 20px;
+  text-align: center;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #9ca3af;
+`;
+
+export const PersonList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #fab0b8;
+  border-radius: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 4px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #fab0b8;
+    border-radius: 3px;
+  }
+`;
+
+export const PersonItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+  }
+`;
+
+export const PersonName = styled.div`
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+`;
+
+export const PersonMBTI = styled.div`
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #6b7280;
 `;
