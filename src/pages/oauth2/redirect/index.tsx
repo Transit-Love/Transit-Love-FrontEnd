@@ -84,7 +84,7 @@ const OAuth2Redirect: React.FC = () => {
 
             if (profile && profile.id) {
               console.log("프로필 존재, 홈페이지로 이동");
-              navigate("/");
+              navigate("/countdown");
             } else {
               console.log("프로필 없음, 설정 페이지로 이동");
               navigate("/profile/setting");

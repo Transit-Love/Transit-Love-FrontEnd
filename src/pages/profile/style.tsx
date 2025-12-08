@@ -1,19 +1,26 @@
 import styled from "@emotion/styled";
 
-export const ProfileContainer = styled.div`
+export const ProfileWrapper = styled.div`
   width: 100%;
   max-width: 390px;
   height: 100vh;
   margin: 0 auto;
-  overflow-x: hidden;
-  overflow-y: auto;
   position: relative;
-  padding-bottom: 180px;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: 391px) {
     background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const ProfileContainer = styled.div`
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  padding-bottom: 180px;
 
   &::-webkit-scrollbar {
     display: none;

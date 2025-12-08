@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const ChatPageContainer = styled.div`
+export const ChatPageWrapper = styled.div`
   width: 100%;
   max-width: 390px;
   height: 100vh;
@@ -9,12 +9,18 @@ export const ChatPageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 
   @media (min-width: 391px) {
     background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const ChatPageContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 `;
 
 export const ChatHeader = styled.div`

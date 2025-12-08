@@ -265,21 +265,21 @@ const ChatPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <S.ChatPageContainer>
+      <S.ChatPageWrapper>
         <Loading message="채팅을 불러오는 중..." />
         <NavBar />
-      </S.ChatPageContainer>
+      </S.ChatPageWrapper>
     );
   }
 
   if (error) {
     return (
-      <S.ChatPageContainer>
+      <S.ChatPageWrapper>
         <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
           {error}
         </div>
         <NavBar />
-      </S.ChatPageContainer>
+      </S.ChatPageWrapper>
     );
   }
 
@@ -287,7 +287,7 @@ const ChatPage: React.FC = () => {
   // 로딩 중
   if (isLoading) {
     return (
-      <S.ChatPageContainer>
+      <S.ChatPageWrapper>
         <S.ChatHeader>
           <S.HeaderContent>
             <S.UserInfoSection>
@@ -309,14 +309,14 @@ const ChatPage: React.FC = () => {
           </div>
         </S.MessagesContainer>
         <NavBar />
-      </S.ChatPageContainer>
+      </S.ChatPageWrapper>
     );
   }
 
   // 에러 발생
   if (error) {
     return (
-      <S.ChatPageContainer>
+      <S.ChatPageWrapper>
         <S.ChatHeader>
           <S.HeaderContent>
             <S.UserInfoSection>
@@ -338,7 +338,7 @@ const ChatPage: React.FC = () => {
           </div>
         </S.MessagesContainer>
         <NavBar />
-      </S.ChatPageContainer>
+      </S.ChatPageWrapper>
     );
   }
 
@@ -353,7 +353,7 @@ const ChatPage: React.FC = () => {
   const displayMbti = matchedProfile?.mbti;
 
   return (
-    <S.ChatPageContainer>
+    <S.ChatPageWrapper>
       <S.ChatHeader>
         <S.HeaderContent>
           <S.UserInfoSection>
@@ -463,7 +463,7 @@ const ChatPage: React.FC = () => {
       </S.InputContainer>
 
       <NavBar />
-    </S.ChatPageContainer>
+    </S.ChatPageWrapper>
   );
 };
 
