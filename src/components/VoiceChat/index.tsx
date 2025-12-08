@@ -38,6 +38,39 @@ export const VoiceChat: React.FC<VoiceChatProps> = ({
 }) => {
   const [showModulationPanel, setShowModulationPanel] = React.useState(false);
 
+  // 전화벨 소리 재생 (INCOMING 상태일 때)
+  React.useEffect(() => {
+    if (callStatus === VoiceCallStatus.INCOMING) {
+      // 브라우저 기본 비프음 사용
+      const playRingtone = () => {
+        const context = new AudioContext();
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+
+        oscillator.frequency.value = 440; // A4 음
+        gainNode.gain.value = 0.3;
+        oscillator.type = "sine";
+
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.5);
+
+        setTimeout(() => {
+          oscillator.disconnect();
+          gainNode.disconnect();
+        }, 600);
+      };
+
+      // 2초마다 벨소리 반복
+      const interval = setInterval(playRingtone, 2000);
+      playRingtone(); // 즉시 한번 재생
+
+      return () => clearInterval(interval);
+    }
+  }, [callStatus]);
+
   // 통화 시간 포맷팅
   const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -53,7 +86,7 @@ export const VoiceChat: React.FC<VoiceChatProps> = ({
       case VoiceCallStatus.REQUESTING:
         return "전화를 거는 중...";
       case VoiceCallStatus.INCOMING:
-        return `${partnerName}님이 전화를 걸었습니다`;
+        return `전화가 왔습니다`;
       case VoiceCallStatus.CONNECTING:
         return "연결 중...";
       case VoiceCallStatus.CONNECTED:
@@ -94,7 +127,12 @@ export const VoiceChat: React.FC<VoiceChatProps> = ({
 
         {/* 프로필 영역 */}
         <ProfileSection>
-          <Avatar>
+          <Avatar
+            isIncoming={
+              callStatus === VoiceCallStatus.INCOMING ||
+              callStatus === VoiceCallStatus.REQUESTING
+            }
+          >
             <AvatarIcon>👤</AvatarIcon>
           </Avatar>
           <PartnerName>{partnerName}</PartnerName>
@@ -307,7 +345,7 @@ const ProfileSection = styled.div`
   margin-bottom: 40px;
 `;
 
-const Avatar = styled.div`
+const Avatar = styled.div<{ isIncoming?: boolean }>`
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -317,6 +355,23 @@ const Avatar = styled.div`
   justify-content: center;
   margin-bottom: 16px;
   border: 4px solid rgba(255, 255, 255, 0.3);
+
+  ${({ isIncoming }) =>
+    isIncoming &&
+    `
+    animation: pulse 2s ease-in-out infinite;
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+      }
+    }
+  `}
 `;
 
 const AvatarIcon = styled.span`
