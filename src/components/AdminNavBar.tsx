@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import FinalResultIcon from "../assets/icon/profile.png";
 import HomeIcon from "../assets/icon/home.png";
 import MessageIcon from "../assets/icon/message.svg";
+import ChatIcon from "../assets/icon/message-circle.svg";
 
 const Bar = styled.nav`
   position: fixed;
@@ -50,6 +51,7 @@ const AdminNavBar: React.FC = () => {
 
   const isParticipants = pathname === "/admin/participants";
   const isMessages = pathname === "/admin/messages";
+  const isChatList = pathname.startsWith("/admin/chat");
   const isFinalResult = pathname === "/admin/final-result";
 
   return (
@@ -64,6 +66,9 @@ const AdminNavBar: React.FC = () => {
         </Item>
         <Item to="/admin/messages" active={isMessages} aria-label="messages">
           <Icon src={MessageIcon} active={isMessages} />
+        </Item>
+        <Item to="/admin/chat-list" active={isChatList} aria-label="chat">
+          <Icon src={ChatIcon} active={isChatList} />
         </Item>
         <Item
           to="/admin/participants"
