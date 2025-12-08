@@ -1,9 +1,9 @@
 import React from "react";
 import * as S from "./style.ts";
 import { useNavigate } from "react-router-dom";
-import Back from "../../assets/back.png";
 import Heart from "../../assets/icon/heart.svg";
 import AdminNavBar from "../AdminNavBar";
+import PageHeader from "../PageHeader";
 import type { Couple } from "../../types/couple";
 
 interface CoupleListLayoutProps {
@@ -23,15 +23,7 @@ const CoupleListLayout: React.FC<CoupleListLayoutProps> = ({
     <S.Container>
       <S.BackgroundImage />
 
-      <S.Header>
-        <S.NavBar>
-          <S.IconButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.IconButton>
-          <S.HeaderTitle>{title}</S.HeaderTitle>
-          <S.IconButton aria-label="filter" />
-        </S.NavBar>
-      </S.Header>
+      <PageHeader title={title} backgroundColor="#FFC6B6" />
 
       <S.StatusIcons />
       <S.TimeDisplay />

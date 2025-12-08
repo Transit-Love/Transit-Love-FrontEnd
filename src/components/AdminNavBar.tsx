@@ -2,9 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Link, useLocation } from "react-router-dom";
 import FinalResultIcon from "../assets/icon/profile.png";
-import HomeIcon from "../assets/icon/home.png";
+// import HomeIcon from "../assets/icon/home.png";
 import MessageIcon from "../assets/icon/message.svg";
-import ChatIcon from "../assets/icon/message-circle.svg";
+import ChatIcon from "../assets/icon/chat.png";
 
 const Bar = styled.nav`
   position: fixed;
@@ -28,21 +28,21 @@ const Items = styled.div`
   gap: 11px;
 `;
 
-const Item = styled(Link)<{ active?: boolean }>`
+const Item = styled(Link)<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 68px;
   height: 49px;
   border-radius: 12px;
-  background: ${({ active }) =>
-    active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
+  background: ${({ $active }) =>
+    $active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
 `;
 
-const Icon = styled.img<{ active?: boolean }>`
+const Icon = styled.img<{ $active?: boolean }>`
   width: 24px;
   height: 24px;
-  opacity: ${({ active }) => (active ? 1 : 0.6)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
 `;
 
 const AdminNavBar: React.FC = () => {
@@ -51,31 +51,24 @@ const AdminNavBar: React.FC = () => {
 
   const isParticipants = pathname === "/admin/participants";
   const isMessages = pathname === "/admin/messages";
-  const isChatList = pathname.startsWith("/admin/chat");
-  const isFinalResult = pathname === "/admin/final-result";
+  const isChatList = pathname === "/admin/chat-list";
 
   return (
     <Bar>
       <Items>
-        <Item
-          to="/admin/final-result"
-          active={isFinalResult}
-          aria-label="final-result"
-        >
-          <Icon src={HomeIcon} active={isFinalResult} />
+        {/* 홈 탭 제거됨 */}
+        <Item to="/admin/messages" $active={isMessages} aria-label="messages">
+          <Icon src={MessageIcon} $active={isMessages} />
         </Item>
-        <Item to="/admin/messages" active={isMessages} aria-label="messages">
-          <Icon src={MessageIcon} active={isMessages} />
-        </Item>
-        <Item to="/admin/chat-list" active={isChatList} aria-label="chat">
-          <Icon src={ChatIcon} active={isChatList} />
+        <Item to="/admin/chat-list" $active={isChatList} aria-label="chat">
+          <Icon src={ChatIcon} $active={isChatList} />
         </Item>
         <Item
           to="/admin/participants"
-          active={isParticipants}
+          $active={isParticipants}
           aria-label="participants"
         >
-          <Icon src={FinalResultIcon} active={isParticipants} />
+          <Icon src={FinalResultIcon} $active={isParticipants} />
         </Item>
       </Items>
     </Bar>

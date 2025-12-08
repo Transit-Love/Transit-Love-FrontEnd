@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
   },
 });
 import LoginPage from "./pages/login";
-import HomePage from "./pages/home";
+// import HomePage from "./pages/home";
 import ProfilePage from "./pages/profile";
 import ProfileSettingPage from "./pages/profile/setting";
 import ProfileDetailPage from "./pages/profile/detail";
@@ -42,7 +42,7 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
-          <Route path="/home" element={<HomePage />} />
+          {/* <Route path="/home" element={<HomePage />} /> */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth2/redirect" element={<OAuth2Redirect />} />
           <Route path="/profile" element={<ProfilePage />} />

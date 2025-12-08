@@ -18,7 +18,22 @@ const AdminParticipantsPage: React.FC = () => {
   })) || [];
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div style={{ 
+        width: "100%", 
+        maxWidth: "390px", 
+        height: "100vh", 
+        margin: "0 auto",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        background: "#ffffff",
+        boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)"
+      }}>
+        <Loading message="참가자 목록을 불러오는 중..." />
+      </div>
+    );
   }
 
   if (error) {
