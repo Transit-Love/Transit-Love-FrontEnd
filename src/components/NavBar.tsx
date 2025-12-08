@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { isAdminState } from "../store/auth";
 import HomeIcon from "../assets/icon/home.png";
 import MessageIcon from "../assets/icon/chat.png";
 import AnonymousMessageIcon from "../assets/icon/message.svg";
@@ -62,31 +64,46 @@ const Icon = styled.img<{ $active?: boolean }>`
 const NavBar: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
+  const isAdmin = useRecoilValue(isAdminState);
 
-  const isHome = pathname === "/home";
-  const isChatList = pathname === "/chat-list";
-  const isAnonymousMessage = pathname === "/message";
+  // Admin 경로 체크
+  const isHome = isAdmin 
+    ? pathname === "/admin/participants" 
+    : pathname === "/home";
+  const isChatList = isAdmin
+    ? pathname === "/admin/chat-list"
+    : pathname === "/chat-list";
+  const isAnonymousMessage = isAdmin
+    ? pathname === "/admin/messages"
+    : pathname === "/message";
   const isProfile = pathname === "/profile";
+
+  // Admin 경로 설정
+  const homeLink = isAdmin ? "/admin/participants" : "/home";
+  const chatLink = isAdmin ? "/admin/chat-list" : "/chat-list";
+  const messageLink = isAdmin ? "/admin/messages" : "/message";
 
   return (
     <Bar>
       <Items>
-        <Item to="/home" $active={isHome} aria-label="home">
+        <Item to={homeLink} $active={isHome} aria-label="home">
           <Icon src={HomeIcon} $active={isHome} />
         </Item>
-        <Item to="/chat-list" $active={isChatList} aria-label="chat">
+        <Item to={chatLink} $active={isChatList} aria-label="chat">
           <Icon src={MessageIcon} $active={isChatList} />
         </Item>
         <Item
-          to="/message"
+          to={messageLink}
           $active={isAnonymousMessage}
           aria-label="anonymous-message"
         >
           <Icon src={AnonymousMessageIcon} $active={isAnonymousMessage} />
         </Item>
-        <Item to="/profile" $active={isProfile} aria-label="profile">
-          <Icon src={ProfileIcon} $active={isProfile} />
-        </Item>
+        {!isAdmin && (
+          <Item to="/profile" $active={isProfile} aria-label="profile">
+            <Icon src={ProfileIcon} $active={isProfile} />
+          </Item>
+        )}
       </Items>
     </Bar>
   );

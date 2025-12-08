@@ -2,9 +2,19 @@ import React from "react";
 import * as S from "./style";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
+import authService from "../../api/authService";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const isAdmin = authService.isAdmin();
+
+  const handleCardClick = () => {
+    if (isAdmin) {
+      navigate("/admin/participants");
+    } else {
+      navigate("/chat-list");
+    }
+  };
 
   return (
     <S.HomeWrapper>
@@ -18,7 +28,7 @@ const HomePage: React.FC = () => {
         </S.HeaderSection>
 
         <S.MainCardSection>
-          <S.MainCard onClick={() => navigate("/chat-list")}>
+          <S.MainCard onClick={handleCardClick}>
             <S.MainCardIcon>💬</S.MainCardIcon>
             <S.MainCardContent>
               <S.MainCardTitle>채팅 시작하기</S.MainCardTitle>

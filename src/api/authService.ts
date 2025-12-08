@@ -6,6 +6,7 @@ export interface User {
   name: string;
   picture: string;
   provider: string;
+  role?: string; // 'ADMIN' | 'USER'
 }
 
 const authService = {
@@ -57,6 +58,7 @@ const authService = {
   // 로그아웃
   logout: () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("userRole");
     window.location.href = "/login";
   },
 
@@ -73,6 +75,21 @@ const authService = {
   // 로그인 여부 확인
   isAuthenticated: (): boolean => {
     return !!localStorage.getItem("accessToken");
+  },
+
+  // Role 저장
+  setRole: (role: string) => {
+    localStorage.setItem("userRole", role);
+  },
+
+  // Role 가져오기
+  getRole: (): string | null => {
+    return localStorage.getItem("userRole");
+  },
+
+  // Admin 여부 확인
+  isAdmin: (): boolean => {
+    return localStorage.getItem("userRole") === "ADMIN";
   },
 
   // 마지막 선택 옵션 조회
