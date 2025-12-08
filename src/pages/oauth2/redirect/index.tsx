@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { userRoleState, isAdminState } from "../../../store/auth";
 import * as S from "./style";
 import Loading from "../../../components/Loading";
 import authService from "../../../api/authService";
@@ -8,6 +10,8 @@ import profileService from "../../../api/profileService";
 const OAuth2Redirect: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const setUserRole = useSetRecoilState(userRoleState);
+  const setIsAdmin = useSetRecoilState(isAdminState);
 
   useEffect(() => {
     const handleOAuth2Redirect = async () => {
@@ -73,10 +77,26 @@ const OAuth2Redirect: React.FC = () => {
           try {
             const currentUser = await authService.getCurrentUser();
             console.log("토큰으로 확인된 사용자:", currentUser);
+            
+            // role 정보 저장
+            if (currentUser.role) {
+              authService.setRole(currentUser.role);
+              setUserRole(currentUser.role);
+              setIsAdmin(currentUser.role === "ADMIN");
+              console.log("사용자 역할 저장:", currentUser.role);
+              
+              // Admin은 바로 홈으로 이동 (카운트다운, 매칭 성공 페이지 건너뛰기)
+              if (currentUser.role === "ADMIN") {
+                console.log("Admin 사용자 - 바로 홈으로 이동");
+                navigate("/admin/participants");
+                return;
+              }
+            }
           } catch (err) {
             console.error("사용자 정보 확인 실패:", err);
           }
 
+          // User만 프로필 확인 후 카운트다운으로
           try {
             // 프로필 존재 여부 확인
             console.log("프로필 조회 시도...");
