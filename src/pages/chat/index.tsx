@@ -24,6 +24,9 @@ import {
 import type { ChatMessageResponse } from "../../types/chat";
 import profileService from "../../api/profileService";
 import type { MatchedProfile } from "../../api/profileService";
+import { VoiceChat } from "../../components/VoiceChat";
+import { useVoiceChat } from "../../hooks/useVoiceChat";
+import { VoiceCallStatus } from "../../types/voiceChat";
 
 const ChatPage: React.FC = () => {
   const navigate = useNavigate();
@@ -43,6 +46,7 @@ const ChatPage: React.FC = () => {
     null
   );
   const [error, setError] = useState<string | null>(null);
+  const [isVoiceChatOpen, setIsVoiceChatOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentUserIdRef = useRef<number | null>(null);
 
@@ -218,6 +222,34 @@ const ChatPage: React.FC = () => {
     }
   }, [isLoading, chatRoomId, matchId, serverMessages.length]);
 
+  // 음성 채팅 훅 초기화
+  const voiceChat = useVoiceChat({
+    chatRoomId: chatRoomId || matchId || 0,
+    myProfileId: currentUserId || 0,
+    partnerProfileId: otherProfileId,
+  });
+
+  // 음성 채팅 UI 자동 표시/숨김
+  useEffect(() => {
+    if (voiceChat.callStatus !== VoiceCallStatus.IDLE) {
+      setIsVoiceChatOpen(true);
+    }
+
+    if (voiceChat.callStatus === VoiceCallStatus.ENDED) {
+      // 통화 종료 후 3초 뒤에 UI 닫기
+      const timer = setTimeout(() => {
+        setIsVoiceChatOpen(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [voiceChat.callStatus]);
+
+  // 전화 아이콘 클릭 핸들러
+  const handlePhoneClick = () => {
+    setIsVoiceChatOpen(true);
+    voiceChat.startCall();
+  };
+
   // 메시지 목록이 업데이트되면 스크롤 하단으로
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -385,7 +417,12 @@ const ChatPage: React.FC = () => {
             </S.UserDetails>
           </S.UserInfoSection>
           <S.Actions>
-            <S.ActionIcon src={PhoneIcon} alt="통화" />
+            <S.ActionIcon
+              src={PhoneIcon}
+              alt="통화"
+              onClick={handlePhoneClick}
+              style={{ cursor: "pointer" }}
+            />
             <S.ActionIcon src={MoreVerticalIcon} alt="더보기" />
           </S.Actions>
         </S.HeaderContent>
@@ -461,6 +498,24 @@ const ChatPage: React.FC = () => {
           </S.SendButton>
         </S.InputRow>
       </S.InputContainer>
+
+      {/* 음성 채팅 UI */}
+      <VoiceChat
+        isOpen={isVoiceChatOpen}
+        onClose={() => setIsVoiceChatOpen(false)}
+        callStatus={voiceChat.callStatus}
+        partnerName={displayName}
+        callDuration={voiceChat.callDuration}
+        isMuted={voiceChat.isMuted}
+        isSpeakerOn={voiceChat.isSpeakerOn}
+        modulationSettings={voiceChat.modulationSettings}
+        onAccept={voiceChat.acceptCall}
+        onReject={voiceChat.rejectCall}
+        onEnd={voiceChat.endCall}
+        onToggleMute={voiceChat.toggleMute}
+        onToggleSpeaker={voiceChat.toggleSpeaker}
+        onUpdateModulation={voiceChat.updateModulationSettings}
+      />
 
       <NavBar />
     </S.ChatPageWrapper>
