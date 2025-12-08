@@ -1,49 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import NavBar from "../../components/NavBar";
+import Loading from "../../components/Loading";
+import { useChatList } from "../../hooks/useChatQueries";
+import {
+  useReceivedHeartMessages,
+  useSendHeartMessage,
+} from "../../hooks/useHeartMessages";
 
 const MessagePage: React.FC = () => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState("오늘 정말 즐거웠어요...");
-  const [selectedPerson, setSelectedPerson] = useState("선택할 사람");
+  const [message, setMessage] = useState("");
+  const [selectedPersonId, setSelectedPersonId] = useState<number | null>(null);
+  const [selectedPersonName, setSelectedPersonName] = useState("선택할 사람");
+  const [showPersonSelect, setShowPersonSelect] = useState(false);
+  const [hasSentMessage, setHasSentMessage] = useState(false);
 
-  const receivedMessages = [
-    {
-      id: 1,
-      sender: "익명의 누군가",
-      time: "23:15",
-      content: "오늘 하루 정말 즐거웠어요. 내일도 이야기 나눠요",
-    },
-    {
-      id: 2,
-      sender: "익명의 누군가",
-      time: "23:28",
-      content: "당신과 대화하면서 정말 많이 웃었어요. 고마워요",
-    },
+  // 채팅 목록 조회 (프로필 목록)
+  const { data: chatList, isLoading: isChatListLoading } = useChatList();
+
+  // 받은 속마음문자 조회
+  const {
+    data: receivedMessages = [],
+    isLoading: isMessagesLoading,
+    refetch: refetchMessages,
+  } = useReceivedHeartMessages();
+
+  // 속마음문자 전송
+  const { mutate: sendMessage, isPending: isSending } = useSendHeartMessage();
+
+  // 프로필 목록 (매칭된 사람 + 다른 사람들)
+  const profiles = [
+    ...(chatList?.matchedProfile ? [chatList.matchedProfile] : []),
+    ...(chatList?.otherProfiles || []),
   ];
 
   const handleSendMessage = () => {
-    if (selectedPerson === "선택할 사람") {
+    console.log("전송 시도 - selectedPersonId:", selectedPersonId, "selectedPersonName:", selectedPersonName);
+    
+    if (!selectedPersonId) {
       alert("메시지를 받을 사람을 선택해주세요.");
       return;
     }
-    console.log("메시지 전송:", message, "받는 사람:", selectedPerson);
+
+    if (!message.trim()) {
+      alert("메시지 내용을 입력해주세요.");
+      return;
+    }
+
+    sendMessage(
+      {
+        receiverProfileId: selectedPersonId,
+        content: message.trim(),
+      },
+      {
+        onSuccess: () => {
+          alert("속마음 문자가 전송되었습니다.");
+          setMessage("");
+          setSelectedPersonId(null);
+          setSelectedPersonName("선택할 사람");
+          setHasSentMessage(true);
+          refetchMessages();
+        },
+        onError: (error: any) => {
+          const errorMessage =
+            error?.response?.data?.message ||
+            "속마음 문자 전송에 실패했습니다.";
+          alert(errorMessage);
+        },
+      }
+    );
   };
 
-  const handlePersonSelect = () => {
-    setSelectedPerson("너도 아라를 아라?");
+  const handlePersonSelect = (profileId: number, name: string) => {
+    console.log("선택된 사람:", profileId, name);
+    setSelectedPersonId(profileId);
+    setSelectedPersonName(name);
+    setShowPersonSelect(false);
   };
+
+  // 시간 포맷팅
+  const formatTime = (sentAt: string) => {
+    const date = new Date(sentAt);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const isLoading = isChatListLoading || isMessagesLoading;
 
   return (
     <S.MessageContainer>
       <S.BackgroundImage />
       
-      <PageHeader 
-        title="속마음 문자" 
-        subtitle="23:42에 종료 • 1시간 18분 남음"
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <PageHeader 
+            title="속마음 문자" 
+            subtitle="23:42에 종료 • 1시간 18분 남음"
+          />
 
       <S.InfoCard>
         <S.InfoText>
@@ -58,37 +117,63 @@ const MessagePage: React.FC = () => {
         <S.SectionHeader>
           <S.SectionTitle>받은 속마음 문자</S.SectionTitle>
           <S.CountBadge>
-            <S.CountText>2</S.CountText>
+            <S.CountText>{receivedMessages.length}</S.CountText>
           </S.CountBadge>
         </S.SectionHeader>
 
         <S.MessagesList>
-          {receivedMessages.map((msg) => (
-            <S.MessageCard key={msg.id}>
-              <S.MessageHeader>
-                <S.SenderName>{msg.sender}</S.SenderName>
-                <S.MessageTime>{msg.time}</S.MessageTime>
-              </S.MessageHeader>
-              <S.MessageContent>{msg.content}</S.MessageContent>
-            </S.MessageCard>
-          ))}
+          {receivedMessages.length === 0 ? (
+            <S.EmptyMessage>아직 받은 속마음 문자가 없습니다.</S.EmptyMessage>
+          ) : (
+            receivedMessages.map((msg) => (
+              <S.MessageCard key={msg.id}>
+                <S.MessageHeader>
+                  <S.SenderName>익명의 누군가</S.SenderName>
+                  <S.MessageTime>{formatTime(msg.sentAt)}</S.MessageTime>
+                </S.MessageHeader>
+                <S.MessageContent>{msg.content}</S.MessageContent>
+              </S.MessageCard>
+            ))
+          )}
         </S.MessagesList>
       </S.ReceivedSection>
 
-      <S.SendSection>
-        <S.SendTitle>속마음 문자 보내기</S.SendTitle>
+      {!hasSentMessage && (
+        <>
+          <S.SendSection>
+            <S.SendTitle>속마음 문자 보내기</S.SendTitle>
 
-        <S.PersonSelectCard onClick={handlePersonSelect}>
+        <S.PersonSelectCard onClick={() => setShowPersonSelect(!showPersonSelect)}>
           <S.PersonSelectContent>
             <S.PersonSelectHeader>
-              <S.PersonSelectLabel>{selectedPerson}</S.PersonSelectLabel>
+              <S.PersonSelectLabel>
+                {selectedPersonName === "선택할 사람" ? "메시지를 받을 사람" : "받는 사람"}
+              </S.PersonSelectLabel>
             </S.PersonSelectHeader>
             <S.PersonSelectMessage>
-              {selectedPerson !== "선택할 사람" ? selectedPerson : ""}
+              {selectedPersonName}
             </S.PersonSelectMessage>
           </S.PersonSelectContent>
           <S.ChevronIcon />
         </S.PersonSelectCard>
+
+        {showPersonSelect && (
+          <S.PersonList>
+            {profiles.length === 0 ? (
+              <S.EmptyMessage>선택 가능한 프로필이 없습니다.</S.EmptyMessage>
+            ) : (
+              profiles.map((profile) => (
+                <S.PersonItem
+                  key={profile.profileId}
+                  onClick={() => handlePersonSelect(profile.profileId, profile.nickname)}
+                >
+                  <S.PersonName>{profile.nickname}</S.PersonName>
+                  {profile.mbti && <S.PersonMBTI>{profile.mbti}</S.PersonMBTI>}
+                </S.PersonItem>
+              ))
+            )}
+          </S.PersonList>
+        )}
 
         <S.MessageInput>
           <S.MessagePlaceholder>메시지 작성 (최대 100자)</S.MessagePlaceholder>
@@ -96,6 +181,7 @@ const MessagePage: React.FC = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             maxLength={100}
+            placeholder="마음을 전하고 싶은 내용을 작성해주세요..."
           />
         </S.MessageInput>
 
@@ -104,11 +190,17 @@ const MessagePage: React.FC = () => {
         </S.CharacterCount>
       </S.SendSection>
 
-      <S.SendButton onClick={handleSendMessage}>
-        <S.SendButtonText>속마음 문자 전송하기</S.SendButtonText>
+      <S.SendButton onClick={handleSendMessage} disabled={isSending}>
+        <S.SendButtonText>
+          {isSending ? "전송 중..." : "속마음 문자 전송하기"}
+        </S.SendButtonText>
       </S.SendButton>
+        </>
+      )}
 
-      <NavBar />
+          <NavBar />
+        </>
+      )}
     </S.MessageContainer>
   );
 };
