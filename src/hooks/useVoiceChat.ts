@@ -59,27 +59,27 @@ export const useVoiceChat = ({
         console.log("[STOMP Debug]", str);
       },
       onConnect: () => {
-        console.log("[WebSocket] 연결됨");
+        console.log("🔌 [WebSocket] 연결 성공");
         setIsConnected(true);
 
-        // 개인 큐 구독
-        client.subscribe(`/queue/voice.${myProfileId}`, (message) => {
-          const signal: VoiceSignalMessage = JSON.parse(message.body);
-          console.log("[개인 큐] 메시지 수신:", signal);
-          if (handleSignalMessageRef.current) {
-            handleSignalMessageRef.current(signal);
-          }
-        });
-
-        // 채팅방 토픽 구독 (상대방의 메시지를 받기 위해)
+        // 채팅방 토픽 구독 (브로드캐스트 수신)
         client.subscribe(`/topic/voice.${chatRoomId}`, (message) => {
           const signal: VoiceSignalMessage = JSON.parse(message.body);
-          console.log("[채팅방 토픽] 메시지 수신:", signal);
-          // 상대방이 보낸 메시지만 처리
+          console.log("📡 [채팅방 브로드캐스트] 메시지 수신:", {
+            type: signal.type,
+            senderId: signal.senderId,
+            myProfileId,
+            willProcess: signal.senderId !== myProfileId,
+          });
+
+          // ⭐ 자신이 보낸 메시지는 무시 (echo 방지)
           if (signal.senderId !== myProfileId) {
+            console.log("✅ [처리] 상대방 메시지 처리:", signal.type);
             if (handleSignalMessageRef.current) {
               handleSignalMessageRef.current(signal);
             }
+          } else {
+            console.log("⏭️ [무시] 내가 보낸 메시지 echo");
           }
         });
       },
