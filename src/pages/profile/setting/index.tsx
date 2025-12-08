@@ -10,6 +10,8 @@ const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
   const [mbti, setMbti] = useState("");
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImagePreview, setProfileImagePreview] = useState<string>("");
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{
@@ -57,7 +59,6 @@ const ProfileSettingPage: React.FC = () => {
 
   const availableKeywords: string[] = [
     "영화광",
-    "ENFP",
     "게임러버",
     "독서광",
     "여행러버",
@@ -82,6 +83,38 @@ const ProfileSettingPage: React.FC = () => {
     }
   };
 
+  const handlePreviousQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 파일 크기 체크 (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('이미지 크기는 5MB 이하여야 합니다.');
+        return;
+      }
+      
+      // 파일 타입 체크
+      if (!file.type.startsWith('image/')) {
+        alert('이미지 파일만 업로드 가능합니다.');
+        return;
+      }
+      
+      setProfileImage(file);
+      
+      // 미리보기 생성
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAnswerSelect = (questionIndex: number, optionIndex: number) => {
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -98,6 +131,11 @@ const ProfileSettingPage: React.FC = () => {
 
   const handleNextStep = async () => {
     // 유효성 검사
+    if (!profileImage) {
+      alert('프로필 이미지를 업로드해주세요.');
+      return;
+    }
+
     if (!nickname.trim()) {
       alert('닉네임을 입력해주세요.');
       return;
@@ -105,6 +143,11 @@ const ProfileSettingPage: React.FC = () => {
     
     if (nickname.length > 50) {
       alert('닉네임은 50자 이하로 입력해주세요.');
+      return;
+    }
+
+    if (!mbti.trim()) {
+      alert('MBTI를 입력해주세요.');
       return;
     }
 
@@ -176,8 +219,37 @@ const ProfileSettingPage: React.FC = () => {
   return (
     <S.ProfileContainer>
       <S.BackgroundImage />
-
       <PageHeader title="프로필 설정" backgroundColor="#fab0b8" showBackButton={false} />
+      
+      <S.ProfileImageSection>
+        <S.SectionTitle>프로필 이미지</S.SectionTitle>
+        <S.ImageUploadContainer>
+          <S.ImagePreview>
+            {profileImagePreview ? (
+              <img src={profileImagePreview} alt="프로필 미리보기" />
+            ) : (
+              <S.ImagePlaceholder>
+                <span>📷</span>
+                <p>이미지 선택</p>
+              </S.ImagePlaceholder>
+            )}
+          </S.ImagePreview>
+          <S.ImageUploadButton htmlFor="profile-image-input">
+            이미지 업로드
+          </S.ImageUploadButton>
+          <input
+            id="profile-image-input"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: 'none' }}
+          />
+        </S.ImageUploadContainer>
+        <S.InputDescription>
+          다른 사람들에게 보여질 프로필 사진입니다. (최대 5MB)
+        </S.InputDescription>
+      </S.ProfileImageSection>
+
       <S.NicknameSection>
         <S.SectionTitle>닉네임</S.SectionTitle>
         <S.InputField>
@@ -220,12 +292,16 @@ const ProfileSettingPage: React.FC = () => {
 
         <S.QuestionCard>
           <S.QuestionHeader>
+            <S.ArrowButton 
+              onClick={handlePreviousQuestion}
+              style={{ visibility: currentQuestion > 0 ? 'visible' : 'hidden' }}
+            >
+              ← 이전
+            </S.ArrowButton>
             <S.QuestionNumber>{currentQuestion + 1} / {balanceGameQuestions.length}</S.QuestionNumber>
-            {currentQuestion < balanceGameQuestions.length - 1 && (
-              <S.ArrowButton onClick={handleNextQuestion}>
-                다음 →
-              </S.ArrowButton>
-            )}
+            <S.ArrowButton style={{ visibility: 'hidden' }}>
+              다음 →
+            </S.ArrowButton>
           </S.QuestionHeader>
 
 
