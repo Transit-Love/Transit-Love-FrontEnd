@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { userRoleState } from "../../../store/auth";
 import * as S from "./style";
 import Loading from "../../../components/Loading";
 import authService from "../../../api/authService";
@@ -10,7 +8,6 @@ import profileService from "../../../api/profileService";
 const OAuth2Redirect: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const setUserRole = useSetRecoilState(userRoleState);
 
   useEffect(() => {
     const handleOAuth2Redirect = async () => {
@@ -76,13 +73,12 @@ const OAuth2Redirect: React.FC = () => {
           try {
             const currentUser = await authService.getCurrentUser();
             console.log("토큰으로 확인된 사용자:", currentUser);
-
+            
             // role 정보 저장
             if (currentUser.role) {
               authService.setRole(currentUser.role);
-              setUserRole(currentUser.role);
               console.log("사용자 역할 저장:", currentUser.role);
-
+              
               // Admin은 바로 홈으로 이동 (카운트다운, 매칭 성공 페이지 건너뛰기)
               if (currentUser.role === "ADMIN") {
                 console.log("Admin 사용자 - 바로 홈으로 이동");
@@ -146,7 +142,7 @@ const OAuth2Redirect: React.FC = () => {
     };
 
     handleOAuth2Redirect();
-  }, [location, navigate, setUserRole]);
+  }, [location, navigate]);
 
   return (
     <S.Container>

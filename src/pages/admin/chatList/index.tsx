@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import * as S from "../../chatList/style"; // 사용자 채팅 스타일 재활용
 import AdminNavBar from "../../../components/AdminNavBar";
-import CommonHeader from "../../../components/CommonHeader";
+import PageHeader from "../../../components/PageHeader";
 import Loading from "../../../components/Loading";
 import { useAdminMatchList } from "../../../hooks/useAdminQueries";
 import MessageCircleIcon from "../../../assets/icon/message-circle.svg";
@@ -101,24 +101,35 @@ const AdminChatListPage: React.FC = () => {
   // 로딩 중
   if (isLoading) {
     return (
-      <S.ChatContainer>
-        <CommonHeader title="채팅 목록" onBack={() => navigate(-1)} />
-        <Loading message="채팅 목록을 불러오는 중..." />
-        <AdminNavBar />
-      </S.ChatContainer>
+      <S.ChatWrapper>
+        <div style={{ 
+          width: "100%", 
+          maxWidth: "390px", 
+          height: "100vh",
+          margin: "0 auto",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          background: "#ffffff",
+          boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)"
+        }}>
+          <Loading message="채팅 목록을 불러오는 중..." />
+        </div>
+      </S.ChatWrapper>
     );
   }
 
   // 에러 발생
   if (error) {
     return (
-      <S.ChatContainer>
-        <CommonHeader title="채팅 목록" onBack={() => navigate(-1)} />
+      <S.ChatWrapper>
+        <PageHeader title="채팅 목록" backgroundColor="#FFC6B6" />
         <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
           {error instanceof Error ? error.message : "오류가 발생했습니다"}
         </div>
         <AdminNavBar />
-      </S.ChatContainer>
+      </S.ChatWrapper>
     );
   }
 
@@ -126,10 +137,11 @@ const AdminChatListPage: React.FC = () => {
   const activeMatches = matches.filter((m) => m.isActive);
 
   return (
-    <S.ChatContainer>
-      <CommonHeader title="채팅 목록" onBack={() => navigate(-1)} />
+    <S.ChatWrapper>
+      <PageHeader title="채팅 목록" backgroundColor="#FFC6B6" />
 
-      <MobileContainer>
+      <S.ChatContainer>
+        <MobileContainer>
         <ContentWrapper>
           <div style={{ fontSize: "14px", color: "#666" }}>
             전체 매칭: {matches.length}개
@@ -192,13 +204,6 @@ const AdminChatListPage: React.FC = () => {
                             flexWrap: "wrap",
                           }}
                         >
-                          <S.UserTag isCouple>
-                            <S.InfoText
-                              style={{ fontSize: "12px", lineHeight: "normal" }}
-                            >
-                              {match.profile1.mbti}
-                            </S.InfoText>
-                          </S.UserTag>
                         </div>
                       </S.UserInfo>
                     </div>
@@ -219,13 +224,6 @@ const AdminChatListPage: React.FC = () => {
                             flexWrap: "wrap",
                           }}
                         >
-                          <S.UserTag isCouple>
-                            <S.InfoText
-                              style={{ fontSize: "12px", lineHeight: "normal" }}
-                            >
-                              {match.profile2.mbti}
-                            </S.InfoText>
-                          </S.UserTag>
                         </div>
                       </S.UserInfo>
                     </div>
@@ -272,9 +270,6 @@ const AdminChatListPage: React.FC = () => {
                           </div>
                         )}
                       </div>
-                      <S.InfoText style={{ fontSize: "10px", color: "#999" }}>
-                        {match.matchType === "AUTO" ? "자동" : "수동"}
-                      </S.InfoText>
                     </div>
                   </S.UserCard>
                 ))
@@ -349,9 +344,10 @@ const AdminChatListPage: React.FC = () => {
           )}
         </SectionWrapper>
       </MobileContainer>
+      </S.ChatContainer>
 
       <AdminNavBar />
-    </S.ChatContainer>
+    </S.ChatWrapper>
   );
 };
 

@@ -65,37 +65,50 @@ const AdminChatDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <S.ChatPageContainer>
-        <Loading message="채팅 내역을 불러오는 중..." />
-        <AdminNavBar />
-      </S.ChatPageContainer>
+      <S.ChatPageWrapper>
+        <div style={{ 
+          width: "100%", 
+          maxWidth: "390px", 
+          height: "100vh",
+          margin: "0 auto",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          background: "#ffffff",
+          boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)"
+        }}>
+          <Loading message="채팅 내역을 불러오는 중..." />
+        </div>
+      </S.ChatPageWrapper>
     );
   }
 
   if (error) {
     return (
-      <S.ChatPageContainer>
+      <S.ChatPageWrapper>
         <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
           {error instanceof Error ? error.message : "오류가 발생했습니다"}
         </div>
         <AdminNavBar />
-      </S.ChatPageContainer>
+      </S.ChatPageWrapper>
     );
   }
 
   if (!matchProfiles) {
     return (
-      <S.ChatPageContainer>
+      <S.ChatPageWrapper>
         <div style={{ padding: "24px", textAlign: "center" }}>
           프로필 정보를 불러올 수 없습니다.
         </div>
         <AdminNavBar />
-      </S.ChatPageContainer>
+      </S.ChatPageWrapper>
     );
   }
 
   return (
-    <S.ChatPageContainer>
+    <S.ChatPageWrapper>
+      <S.ChatPageContainer>
       <S.ChatHeader>
         <S.HeaderContent>
           <S.UserInfoSection>
@@ -284,9 +297,10 @@ const AdminChatDetailPage: React.FC = () => {
       >
         🔒 어드민 모드 - 읽기 전용 (메시지 전송 불가)
       </div>
+      </S.ChatPageContainer>
 
       <AdminNavBar />
-    </S.ChatPageContainer>
+    </S.ChatPageWrapper>
   );
 };
 

@@ -7,6 +7,8 @@ export const Container = styled.div`
   margin: 0 auto;
   overflow-y: auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
   padding-bottom: 60px;
 
   /* 스크롤바 숨김 */
@@ -106,14 +108,15 @@ export const TimeDisplay = styled.div`
 `;
 
 export const Section = styled.div`
-  position: absolute;
-  left: 24px;
-  top: 124px;
-  width: 342px;
+  position: relative;
+  width: 100%;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   z-index: 100;
+  flex: 1;
+  margin-top: 0;
 `;
 
 export const SectionHeader = styled.div`

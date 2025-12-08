@@ -40,13 +40,13 @@ const CountdownPage: React.FC = () => {
                   state: { profile: matched[0] }
                 });
               } else {
-                // 매칭된 상대가 없으면 홈으로
-                navigate("/home");
+                // 매칭된 상대가 없으면 프로필로
+                navigate("/profile");
               }
             })
             .catch((error) => {
               console.error("매칭 상대 조회 실패:", error);
-              navigate("/home");
+              navigate("/profile");
             })
             .finally(() => {
               setIsLoading(false);

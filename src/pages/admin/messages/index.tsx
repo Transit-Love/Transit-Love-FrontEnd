@@ -1,8 +1,8 @@
 import React from "react";
 import * as S from "./style";
 import { useNavigate } from "react-router-dom";
-import Back from "../../../assets/back.png";
 import AdminNavBar from "../../../components/AdminNavBar";
+import PageHeader from "../../../components/PageHeader";
 
 const AdminMessagesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,15 +49,7 @@ const AdminMessagesPage: React.FC = () => {
     <S.Container>
       <S.BackgroundImage />
 
-      <S.Header>
-        <S.NavBar>
-          <S.IconButton onClick={() => navigate(-1)}>
-            <img src={Back} alt="back" />
-          </S.IconButton>
-          <S.HeaderTitle>속마음 문자들</S.HeaderTitle>
-          <S.IconButton aria-label="filter" />
-        </S.NavBar>
-      </S.Header>
+      <PageHeader title="속마음 문자들" backgroundColor="#FFC6B6" />
 
       <S.StatusIcons />
       <S.TimeDisplay />
