@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 
 export const ChatWrapper = styled.div`
-  width: 390px;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 390px;
+  height: 100vh;
   background: transparent;
   position: relative;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   @media (min-width: 391px) {
     background: #ffffff;
@@ -34,6 +36,9 @@ export const HeaderInfo = styled.div`
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  position: sticky;
+  top: 86px;
+  z-index: 999;
 `;
 
 export const InfoCard = styled.div`

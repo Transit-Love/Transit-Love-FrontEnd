@@ -76,17 +76,6 @@ const CountdownPage: React.FC = () => {
             </S.InfoDescription>
           </S.InfoTextWrapper>
         </S.InfoCard>
-
-        <S.InfoSection>
-          <S.ParticipantsInfo>
-            <S.ParticipantsTitle>현재 참여자</S.ParticipantsTitle>
-            <S.ParticipantsCount>
-              <S.UsersIcon>👥</S.UsersIcon>
-              <S.ParticipantsNumber>24명</S.ParticipantsNumber>
-              <S.ParticipantsStatus>참여 중</S.ParticipantsStatus>
-            </S.ParticipantsCount>
-          </S.ParticipantsInfo>
-        </S.InfoSection>
       </S.ContentWrapper>
 
       <NavBar />

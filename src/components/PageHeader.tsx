@@ -48,6 +48,9 @@ const HeaderContainer = styled.div<{ backgroundColor: string }>`
   flex-shrink: 0;
   background: ${({ backgroundColor }) => backgroundColor};
   margin: 0 auto;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 `;
 
 const HeaderContent = styled.div`
