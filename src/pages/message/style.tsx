@@ -324,7 +324,7 @@ export const SendSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  z-index: 100;
+  z-index: 150;
 `;
 
 export const SendTitle = styled.div`
@@ -347,6 +347,8 @@ export const PersonSelectCard = styled.div`
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 150;
 
   &:hover {
     background: #f1f5f9;
@@ -526,6 +528,9 @@ export const PersonList = styled.div`
   max-height: 200px;
   overflow-y: auto;
   margin-top: 4px;
+  position: absolute;
+  z-index: 250;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   &::-webkit-scrollbar {
     width: 6px;

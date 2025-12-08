@@ -94,12 +94,15 @@ const ProfilePage: React.FC = () => {
   if (loading) {
     return (
       <S.ProfileWrapper>
-        <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
-        <S.ProfileContainer>
-          <S.BackgroundImage />
+        <div style={{ 
+          width: "100%", 
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
           <Loading message="프로필을 불러오는 중..." />
-        </S.ProfileContainer>
-        <NavBar />
+        </div>
       </S.ProfileWrapper>
     );
   }

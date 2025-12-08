@@ -21,38 +21,38 @@ const ProfileSettingPage: React.FC = () => {
 
   const balanceGameQuestions = [
     {
-      question: "연애할 때 나는...",
+      question: "데이트 장소는?",
       options: [
-        { text: "친구 같은 연애", icon: "❤️" },
-        { text: "설레는 연애", icon: "⚡" },
+        { text: "카페에서 조용히", icon: "❤️" },
+        { text: "놀이공원에서 신나게", icon: "⚡" },
       ],
     },
     {
-      question: "데이트를 할 때 나는...",
+      question: "주말에 뭐 할래?",
       options: [
-        { text: "계획을 세우는 편", icon: "📅" },
-        { text: "즉흥적인 편", icon: "🎯" },
+        { text: "집에서 영화보기", icon: "📅" },
+        { text: "밖에 나가서 산책", icon: "🎯" },
       ],
     },
     {
-      question: "갈등이 생겼을 때 나는...",
+      question: "선물을 받는다면?",
       options: [
-        { text: "바로 해결하려고 함", icon: "⚔️" },
-        { text: "시간을 두고 생각함", icon: "🤔" },
+        { text: "실용적인 선물", icon: "⚔️" },
+        { text: "감성적인 선물", icon: "🤔" },
       ],
     },
     {
-      question: "사랑을 표현할 때 나는...",
+      question: "여행 스타일은?",
       options: [
-        { text: "말로 표현하는 편", icon: "💬" },
-        { text: "행동으로 보여주는 편", icon: "🎁" },
+        { text: "계획적인 여행", icon: "💬" },
+        { text: "즉흥적인 여행", icon: "🎁" },
       ],
     },
     {
-      question: "이상적인 연인과의 시간은...",
+      question: "연락 스타일은?",
       options: [
-        { text: "함께 뭔가를 하는 시간", icon: "🎮" },
-        { text: "조용히 함께 있는 시간", icon: "📖" },
+        { text: "자주 연락하기", icon: "🎮" },
+        { text: "필요할 때만 연락", icon: "📖" },
       ],
     },
   ];

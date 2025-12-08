@@ -115,11 +115,15 @@ const ChatListPage: React.FC = () => {
   if (loading) {
     return (
       <S.ChatWrapper>
-        <PageHeader title="채팅" backgroundColor="#FFC6B6" />
-        <S.ChatContainer>
+        <div style={{ 
+          width: "100%", 
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
           <Loading message="채팅 목록을 불러오는 중..." />
-        </S.ChatContainer>
-        <NavBar />
+        </div>
       </S.ChatWrapper>
     );
   }
