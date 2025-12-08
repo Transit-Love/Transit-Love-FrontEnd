@@ -20,7 +20,8 @@ export const ProfileContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
-  padding-bottom: 180px;
+  margin-top: -60px;
+  margin-bottom: 80px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -166,7 +167,7 @@ export const KeywordsSection = styled.div`
 export const MatchSection = styled.div`
   position: absolute;
   left: 24px;
-  top: 500px;
+  top: 450px;
   width: 342px;
   display: flex;
   flex-direction: column;
@@ -299,7 +300,7 @@ export const KeywordTag = styled.div`
 export const BalanceResults = styled.div`
   position: absolute;
   left: 25px;
-  top: 660px;
+  top: 630px;
   width: 342px;
   display: flex;
   flex-direction: column;
