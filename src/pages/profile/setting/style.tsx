@@ -118,6 +118,77 @@ export const TimeDisplay = styled.div`
   z-index: 5;
 `;
 
+export const ProfileImageSection = styled.div`
+  width: 390px;
+  padding: 5px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 100;
+  margin-top: 30px;
+`;
+
+export const ImageUploadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const ImagePreview = styled.div`
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const ImagePlaceholder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #9ca3af;
+  
+  span {
+    font-size: 40px;
+  }
+  
+  p {
+    font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+    font-size: 14px;
+    margin: 0;
+  }
+`;
+
+export const ImageUploadButton = styled.label`
+  padding: 10px 24px;
+  background: #fab0b8;
+  border-radius: 12px;
+  color: white;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 export const NicknameSection = styled.div`
   width: 390px;
   padding: 5px 24px;
@@ -125,7 +196,7 @@ export const NicknameSection = styled.div`
   flex-direction: column;
   gap: 10px;
   z-index: 100;
-  margin-top: 99px;
+  margin-top: 30px;
 `;
 
 export const MBTISection = styled.div`
@@ -225,10 +296,10 @@ export const QuestionCard = styled.div`
 
 export const QuestionHeader = styled.div`
   display: flex;
-  gap: 7rem;
-  margin-left: 8rem;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 8px;
 `;
 
 export const QuestionNumber = styled.div`
@@ -251,10 +322,21 @@ export const ArrowButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-size: 14px;
+  color: #fab0b8;
+  font-weight: 400;
+  white-space: nowrap;
+  min-width: 50px;
+  
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 export const ArrowIcon = styled.div`
