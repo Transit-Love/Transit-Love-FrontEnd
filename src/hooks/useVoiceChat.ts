@@ -65,8 +65,21 @@ export const useVoiceChat = ({
         // 개인 큐 구독
         client.subscribe(`/queue/voice.${myProfileId}`, (message) => {
           const signal: VoiceSignalMessage = JSON.parse(message.body);
+          console.log("[개인 큐] 메시지 수신:", signal);
           if (handleSignalMessageRef.current) {
             handleSignalMessageRef.current(signal);
+          }
+        });
+
+        // 채팅방 토픽 구독 (상대방의 메시지를 받기 위해)
+        client.subscribe(`/topic/voice.${chatRoomId}`, (message) => {
+          const signal: VoiceSignalMessage = JSON.parse(message.body);
+          console.log("[채팅방 토픽] 메시지 수신:", signal);
+          // 상대방이 보낸 메시지만 처리
+          if (signal.senderId !== myProfileId) {
+            if (handleSignalMessageRef.current) {
+              handleSignalMessageRef.current(signal);
+            }
           }
         });
       },
@@ -78,7 +91,7 @@ export const useVoiceChat = ({
 
     client.activate();
     stompClientRef.current = client;
-  }, [myProfileId]);
+  }, [myProfileId, chatRoomId]);
 
   // 시그널 메시지 전송
   const sendSignal = useCallback(
@@ -93,16 +106,17 @@ export const useVoiceChat = ({
         chatRoomId,
         fromProfileId: myProfileId,
         toProfileId: partnerProfileId,
+        senderId: myProfileId,
         timestamp: Date.now(),
         ...extraData,
       };
 
       stompClientRef.current.publish({
-        destination: "/app/voice/signal",
+        destination: `/app/voice/${chatRoomId}`,
         body: JSON.stringify(message),
       });
 
-      console.log("[Signal] 전송:", type);
+      console.log("[Signal] 전송:", type, "to chatRoom:", chatRoomId);
     },
     [chatRoomId, myProfileId, partnerProfileId]
   );
@@ -382,44 +396,24 @@ export const useVoiceChat = ({
   // 통화 시작
   const startCall = useCallback(() => {
     setCallStatus(VoiceCallStatus.REQUESTING);
-    callStartTimeRef.current = new Date(); // 통화 시작 시각 기록
+    // 통화 시작 시각은 WebRTC 연결 성공 시(ontrack)에 기록
     sendSignal(VoiceSignalType.VOICE_CALL_REQUEST);
   }, [sendSignal]);
 
   // 통화 수락
   const acceptCall = useCallback(() => {
     setCallStatus(VoiceCallStatus.CONNECTING);
-    callStartTimeRef.current = new Date(); // 통화 시작 시각 기록
+    // 통화 시작 시각은 WebRTC 연결 성공 시(ontrack)에 기록
     sendSignal(VoiceSignalType.VOICE_CALL_ACCEPT);
   }, [sendSignal]);
 
   // 통화 거절
-  const rejectCall = useCallback(async () => {
+  const rejectCall = useCallback(() => {
     setCallStatus(VoiceCallStatus.ENDED);
     sendSignal(VoiceSignalType.VOICE_CALL_REJECT);
-
-    // 거절된 통화 기록 저장
-    if (callStartTimeRef.current) {
-      try {
-        const endTime = new Date();
-        await voiceChatService.saveCallHistory({
-          chatRoomId,
-          callerProfileId: partnerProfileId, // 상대방이 발신자
-          receiverProfileId: myProfileId, // 내가 수신자
-          startTime: callStartTimeRef.current.toISOString(),
-          endTime: endTime.toISOString(),
-          duration: 0,
-          callStatus: "REJECTED",
-          voiceModulationUsed: false,
-        });
-        console.log("[통화 기록] 거절 기록 저장 완료");
-      } catch (error) {
-        console.error("[통화 기록 저장 실패]", error);
-      }
-    }
-
+    // 거절 시에는 연결되지 않았으므로 통화 기록 저장하지 않음
     cleanup();
-  }, [sendSignal, cleanup, chatRoomId, myProfileId, partnerProfileId]);
+  }, [sendSignal, cleanup]);
 
   // 통화 종료
   const endCall = useCallback(async () => {
@@ -479,7 +473,7 @@ export const useVoiceChat = ({
           });
 
           // WebSocket으로 상대방에게 음소거 상태 알림
-          sendSignal(VoiceSignalType.REQUEST, {
+          sendSignal(VoiceSignalType.MUTE_STATUS_CHANGED, {
             isMuted: newMutedState,
           });
         } catch (error) {
