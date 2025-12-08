@@ -151,11 +151,18 @@ const AdminChatDetailPage: React.FC = () => {
           </div>
         ) : (
           messages.map((msg, index) => {
-            const isProfile1 = msg.isProfile1Message;
             const showDateDivider = shouldShowDateDivider(
               msg,
               messages[index - 1]
             );
+
+            // senderProfileId로 profile1인지 profile2인지 판단
+            const isProfile1 =
+              msg.senderProfileId === matchProfiles.profile1.profileId;
+            const senderProfile = isProfile1
+              ? matchProfiles.profile1
+              : matchProfiles.profile2;
+            const senderColor = isProfile1 ? "#5B9BD5" : "#ED7D95";
 
             return (
               <React.Fragment key={msg.id}>
@@ -167,48 +174,95 @@ const AdminChatDetailPage: React.FC = () => {
                   </S.DateDivider>
                 )}
 
-                <S.MessageRow>
-                  <S.SmallAvatar
-                    src={getAvatarImage(
-                      isProfile1
-                        ? matchProfiles.profile1.profileId
-                        : matchProfiles.profile2.profileId
-                    )}
-                    alt="프로필"
-                  />
-                  <S.MessageContent>
-                    <div
-                      style={{
-                        fontSize: "12px",
-                        color: isProfile1 ? "#5B9BD5" : "#ED7D95",
-                        fontWeight: 600,
-                        marginBottom: "4px",
-                      }}
-                    >
-                      {isProfile1
-                        ? matchProfiles.profile1.nickname
-                        : matchProfiles.profile2.nickname}
-                    </div>
-                    <S.MessageBubble>
-                      <S.MessageText>{msg.content}</S.MessageText>
-                    </S.MessageBubble>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        marginTop: "4px",
-                      }}
-                    >
-                      <S.TimeStamp>{formatTime(msg.sentAt)}</S.TimeStamp>
-                      {msg.isRead && (
-                        <S.TimeStamp style={{ color: "#9B7EBD" }}>
-                          · 읽음
-                        </S.TimeStamp>
-                      )}
-                    </div>
-                  </S.MessageContent>
-                </S.MessageRow>
+                {isProfile1 ? (
+                  // Profile1 메시지 - 오른쪽에 표시
+                  <S.MessageRowRight>
+                    <S.MessageContent style={{ alignItems: "flex-end" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          justifyContent: "flex-end",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: senderColor,
+                            fontWeight: 600,
+                          }}
+                        >
+                          {senderProfile.nickname}
+                        </div>
+                        <S.SmallAvatar
+                          src={getAvatarImage(senderProfile.profileId)}
+                          alt="프로필1"
+                        />
+                      </div>
+                      <S.MessageBubbleSent>
+                        <S.MessageTextSent>{msg.content}</S.MessageTextSent>
+                      </S.MessageBubbleSent>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          marginTop: "4px",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <S.TimeStampRight>
+                          {formatTime(msg.sentAt)}
+                        </S.TimeStampRight>
+                        {msg.isRead && (
+                          <S.TimeStampRight style={{ color: "#9B7EBD" }}>
+                            · 읽음
+                          </S.TimeStampRight>
+                        )}
+                      </div>
+                    </S.MessageContent>
+                  </S.MessageRowRight>
+                ) : (
+                  // Profile2 메시지 - 왼쪽에 표시
+                  <S.MessageRow>
+                    <S.SmallAvatar
+                      src={getAvatarImage(senderProfile.profileId)}
+                      alt="프로필2"
+                    />
+                    <S.MessageContent>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: senderColor,
+                          fontWeight: 600,
+                          marginBottom: "4px",
+                        }}
+                      >
+                        {senderProfile.nickname}
+                      </div>
+                      <S.MessageBubble>
+                        <S.MessageText>{msg.content}</S.MessageText>
+                      </S.MessageBubble>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          marginTop: "4px",
+                        }}
+                      >
+                        <S.TimeStamp>{formatTime(msg.sentAt)}</S.TimeStamp>
+                        {msg.isRead && (
+                          <S.TimeStamp style={{ color: "#9B7EBD" }}>
+                            · 읽음
+                          </S.TimeStamp>
+                        )}
+                      </div>
+                    </S.MessageContent>
+                  </S.MessageRow>
+                )}
               </React.Fragment>
             );
           })
