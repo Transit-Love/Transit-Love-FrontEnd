@@ -150,7 +150,9 @@ const ProfilePage: React.FC = () => {
         <S.SectionTitle>내 매칭 상대</S.SectionTitle>
         {matchedProfile ? (
           <S.MatchedCard
-            onClick={() => navigate(`/profile/${matchedProfile.id}`)}
+            onClick={() => navigate(`/profile/${matchedProfile.id}`, {
+              state: { profile: matchedProfile }
+            })}
           >
             <S.MatchedInfo>
               <S.MatchedName>{matchedProfile.nickname}</S.MatchedName>
