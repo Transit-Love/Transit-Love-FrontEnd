@@ -42,6 +42,19 @@ export const useWebSocket = ({
   const maxReconnectAttempts = 3;
   const shouldReconnect = useRef(true);
 
+  // 콜백 함수들을 ref로 저장하여 의존성 문제 해결
+  const onMessageReceivedRef = useRef(onMessageReceived);
+  const onConnectedRef = useRef(onConnected);
+  const onDisconnectedRef = useRef(onDisconnected);
+  const onErrorRef = useRef(onError);
+
+  useEffect(() => {
+    onMessageReceivedRef.current = onMessageReceived;
+    onConnectedRef.current = onConnected;
+    onDisconnectedRef.current = onDisconnected;
+    onErrorRef.current = onError;
+  }, [onMessageReceived, onConnected, onDisconnected, onError]);
+
   // WebSocket 연결
   useEffect(() => {
     // enabled가 false이거나 matchId가 없으면 연결하지 않음
@@ -54,7 +67,7 @@ export const useWebSocket = ({
 
     if (!token) {
       console.warn("액세스 토큰이 없습니다. WebSocket 연결을 건너뜁니다.");
-      onError?.(new Error("No access token"));
+      onErrorRef.current?.(new Error("No access token"));
       return;
     }
 
@@ -106,18 +119,18 @@ export const useWebSocket = ({
           try {
             const chatMessage: ChatMessageResponse = JSON.parse(message.body);
             console.log("📩 메시지 수신:", chatMessage);
-            onMessageReceived(chatMessage);
+            onMessageReceivedRef.current(chatMessage);
           } catch (error) {
             console.error("메시지 파싱 오류:", error);
           }
         });
 
-        onConnected?.();
+        onConnectedRef.current?.();
       },
       onDisconnect: () => {
         console.log("❌ WebSocket 연결 해제");
         setIsConnected(false);
-        onDisconnected?.();
+        onDisconnectedRef.current?.();
       },
       onStompError: (frame) => {
         console.error("❌ STOMP 오류:", frame.headers?.message || frame);
@@ -130,21 +143,20 @@ export const useWebSocket = ({
           console.error("🔒 인증 오류 감지 - 재연결 중단");
           shouldReconnect.current = false;
           client.deactivate();
-          onError?.(new Error("Authentication failed"));
+          onErrorRef.current?.(new Error("Authentication failed"));
         } else {
-          onError?.(frame);
+          onErrorRef.current?.(frame);
         }
       },
       onWebSocketError: (event) => {
-        console.error("❌ WebSocket 오류");
-
-        // 오류 발생 시 재연결 시도 제한 체크
+        // 최대 재연결 시도 횟수 초과 시에만 로그 출력
         if (reconnectAttempts.current >= maxReconnectAttempts) {
+          console.error("❌ WebSocket 연결 실패: 최대 재연결 시도 초과");
           shouldReconnect.current = false;
           client.deactivate();
+          onErrorRef.current?.(new Error("Max reconnect attempts reached"));
         }
-
-        onError?.(event);
+        // 그 외의 경우 조용히 재연결 시도
       },
     });
 
@@ -158,14 +170,7 @@ export const useWebSocket = ({
         client.deactivate();
       }
     };
-  }, [
-    matchId,
-    enabled,
-    onMessageReceived,
-    onConnected,
-    onDisconnected,
-    onError,
-  ]);
+  }, [matchId, enabled]); // 콜백 함수들을 의존성에서 제거
 
   // 메시지 전송
   const sendMessage = useCallback(

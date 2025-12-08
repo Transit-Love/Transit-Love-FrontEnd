@@ -148,26 +148,30 @@ export const MessageContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 240px;
+  max-width: 240px;
 `;
 
 export const MessageBubble = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: flex-start;
   padding: 12px 16px;
   background: #fff;
   border-radius: 16px;
   border-top-left-radius: 4px;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.06);
+  width: fit-content;
+  max-width: 240px;
 `;
 
 export const MessageBubbleSent = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: flex-start;
   padding: 12px 16px;
   background: var(--Color-2, #ffc6b6);
   border-radius: 16px;
   border-top-right-radius: 4px;
+  width: fit-content;
+  max-width: 240px;
 `;
 
 export const MessageText = styled.p`
@@ -176,9 +180,9 @@ export const MessageText = styled.p`
   font-size: 16px;
   font-weight: 400;
   line-height: 19.2px;
-  width: 200px;
   margin: 0;
   word-break: break-word;
+  white-space: pre-wrap;
 `;
 
 export const MessageTextSent = styled.p`
@@ -187,9 +191,9 @@ export const MessageTextSent = styled.p`
   font-size: 16px;
   font-weight: 400;
   line-height: 19.2px;
-  width: 200px;
   margin: 0;
   word-break: break-word;
+  white-space: pre-wrap;
 `;
 
 export const TimeStamp = styled.p`
