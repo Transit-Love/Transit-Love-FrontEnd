@@ -1,33 +1,286 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as S from "./style";
 import Avatar1 from "../../assets/icon/avatar1.png";
+import Avatar2 from "../../assets/icon/avatar2.png";
+import Avatar3 from "../../assets/icon/avatar3.png";
+import Avatar4 from "../../assets/icon/avatar4.png";
 import BackIcon from "../../assets/back.png";
 import PhoneIcon from "../../assets/icon/phone.svg";
 import MoreVerticalIcon from "../../assets/icon/more-vertical.svg";
 import PlusIcon from "../../assets/icon/plus.svg";
 import SendIcon from "../../assets/icon/send.svg";
 import NavBar from "../../components/NavBar";
+import { useWebSocket } from "../../hooks/useWebSocket";
+import {
+  useChatMessages,
+  useChatRoomMessages,
+} from "../../hooks/useChatQueries";
+import {
+  markMessagesAsRead,
+  markChatRoomMessagesAsRead,
+} from "../../api/chatService";
+import type { ChatMessageResponse } from "../../types/chat";
+import { isApiError } from "../../types/error";
 
 const ChatPage: React.FC = () => {
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const matchId = searchParams.get("matchId")
+    ? Number(searchParams.get("matchId"))
+    : null;
+  const chatRoomId = searchParams.get("chatRoomId")
+    ? Number(searchParams.get("chatRoomId"))
+    : null;
+  const otherProfileId = Number(searchParams.get("profileId"));
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      console.log("메시지 전송:", message);
-      setMessage("");
+  const [message, setMessage] = useState("");
+  const [localMessages, setLocalMessages] = useState<ChatMessageResponse[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // React Query로 메시지 가져오기 (자동 캐싱)
+  const {
+    data: serverMessages = [],
+    isLoading,
+    error: queryError,
+  } = chatRoomId
+    ? useChatRoomMessages(chatRoomId)
+    : useChatMessages(matchId || 0);
+
+  // 서버 메시지 + 실시간 메시지 합치기
+  const messages = [...serverMessages, ...localMessages];
+  const error = queryError
+    ? queryError instanceof Error
+      ? queryError.message
+      : "메시지를 불러오는데 실패했습니다."
+    : null;
+
+  // 현재 사용자 ID 가져오기
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setCurrentUserId(Number(userId));
+    }
+  }, []);
+
+  // 아바타 이미지 매핑
+  const getAvatarImage = (profileId: number) => {
+    const avatars = [Avatar1, Avatar2, Avatar3, Avatar4];
+    return avatars[profileId % avatars.length];
+  };
+
+  // 메시지 수신 핸들러
+  const handleMessageReceived = (newMessage: ChatMessageResponse) => {
+    setLocalMessages((prev) => [...prev, newMessage]);
+
+    // 상대방 메시지면 자동으로 읽음 처리
+    if (newMessage.senderProfileId !== currentUserId) {
+      if (chatRoomId) {
+        markChatRoomMessagesAsRead(chatRoomId).catch((err) =>
+          console.error("읽음 처리 실패:", err)
+        );
+      } else if (matchId) {
+        markMessagesAsRead(matchId).catch((err) =>
+          console.error("읽음 처리 실패:", err)
+        );
+      }
     }
   };
+
+  // WebSocket 연결 (matchId 또는 chatRoomId 사용)
+  const connectionId = chatRoomId || matchId;
+
+  // connectionId가 없으면 WebSocket 연결하지 않음
+  const shouldConnect = !!connectionId;
+
+  const { isConnected, sendMessage: sendWebSocketMessage } = useWebSocket({
+    matchId: connectionId || 0, // 0은 더미 값 (연결 안함)
+    enabled: shouldConnect, // 연결 활성화 여부
+    onMessageReceived: handleMessageReceived,
+    onConnected: () => console.log("✅ 채팅방 연결됨"),
+    onDisconnected: () => console.log("❌ 채팅방 연결 해제됨"),
+    onError: (error) => {
+      console.error("WebSocket 오류:", error);
+
+      // 토큰 만료 또는 인증 오류 시 로그인 페이지로 이동
+      if (
+        error instanceof Error &&
+        (error.message === "No access token" ||
+          error.message === "Authentication failed")
+      ) {
+        setError("로그인이 만료되었습니다. 다시 로그인해주세요.");
+        setTimeout(() => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("userId");
+          navigate("/login");
+        }, 2000);
+      }
+    },
+  });
+
+  // 초기 로드 시 읽음 처리
+  useEffect(() => {
+    if (!isLoading && serverMessages.length > 0) {
+      if (chatRoomId) {
+        markChatRoomMessagesAsRead(chatRoomId).catch(() =>
+          console.warn("읽음 처리 실패")
+        );
+      } else if (matchId) {
+        markMessagesAsRead(matchId).catch(() => console.warn("읽음 처리 실패"));
+      }
+    }
+  }, [isLoading, chatRoomId, matchId, serverMessages.length]);
+
+  // 메시지 목록이 업데이트되면 스크롤 하단으로
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSendMessage = () => {
+    if (message.trim() && isConnected) {
+      sendWebSocketMessage(message.trim());
+      setMessage("");
+    } else if (!isConnected) {
+      alert("채팅 서버와 연결되지 않았습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
+  // 시간 포맷팅
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const period = hours >= 12 ? "오후" : "오전";
+    const displayHours = hours % 12 || 12;
+    return `${period} ${displayHours}:${minutes}`;
+  };
+
+  // 날짜 구분자 체크
+  const shouldShowDateDivider = (
+    currentMsg: ChatMessageResponse,
+    prevMsg?: ChatMessageResponse
+  ) => {
+    if (!prevMsg) return true;
+    const currentDate = new Date(currentMsg.sentAt).toDateString();
+    const prevDate = new Date(prevMsg.sentAt).toDateString();
+    return currentDate !== prevDate;
+  };
+
+  // 날짜 포맷팅
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const today = new Date();
+    if (date.toDateString() === today.toDateString()) {
+      return "오늘";
+    }
+    return `${date.getMonth() + 1}월 ${date.getDate()}일`;
+  };
+
+  if (loading) {
+    return (
+      <S.ChatPageContainer>
+        <div style={{ padding: "24px", textAlign: "center" }}>로딩 중...</div>
+        <NavBar />
+      </S.ChatPageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <S.ChatPageContainer>
+        <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
+          {error}
+        </div>
+        <NavBar />
+      </S.ChatPageContainer>
+    );
+  }
+
+  // 상대방 프로필 정보 (메시지에서 가져오기)
+  // 로딩 중
+  if (isLoading) {
+    return (
+      <S.ChatPageContainer>
+        <S.ChatHeader>
+          <S.HeaderContent>
+            <S.UserInfoSection>
+              <S.BackButton
+                src={BackIcon}
+                alt="뒤로가기"
+                onClick={() => navigate(-1)}
+                style={{ cursor: "pointer" }}
+              />
+              <S.UserDetails>
+                <S.UserName>로딩 중...</S.UserName>
+              </S.UserDetails>
+            </S.UserInfoSection>
+          </S.HeaderContent>
+        </S.ChatHeader>
+        <S.MessagesContainer>
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            메시지를 불러오는 중...
+          </div>
+        </S.MessagesContainer>
+        <NavBar />
+      </S.ChatPageContainer>
+    );
+  }
+
+  // 에러 발생
+  if (error) {
+    return (
+      <S.ChatPageContainer>
+        <S.ChatHeader>
+          <S.HeaderContent>
+            <S.UserInfoSection>
+              <S.BackButton
+                src={BackIcon}
+                alt="뒤로가기"
+                onClick={() => navigate(-1)}
+                style={{ cursor: "pointer" }}
+              />
+              <S.UserDetails>
+                <S.UserName>오류</S.UserName>
+              </S.UserDetails>
+            </S.UserInfoSection>
+          </S.HeaderContent>
+        </S.ChatHeader>
+        <S.MessagesContainer>
+          <div style={{ textAlign: "center", padding: "20px", color: "red" }}>
+            {error}
+          </div>
+        </S.MessagesContainer>
+        <NavBar />
+      </S.ChatPageContainer>
+    );
+  }
+
+  const otherProfile =
+    messages.length > 0
+      ? messages.find((m) => m.senderProfileId !== currentUserId)
+      : null;
 
   return (
     <S.ChatPageContainer>
       <S.ChatHeader>
         <S.HeaderContent>
           <S.UserInfoSection>
-            <S.BackButton src={BackIcon} alt="뒤로가기" />
-            <S.Avatar src={Avatar1} alt="프로필" />
+            <S.BackButton
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+              style={{ cursor: "pointer" }}
+            />
+            <S.Avatar src={getAvatarImage(otherProfileId)} alt="프로필" />
             <S.UserDetails>
-              <S.UserName>너도 아라를 아라?</S.UserName>
-              <S.OnlineStatus>온라인</S.OnlineStatus>
+              <S.UserName>
+                {otherProfile?.senderNickname || "상대방"}
+              </S.UserName>
+              <S.OnlineStatus>
+                {isConnected ? "온라인" : "오프라인"}
+              </S.OnlineStatus>
             </S.UserDetails>
           </S.UserInfoSection>
           <S.Actions>
@@ -38,45 +291,52 @@ const ChatPage: React.FC = () => {
       </S.ChatHeader>
 
       <S.MessagesContainer>
-        <S.DateDivider>
-          <S.DateBadge>
-            <S.DateText>오늘</S.DateText>
-          </S.DateBadge>
-        </S.DateDivider>
+        {messages.map((msg, index) => {
+          const isMyMessage = msg.senderProfileId === currentUserId;
+          const showDateDivider = shouldShowDateDivider(
+            msg,
+            messages[index - 1]
+          );
 
-        <S.MessageRow>
-          <S.SmallAvatar src={Avatar1} alt="프로필" />
-          <S.MessageContent>
-            <S.MessageBubble>
-              <S.MessageText>안녕하세요! 매칭되어서 너무 기뻐요</S.MessageText>
-            </S.MessageBubble>
-            <S.TimeStamp>오후 2:30</S.TimeStamp>
-          </S.MessageContent>
-        </S.MessageRow>
+          return (
+            <React.Fragment key={msg.id}>
+              {showDateDivider && (
+                <S.DateDivider>
+                  <S.DateBadge>
+                    <S.DateText>{formatDate(msg.sentAt)}</S.DateText>
+                  </S.DateBadge>
+                </S.DateDivider>
+              )}
 
-        <S.MessageRowRight>
-          <S.MessageContent>
-            <S.MessageBubbleSent>
-              <S.MessageTextSent>
-                안녕하세요! 저도 정말 설레네요
-              </S.MessageTextSent>
-            </S.MessageBubbleSent>
-            <S.TimeStampRight>오후 2:32</S.TimeStampRight>
-          </S.MessageContent>
-        </S.MessageRowRight>
-
-        <S.MessageRow>
-          <S.SmallAvatar src={Avatar1} alt="프로필" />
-          <div style={{ width: "120px" }}>
-            <S.TypingBubble>
-              <S.TypingDots>
-                <S.Dot />
-                <S.Dot />
-                <S.Dot />
-              </S.TypingDots>
-            </S.TypingBubble>
-          </div>
-        </S.MessageRow>
+              {isMyMessage ? (
+                <S.MessageRowRight>
+                  <S.MessageContent>
+                    <S.MessageBubbleSent>
+                      <S.MessageTextSent>{msg.content}</S.MessageTextSent>
+                    </S.MessageBubbleSent>
+                    <S.TimeStampRight>
+                      {formatTime(msg.sentAt)}
+                    </S.TimeStampRight>
+                  </S.MessageContent>
+                </S.MessageRowRight>
+              ) : (
+                <S.MessageRow>
+                  <S.SmallAvatar
+                    src={getAvatarImage(msg.senderProfileId)}
+                    alt="프로필"
+                  />
+                  <S.MessageContent>
+                    <S.MessageBubble>
+                      <S.MessageText>{msg.content}</S.MessageText>
+                    </S.MessageBubble>
+                    <S.TimeStamp>{formatTime(msg.sentAt)}</S.TimeStamp>
+                  </S.MessageContent>
+                </S.MessageRow>
+              )}
+            </React.Fragment>
+          );
+        })}
+        <div ref={messagesEndRef} />
       </S.MessagesContainer>
 
       <S.InputContainer>
