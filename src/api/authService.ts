@@ -74,6 +74,30 @@ const authService = {
   isAuthenticated: (): boolean => {
     return !!localStorage.getItem("accessToken");
   },
+
+  // 마지막 선택 옵션 조회
+  getFinalChoiceOptions: async () => {
+    try {
+      const response = await apiClient.get("/api/chat/final-choice/options");
+      return response.data;
+    } catch (error) {
+      console.error("Failed to get final choice options:", error);
+      throw error;
+    }
+  },
+
+  // 마지막 선택 실행
+  makeFinalChoice: async (selectedProfileId: number) => {
+    try {
+      const response = await apiClient.post("/api/chat/final-choice", {
+        selectedProfileId,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to make final choice:", error);
+      throw error;
+    }
+  },
 };
 
 export default authService;

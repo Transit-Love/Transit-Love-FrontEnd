@@ -1,18 +1,59 @@
 import styled from "@emotion/styled";
 
 export const FinalResultContainer = styled.div`
-  width: 390px;
+  width: 100%;
+  max-width: 390px;
   min-height: 100vh;
   background: #f9fafb;
   position: relative;
-  overflow-y: auto;
   margin: 0 auto;
-  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: 391px) {
     background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const ScrollableContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 140px 24px 40px;
+
+  /* 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  @media (max-width: 390px) {
+    padding: 140px 16px 40px;
+  }
+`;
+
+export const LoadingMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #6b7280;
+  font-family: "Ownglyph PDH";
+  font-size: 16px;
+`;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #ef4444;
+  font-family: "Ownglyph PDH";
+  font-size: 16px;
+  text-align: center;
+  padding: 0 24px;
 `;
 
 export const Header = styled.div`
@@ -78,14 +119,15 @@ export const InfoCard = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  width: 342px;
+  width: 100%;
   padding: 20px;
   border-radius: 16px;
   background: #dfd1ea;
-  position: absolute;
-  top: 162px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-bottom: 24px;
+
+  @media (max-width: 390px) {
+    padding: 16px;
+  }
 `;
 
 export const InfoIcon = styled.img`
@@ -122,11 +164,8 @@ export const AvatarSection = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  width: 342px;
-  position: absolute;
-  top: 316px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  margin-bottom: 32px;
 `;
 
 export const AvatarContainer = styled.img`
@@ -134,6 +173,11 @@ export const AvatarContainer = styled.img`
   height: 120px;
   border-radius: 60px;
   object-fit: cover;
+
+  @media (max-width: 390px) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 export const ProfileInfo = styled.div`
@@ -151,16 +195,27 @@ export const ProfileName = styled.p`
   font-weight: 400;
   line-height: 28.8px;
   margin: 0;
+
+  @media (max-width: 390px) {
+    font-size: 20px;
+  }
+`;
+
+export const ProfileMbti = styled.p`
+  color: #6b7280;
+  font-family: "Ownglyph PDH";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.2px;
+  margin: 0;
 `;
 
 export const KeywordsSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 342px;
-  position: absolute;
-  top: 518px;
-  left: 24px;
+  width: 100%;
+  margin-bottom: 32px;
 `;
 
 export const SectionTitle = styled.p`
@@ -202,11 +257,8 @@ export const BalanceSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 342px;
-  position: absolute;
-  top: 626px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  margin-bottom: 32px;
 `;
 
 export const BalanceItems = styled.div`
@@ -255,4 +307,173 @@ export const BalanceValue = styled.p`
   font-weight: 400;
   line-height: 19.2px;
   margin: 0;
+`;
+
+export const MessageCountSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 32px;
+  border-radius: 12px;
+  background: #f3f4f6;
+`;
+
+export const MessageCountText = styled.p`
+  color: #6b7280;
+  font-family: "Ownglyph PDH";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+  margin: 0;
+`;
+
+export const TransferSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid #e5e7eb;
+`;
+
+export const TransferTitle = styled.h2`
+  color: #000;
+  font-family: "Ownglyph PDH";
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+
+  @media (max-width: 390px) {
+    font-size: 18px;
+  }
+`;
+
+export const TransferSubtitle = styled.p`
+  color: #6b7280;
+  font-family: "Ownglyph PDH";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+  margin: 0 0 16px 0;
+`;
+
+export const PartnersList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+`;
+
+export const PartnerCard = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  width: 100%;
+
+  @media (max-width: 390px) {
+    padding: 12px;
+    gap: 12px;
+  }
+`;
+
+export const PartnerAvatar = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  object-fit: cover;
+  flex-shrink: 0;
+
+  @media (max-width: 390px) {
+    width: 50px;
+    height: 50px;
+  }
+`;
+
+export const PartnerInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+`;
+
+export const PartnerName = styled.p`
+  color: #000;
+  font-family: "Ownglyph PDH";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.2px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const PartnerMbti = styled.p`
+  color: #6b7280;
+  font-family: "Ownglyph PDH";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+  margin: 0;
+`;
+
+export const PartnerMessageCount = styled.p`
+  color: #9ca3af;
+  font-family: "Ownglyph PDH";
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.4px;
+  margin: 0;
+`;
+
+export const TransferButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #ffc6b6;
+  border: none;
+  cursor: pointer;
+  font-family: "Ownglyph PDH";
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  white-space: nowrap;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #ffb8a3;
+  }
+
+  &:disabled {
+    background: #e5e7eb;
+    cursor: not-allowed;
+    color: #9ca3af;
+  }
+
+  @media (max-width: 390px) {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+`;
+
+export const NoPartnersMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #9ca3af;
+  font-family: "Ownglyph PDH";
+  font-size: 14px;
+  text-align: center;
 `;

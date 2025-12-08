@@ -9,12 +9,17 @@ export const Container = styled.div`
   position: relative;
   padding-bottom: 60px;
 
+  /* 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
   @media (min-width: 391px) {
     background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-  &::-webkit-scrollbar {
-    display: none;
   }
 `;
 
