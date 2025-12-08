@@ -33,6 +33,7 @@ export interface AdminMatchListResponse {
 
 // 채팅 메시지 (어드민용)
 export interface AdminChatMessage {
+  id: number;
   messageId: number;
   senderProfileId: number;
   senderNickname: string;
