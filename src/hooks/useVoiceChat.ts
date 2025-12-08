@@ -436,7 +436,7 @@ export const useVoiceChat = ({
           endTime: endTime.toISOString(),
           duration: duration,
           callStatus: "COMPLETED",
-          voiceModulationUsed: modulationSettings.effectType !== "none",
+          voiceModulationUsed: true, // 항상 음성 변조 사용
         });
 
         console.log(`[통화 기록] 저장 완료 - ${duration}초`);

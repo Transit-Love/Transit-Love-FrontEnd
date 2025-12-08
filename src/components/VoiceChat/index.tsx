@@ -101,13 +101,12 @@ export const VoiceChat: React.FC<VoiceChatProps> = ({
   // 음성 변조 효과 이름
   const getEffectName = (effect: string): string => {
     const effects: Record<string, string> = {
-      none: "원음",
       robot: "로봇",
       echo: "에코",
       deep: "저음",
       high: "고음",
     };
-    return effects[effect] || "원음";
+    return effects[effect] || "로봇";
   };
 
   if (!isOpen) return null;
@@ -174,10 +173,10 @@ export const VoiceChat: React.FC<VoiceChatProps> = ({
 
               <ControlButton
                 onClick={() => setShowModulationPanel(!showModulationPanel)}
-                active={modulationSettings.effectType !== "none"}
+                active={true}
               >
                 <ControlIcon>🎵</ControlIcon>
-                <ControlLabel>음성 변조</ControlLabel>
+                <ControlLabel>음성 변조 (켜짐)</ControlLabel>
               </ControlButton>
             </ControlPanel>
 
@@ -188,7 +187,7 @@ export const VoiceChat: React.FC<VoiceChatProps> = ({
 
                 {/* 효과 선택 */}
                 <EffectSelector>
-                  {(["none", "robot", "echo", "deep", "high"] as const).map(
+                  {(["robot", "echo", "deep", "high"] as const).map(
                     (effect) => (
                       <EffectButton
                         key={effect}
