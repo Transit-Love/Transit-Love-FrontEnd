@@ -8,7 +8,7 @@ export const ProfileContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
-  padding-bottom: 100px;
+  padding-bottom: 180px;
 
   @media (min-width: 391px) {
     background: #ffffff;

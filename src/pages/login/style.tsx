@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const LoginContainer = styled.div`
   width: 390px;
-  height: 844px;
+  min-height: 100vh;
   background: transparent;
   position: relative;
   overflow: hidden;
@@ -11,7 +11,6 @@ export const LoginContainer = styled.div`
   @media (min-width: 391px) {
     background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
   }
 `;
 

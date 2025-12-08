@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import * as S from "./style";
+import Loading from "../../../components/Loading";
 import authService from "../../../api/authService";
 import profileService from "../../../api/profileService";
 
@@ -81,8 +83,8 @@ const OAuth2Redirect: React.FC = () => {
             const profile = await profileService.getMyProfile();
 
             if (profile && profile.id) {
-              console.log("프로필 존재, 프로필 페이지로 이동");
-              navigate("/profile");
+              console.log("프로필 존재, 홈페이지로 이동");
+              navigate("/");
             } else {
               console.log("프로필 없음, 설정 페이지로 이동");
               navigate("/profile/setting");
@@ -129,18 +131,9 @@ const OAuth2Redirect: React.FC = () => {
   }, [location, navigate]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        fontSize: "18px",
-        color: "#666",
-      }}
-    >
-      <p>로그인 처리 중...</p>
-    </div>
+    <S.Container>
+      <Loading message="로그인 처리 중..." />
+    </S.Container>
   );
 };
 

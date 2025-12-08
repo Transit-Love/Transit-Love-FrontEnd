@@ -9,6 +9,7 @@ import Avatar3 from "../../assets/icon/avatar3.png";
 import Avatar4 from "../../assets/icon/avatar4.png";
 import NavBar from "../../components/NavBar";
 import PageHeader from "../../components/PageHeader";
+import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import { useChatList, useChatRoomList } from "../../hooks/useChatQueries";
 import { createChatRoom } from "../../api/chatService";
@@ -115,7 +116,7 @@ const ChatListPage: React.FC = () => {
     return (
       <S.ChatContainer>
         <PageHeader title="채팅" backgroundColor="#FFC6B6" />
-        <div style={{ padding: "24px", textAlign: "center" }}>로딩 중...</div>
+        <Loading message="채팅 목록을 불러오는 중..." />
         <NavBar />
       </S.ChatContainer>
     );

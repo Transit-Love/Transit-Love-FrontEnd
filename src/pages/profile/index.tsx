@@ -6,6 +6,7 @@ import Heart from "../../assets/icon/heart.svg";
 import Users from "../../assets/icon/users.svg";
 import NavBar from "../../components/NavBar";
 import PageHeader from "../../components/PageHeader";
+import Loading from "../../components/Loading";
 import type { Profile } from "../../types/profile";
 import { BalanceItem } from "../../components/BalanceItem";
 import profileService from "../../api/profileService";
@@ -95,9 +96,7 @@ const ProfilePage: React.FC = () => {
       <S.ProfileContainer>
         <S.BackgroundImage />
         <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
-        <div style={{ padding: "24px", textAlign: "center" }}>
-          프로필을 불러오는 중...
-        </div>
+        <Loading message="프로필을 불러오는 중..." />
         <NavBar />
       </S.ProfileContainer>
     );

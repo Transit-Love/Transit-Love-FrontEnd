@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as S from "../../chat/style"; // 사용자 채팅 스타일 재활용
+import Loading from "../../../components/Loading";
 import Avatar1 from "../../../assets/icon/avatar1.png";
 import Avatar2 from "../../../assets/icon/avatar2.png";
 import Avatar3 from "../../../assets/icon/avatar3.png";
@@ -65,7 +66,7 @@ const AdminChatDetailPage: React.FC = () => {
   if (isLoading) {
     return (
       <S.ChatPageContainer>
-        <div style={{ padding: "24px", textAlign: "center" }}>로딩 중...</div>
+        <Loading message="채팅 내역을 불러오는 중..." />
         <AdminNavBar />
       </S.ChatPageContainer>
     );
