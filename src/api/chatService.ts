@@ -145,3 +145,23 @@ export const sendMessageViaRest = async (
   const response = await apiClient.post("/api/chat/send", request);
   return response.data;
 };
+
+/**
+ * 마지막 선택 옵션 조회
+ * 현재 매칭 상대 + 채팅했던 다른 사람들
+ */
+export const getFinalChoiceOptions = async () => {
+  const response = await apiClient.get("/api/chat/final-choice/options");
+  return response.data;
+};
+
+/**
+ * 마지막 선택 실행
+ * @param selectedProfileId 선택한 프로필 ID
+ */
+export const makeFinalChoice = async (selectedProfileId: number) => {
+  const response = await apiClient.post("/api/chat/final-choice", {
+    selectedProfileId,
+  });
+  return response.data;
+};

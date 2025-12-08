@@ -1,18 +1,60 @@
 import styled from "@emotion/styled";
 
 export const FinalChoiceContainer = styled.div`
-  width: 390px;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 390px;
+  height: 100vh;
   background: #f9fafb;
   position: relative;
-  overflow-y: auto;
   margin: 0 auto;
-  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   @media (min-width: 391px) {
     background: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const ScrollableContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 140px 24px 40px;
+
+  /* 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  @media (max-width: 390px) {
+    padding: 140px 16px 40px;
+  }
+`;
+
+export const LoadingMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #6b7280;
+  font-family: "Ownglyph PDH";
+  font-size: 16px;
+`;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #ef4444;
+  font-family: "Ownglyph PDH";
+  font-size: 16px;
+  text-align: center;
+  padding: 0 24px;
 `;
 
 export const Header = styled.div`
@@ -86,10 +128,8 @@ export const ContentSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 342px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  margin-bottom: 32px;
 `;
 
 export const SectionTitle = styled.p`
@@ -99,6 +139,20 @@ export const SectionTitle = styled.p`
   font-weight: 400;
   line-height: 24px;
   margin: 0;
+  width: 100%;
+`;
+
+export const TransferList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+`;
+
+export const TransferCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   width: 100%;
 `;
 
@@ -167,27 +221,34 @@ export const StatText = styled.p`
   margin: 0;
 `;
 
-export const ActionButton = styled.div<{ variant?: "current" | "transfer" }>`
+export const ActionButton = styled.button<{ variant?: "current" | "transfer" }>`
   display: flex;
   gap: 12px;
   height: 44px;
   align-items: center;
   justify-content: center;
   border-radius: 16px;
+  border: none;
   background: ${({ variant }) =>
     variant === "current"
       ? "var(--primary, #fab0b8)"
       : "var(--secondary, #ffc6b6)"};
   width: 100%;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     opacity: 0.9;
   }
 
-  &:active {
+  &:active:not(:disabled) {
     opacity: 0.8;
+  }
+
+  &:disabled {
+    background: #e5e7eb;
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `;
 
@@ -210,14 +271,11 @@ export const WarningBox = styled.div`
   flex-direction: column;
   gap: 12px;
   align-items: center;
-  width: 342px;
+  width: 100%;
   padding: 16px;
   border-radius: 12px;
   background: var(--thirdary, #dfd1ea);
-  position: absolute;
-  bottom: 105px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 40px;
 `;
 
 export const WarningIcon = styled.img`
@@ -234,4 +292,16 @@ export const WarningText = styled.p`
   text-align: center;
   margin: 0;
   width: 100%;
+`;
+
+export const NoPartnersMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #9ca3af;
+  font-family: "Ownglyph PDH";
+  font-size: 14px;
+  text-align: center;
+  margin-top: 20px;
 `;

@@ -5,7 +5,7 @@ import PageHeader from "../../components/PageHeader";
 import FrameIcon from "../../assets/icon/frame.svg";
 import HeartIcon from "../../assets/icon/heart-result.svg";
 import UsersIcon from "../../assets/icon/users.svg";
-import authService from "../../api/authService";
+import { getFinalChoiceOptions } from "../../api/chatService";
 import type { FinalChoiceOptionsResponse } from "../../types/finalChoice";
 
 const FinalResultPage: React.FC = () => {
@@ -13,7 +13,6 @@ const FinalResultPage: React.FC = () => {
     useState<FinalChoiceOptionsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isChanging, setIsChanging] = useState(false);
 
   useEffect(() => {
     fetchFinalChoiceOptions();
@@ -22,40 +21,13 @@ const FinalResultPage: React.FC = () => {
   const fetchFinalChoiceOptions = async () => {
     try {
       setLoading(true);
-      const data = await authService.getFinalChoiceOptions();
+      const data = await getFinalChoiceOptions();
       setChoiceOptions(data);
     } catch (err) {
       setError("매칭 정보를 불러오는데 실패했습니다.");
       console.error(err);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleFinalChoice = async (profileId: number) => {
-    if (isChanging) return;
-
-    const confirmed = window.confirm(
-      "정말로 이 사람으로 환승하시겠습니까? 이 선택은 되돌릴 수 없습니다."
-    );
-
-    if (!confirmed) return;
-
-    try {
-      setIsChanging(true);
-      const result = await authService.makeFinalChoice(profileId);
-      alert(
-        result.isChanged
-          ? `환승이 완료되었습니다! ${result.partnerNickname}님과 매칭되었습니다.`
-          : `현재 매칭을 유지합니다. ${result.partnerNickname}님과 계속 함께합니다.`
-      );
-      // 선택 완료 후 페이지 새로고침
-      await fetchFinalChoiceOptions();
-    } catch (err) {
-      alert("환승 처리 중 오류가 발생했습니다.");
-      console.error(err);
-    } finally {
-      setIsChanging(false);
     }
   };
 
@@ -167,39 +139,9 @@ const FinalResultPage: React.FC = () => {
           </>
         )}
 
-        {chatPartners && chatPartners.length > 0 && (
-          <S.TransferSection>
-            <S.TransferTitle>환승할 수 있는 다른 후보들</S.TransferTitle>
-            <S.TransferSubtitle>
-              채팅했던 다른 사람으로 환승할 수 있어요
-            </S.TransferSubtitle>
-
-            <S.PartnersList>
-              {chatPartners.map((partner) => (
-                <S.PartnerCard key={partner.profileId}>
-                  <S.PartnerAvatar src={Avatar} alt={partner.nickname} />
-                  <S.PartnerInfo>
-                    <S.PartnerName>{partner.nickname}</S.PartnerName>
-                    <S.PartnerMbti>{partner.mbti}</S.PartnerMbti>
-                    <S.PartnerMessageCount>
-                      {partner.totalMessageCount}개의 메시지
-                    </S.PartnerMessageCount>
-                  </S.PartnerInfo>
-                  <S.TransferButton
-                    onClick={() => handleFinalChoice(partner.profileId)}
-                    disabled={isChanging}
-                  >
-                    {isChanging ? "처리 중..." : "환승하기"}
-                  </S.TransferButton>
-                </S.PartnerCard>
-              ))}
-            </S.PartnersList>
-          </S.TransferSection>
-        )}
-
-        {chatPartners && chatPartners.length === 0 && (
+        {!currentMatch && (
           <S.NoPartnersMessage>
-            환승 가능한 다른 후보가 없습니다.
+            아직 매칭된 상대가 없습니다.
           </S.NoPartnersMessage>
         )}
       </S.ScrollableContent>
