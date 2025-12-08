@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as S from "./style";
 import Avatar1 from "../../assets/icon/avatar1.png";
@@ -21,7 +21,6 @@ import {
   markChatRoomMessagesAsRead,
 } from "../../api/chatService";
 import type { ChatMessageResponse } from "../../types/chat";
-import { isApiError } from "../../types/error";
 import profileService from "../../api/profileService";
 import type { MatchedProfile } from "../../api/profileService";
 
@@ -42,31 +41,67 @@ const ChatPage: React.FC = () => {
   const [matchedProfile, setMatchedProfile] = useState<MatchedProfile | null>(
     null
   );
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const currentUserIdRef = useRef<number | null>(null);
 
-  // React Query로 메시지 가져오기 (자동 캐싱)
+  // React Hooks는 항상 같은 순서로 호출되어야 함
+  const chatRoomMessagesQuery = useChatRoomMessages(chatRoomId || 0);
+  const chatMessagesQuery = useChatMessages(matchId || 0);
+
+  // 조건에 따라 적절한 쿼리 결과 선택
   const {
     data: serverMessages = [],
     isLoading,
     error: queryError,
-  } = chatRoomId
-    ? useChatRoomMessages(chatRoomId)
-    : useChatMessages(matchId || 0);
+  } = chatRoomId ? chatRoomMessagesQuery : chatMessagesQuery;
 
-  // 서버 메시지 + 실시간 메시지 합치기
-  const messages = [...serverMessages, ...localMessages];
-  const error = queryError
-    ? queryError instanceof Error
-      ? queryError.message
-      : "메시지를 불러오는데 실패했습니다."
-    : null;
+  // useMemo로 messages 배열 메모이제이션
+  const messages = useMemo(
+    () => [...serverMessages, ...localMessages],
+    [serverMessages, localMessages]
+  );
 
-  // 현재 사용자 ID 가져오기
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      setCurrentUserId(Number(userId));
+    if (queryError) {
+      setError(
+        queryError instanceof Error
+          ? queryError.message
+          : "메시지를 불러오는데 실패했습니다."
+      );
     }
+  }, [queryError]);
+
+  // 현재 사용자 프로필 ID 가져오기
+  useEffect(() => {
+    const fetchMyProfileId = async () => {
+      try {
+        const myProfile = await profileService.getMyProfile();
+        console.log("✅ 내 프로필 조회 성공:", myProfile);
+        console.log("✅ 내 프로필 ID:", myProfile.id);
+
+        if (myProfile.id !== undefined) {
+          setCurrentUserId(myProfile.id);
+          currentUserIdRef.current = myProfile.id;
+        }
+      } catch (error) {
+        console.error("❌ 내 프로필 조회 실패:", error);
+
+        // fallback: localStorage에서 시도
+        const userId = localStorage.getItem("userId");
+        const profileId = localStorage.getItem("profileId");
+        const id = profileId || userId;
+
+        if (id) {
+          const numId = Number(id);
+          setCurrentUserId(numId);
+          currentUserIdRef.current = numId;
+          console.warn("⚠️ localStorage에서 ID 사용:", numId);
+        }
+      }
+    };
+
+    fetchMyProfileId();
   }, []);
 
   // 매칭된 상대 프로필 정보 가져오기
@@ -102,7 +137,25 @@ const ChatPage: React.FC = () => {
 
   // 메시지 수신 핸들러
   const handleMessageReceived = (newMessage: ChatMessageResponse) => {
-    setLocalMessages((prev) => [...prev, newMessage]);
+    const currentUser = currentUserIdRef.current;
+    console.log("메시지 수신:", {
+      messageId: newMessage.id,
+      senderProfileId: newMessage.senderProfileId,
+      currentUserId: currentUser,
+      isMyMessage: newMessage.senderProfileId === currentUser,
+      content: newMessage.content,
+    });
+
+    setLocalMessages((prev) => {
+      // 중복 메시지 방지: ID가 이미 존재하는지 확인
+      const exists = prev.some((msg) => msg.id === newMessage.id);
+      if (exists) {
+        console.log("중복 메시지 무시:", newMessage.id);
+        return prev;
+      }
+
+      return [...prev, newMessage];
+    });
 
     // 상대방 메시지면 자동으로 읽음 처리
     if (newMessage.senderProfileId !== currentUserId) {
@@ -131,14 +184,14 @@ const ChatPage: React.FC = () => {
     onConnected: () => console.log("✅ 채팅방 연결됨"),
     onDisconnected: () => console.log("❌ 채팅방 연결 해제됨"),
     onError: (error) => {
-      console.error("WebSocket 오류:", error);
-
-      // 토큰 만료 또는 인증 오류 시 로그인 페이지로 이동
+      // 중요한 오류만 처리
       if (
         error instanceof Error &&
         (error.message === "No access token" ||
-          error.message === "Authentication failed")
+          error.message === "Authentication failed" ||
+          error.message === "Max reconnect attempts reached")
       ) {
+        console.error("WebSocket 오류:", error.message);
         setError("로그인이 만료되었습니다. 다시 로그인해주세요.");
         setTimeout(() => {
           localStorage.removeItem("accessToken");
@@ -147,6 +200,7 @@ const ChatPage: React.FC = () => {
           navigate("/login");
         }, 2000);
       }
+      // 일시적인 연결 오류는 무시 (자동 재연결)
     },
   });
 
@@ -208,7 +262,7 @@ const ChatPage: React.FC = () => {
     return `${date.getMonth() + 1}월 ${date.getDate()}일`;
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <S.ChatPageContainer>
         <div style={{ padding: "24px", textAlign: "center" }}>로딩 중...</div>
@@ -345,7 +399,7 @@ const ChatPage: React.FC = () => {
           );
 
           return (
-            <React.Fragment key={msg.id}>
+            <React.Fragment key={`${msg.id}-${index}`}>
               {showDateDivider && (
                 <S.DateDivider>
                   <S.DateBadge>
@@ -393,7 +447,7 @@ const ChatPage: React.FC = () => {
               placeholder="메시지를 입력하세요..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => {
+              onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSendMessage();
                 }
