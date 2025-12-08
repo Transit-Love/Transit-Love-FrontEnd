@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "../assets/icon/home.png";
 import MessageIcon from "../assets/icon/chat.png";
 import AnonymousMessageIcon from "../assets/icon/message.svg";
 import ProfileIcon from "../assets/icon/profile.png";
+import profileService from "../api/profileService";
 
 const Bar = styled.nav`
   position: fixed;
@@ -39,6 +40,19 @@ const Item = styled(Link)<{ $active?: boolean }>`
     $active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
 `;
 
+const ItemButton = styled.button<{ $active?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 49px;
+  border-radius: 12px;
+  background: ${({ $active }) =>
+    $active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
+  border: none;
+  cursor: pointer;
+`;
+
 const Icon = styled.img<{ $active?: boolean }>`
   width: 24px;
   height: 24px;
@@ -49,7 +63,7 @@ const NavBar: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
 
-  const isCountdown = pathname === "/countdown" || pathname === "/";
+  const isHome = pathname === "/home";
   const isChatList = pathname === "/chat-list";
   const isAnonymousMessage = pathname === "/message";
   const isProfile = pathname === "/profile";
@@ -57,8 +71,8 @@ const NavBar: React.FC = () => {
   return (
     <Bar>
       <Items>
-        <Item to="/countdown" $active={isCountdown} aria-label="home">
-          <Icon src={HomeIcon} $active={isCountdown} />
+        <Item to="/home" $active={isHome} aria-label="home">
+          <Icon src={HomeIcon} $active={isHome} />
         </Item>
         <Item to="/chat-list" $active={isChatList} aria-label="chat">
           <Icon src={MessageIcon} $active={isChatList} />

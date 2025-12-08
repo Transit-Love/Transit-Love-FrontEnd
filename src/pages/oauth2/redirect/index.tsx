@@ -83,7 +83,7 @@ const OAuth2Redirect: React.FC = () => {
             const profile = await profileService.getMyProfile();
 
             if (profile && profile.id) {
-              console.log("프로필 존재, 홈페이지로 이동");
+              console.log("프로필 존재, 카운트다운 페이지로 이동");
               navigate("/countdown");
             } else {
               console.log("프로필 없음, 설정 페이지로 이동");

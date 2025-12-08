@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../components/NavBar";
+import profileService from "../../api/profileService";
+import Loading from "../../components/Loading";
 
 const CountdownPage: React.FC = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
-    hours: 2,
-    minutes: 35,
-    seconds: 42,
+    hours: 0,
+    minutes: 0,
+    seconds: 3,
   });
 
   useEffect(() => {
@@ -26,9 +28,30 @@ const CountdownPage: React.FC = () => {
           minutes = 59;
           seconds = 59;
         } else {
-          // 시간이 다 되면 매칭 페이지로 이동
+          // 시간이 다 되면 매칭된 상대 페이지로 직접 이동
           clearInterval(timer);
-          navigate("/matching");
+          setIsLoading(true);
+          
+          // 매칭된 상대 조회 후 이동
+          profileService.getMatchedProfile()
+            .then((matched) => {
+              if (matched && Array.isArray(matched) && matched.length > 0) {
+                navigate(`/profile/${matched[0].id}`, {
+                  state: { profile: matched[0] }
+                });
+              } else {
+                // 매칭된 상대가 없으면 홈으로
+                navigate("/home");
+              }
+            })
+            .catch((error) => {
+              console.error("매칭 상대 조회 실패:", error);
+              navigate("/home");
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+          
           return prevTime;
         }
 
@@ -42,6 +65,15 @@ const CountdownPage: React.FC = () => {
   const formatTime = (num: number) => {
     return num.toString().padStart(2, "0");
   };
+
+  if (isLoading) {
+    return (
+      <S.CountdownContainer>
+        <S.BackgroundImage />
+        <Loading message="매칭 상대를 불러오는 중..." />
+      </S.CountdownContainer>
+    );
+  }
 
   return (
     <S.CountdownContainer>
@@ -77,8 +109,6 @@ const CountdownPage: React.FC = () => {
           </S.InfoTextWrapper>
         </S.InfoCard>
       </S.ContentWrapper>
-
-      <NavBar />
     </S.CountdownContainer>
   );
 };

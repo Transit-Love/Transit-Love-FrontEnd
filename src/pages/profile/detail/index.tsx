@@ -36,53 +36,57 @@ const ProfileDetailPage: React.FC = () => {
   // 로딩 중
   if (loading) {
     return (
-      <S.ProfileContainer>
-        <S.BackgroundImage />
+      <S.ProfileWrapper>
         <PageHeader
-          title="상대 프로필"
+          title="매칭 성공!"
           backgroundColor="#fab0b8"
-          onBack={() => navigate("/profile")}
+          onBackClick={() => navigate("/profile")}
         />
-        <div
-          style={{
-            padding: "24px",
-            textAlign: "center",
-            paddingTop: "120px",
-            position: "relative",
-            zIndex: 100,
-          }}
-        >
-          프로필을 불러오는 중...
-        </div>
+        <S.ProfileContainer>
+          <S.BackgroundImage />
+          <div
+            style={{
+              padding: "24px",
+              textAlign: "center",
+              paddingTop: "120px",
+              position: "relative",
+              zIndex: 100,
+            }}
+          >
+            프로필을 불러오는 중...
+          </div>
+        </S.ProfileContainer>
         <NavBar />
-      </S.ProfileContainer>
+      </S.ProfileWrapper>
     );
   }
 
   // 에러 발생
   if (error || !profile) {
     return (
-      <S.ProfileContainer>
-        <S.BackgroundImage />
+      <S.ProfileWrapper>
         <PageHeader
-          title="상대 프로필"
+          title="매칭 성공!"
           backgroundColor="#fab0b8"
-          onBack={() => navigate("/profile")}
+          onBackClick={() => navigate("/profile")}
         />
-        <div
-          style={{
-            padding: "24px",
-            textAlign: "center",
-            color: "red",
-            paddingTop: "120px",
-            position: "relative",
-            zIndex: 100,
-          }}
-        >
-          {error || "프로필을 불러올 수 없습니다."}
-        </div>
+        <S.ProfileContainer>
+          <S.BackgroundImage />
+          <div
+            style={{
+              padding: "24px",
+              textAlign: "center",
+              color: "red",
+              paddingTop: "120px",
+              position: "relative",
+              zIndex: 100,
+            }}
+          >
+            {error || "프로필을 불러올 수 없습니다."}
+          </div>
+        </S.ProfileContainer>
         <NavBar />
-      </S.ProfileContainer>
+      </S.ProfileWrapper>
     );
   }
 
@@ -92,55 +96,65 @@ const ProfileDetailPage: React.FC = () => {
     ...profile.keywords.map((k) => k.name),
   ];
 
+  const handleStartChat = () => {
+    // matchId가 있다면 사용, 없으면 profileId 사용
+    navigate(`/chat?profileId=${profile.id}`);
+  };
+
   return (
-    <S.ProfileContainer>
-      <S.BackgroundImage />
+    <S.ProfileWrapper>
       <PageHeader
-        title={`${profile.nickname}님의 프로필`}
+        title="매칭 성공!"
         backgroundColor="#fab0b8"
-        onBack={() => navigate("/profile")}
+        onBackClick={() => navigate("/profile")}
       />
-      <S.AvatarSection>
-        <S.AvatarContainer>
-          <S.Avatar src={Avatar1} alt="프로필" />
-        </S.AvatarContainer>
-        <S.ProfileInfo>
-          <S.ProfileName>{profile.nickname}</S.ProfileName>
-        </S.ProfileInfo>
-      </S.AvatarSection>
+      <S.ProfileContainer>
+        <S.BackgroundImage />
+        <S.AvatarSection>
+          <S.AvatarContainer>
+            <S.Avatar src={Avatar1} alt="프로필" />
+          </S.AvatarContainer>
+          <S.ProfileInfo>
+            <S.ProfileName>{profile.nickname}</S.ProfileName>
+          </S.ProfileInfo>
+        </S.AvatarSection>
 
-      <S.KeywordsSection>
-        <S.SectionTitle>이런 사람이에요</S.SectionTitle>
-        <S.KeywordsGrid>
-          {displayKeywords.map((keyword, index) => (
-            <S.KeywordTag key={index}>{keyword}</S.KeywordTag>
-          ))}
-        </S.KeywordsGrid>
-      </S.KeywordsSection>
+        <S.KeywordsSection>
+          <S.SectionTitle>이런 사람이에요</S.SectionTitle>
+          <S.KeywordsGrid>
+            {displayKeywords.map((keyword, index) => (
+              <S.KeywordTag key={index}>{keyword}</S.KeywordTag>
+            ))}
+          </S.KeywordsGrid>
+        </S.KeywordsSection>
 
-      <S.BalanceResults>
-        <S.SectionTitle>밸런스게임 결과</S.SectionTitle>
-        <S.BalanceItems>
-          {profile.balanceGameAnswers.map((answer, index) => {
-            // 아이콘은 인덱스에 따라 번갈아 표시
-            const icon = index % 2 === 0 ? Heart : Users;
-            const selectedAnswer =
-              answer.selectedOption === 1 ? answer.option1 : answer.option2;
+        <S.BalanceResults>
+          <S.SectionTitle>밸런스게임 결과</S.SectionTitle>
+          <S.BalanceItems>
+            {profile.balanceGameAnswers.map((answer, index) => {
+              // 아이콘은 인덱스에 따라 번갈아 표시
+              const icon = index % 2 === 0 ? Heart : Users;
+              const selectedAnswer =
+                answer.selectedOption === 1 ? answer.option1 : answer.option2;
 
-            return (
-              <BalanceItem
-                key={answer.balanceGameId}
-                icon={icon}
-                category={answer.question || `질문 ${answer.balanceGameId}`}
-                result={selectedAnswer || `선택 ${answer.selectedOption}`}
-              />
-            );
-          })}
-        </S.BalanceItems>
-      </S.BalanceResults>
+              return (
+                <BalanceItem
+                  key={answer.balanceGameId}
+                  icon={icon}
+                  category={answer.question || `질문 ${answer.balanceGameId}`}
+                  result={selectedAnswer || `선택 ${answer.selectedOption}`}
+                />
+              );
+            })}
+          </S.BalanceItems>
+        </S.BalanceResults>
 
+        <S.ChatButton onClick={handleStartChat}>
+          <S.ChatButtonText>대화하기</S.ChatButtonText>
+        </S.ChatButton>
+      </S.ProfileContainer>
       <NavBar />
-    </S.ProfileContainer>
+    </S.ProfileWrapper>
   );
 };
 
