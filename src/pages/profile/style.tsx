@@ -153,6 +153,28 @@ export const ProfileName = styled.div`
   color: #000000;
 `;
 
+export const EditButton = styled.button`
+  margin-top: 8px;
+  padding: 6px 16px;
+  background: #fab0b8;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f99aa5;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
 export const KeywordsSection = styled.div`
   position: absolute;
   left: 24px;

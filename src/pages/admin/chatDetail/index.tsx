@@ -2,10 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as S from "../../chat/style"; // 사용자 채팅 스타일 재활용
 import Loading from "../../../components/Loading";
-import Avatar1 from "../../../assets/icon/avatar1.png";
-import Avatar2 from "../../../assets/icon/avatar2.png";
-import Avatar3 from "../../../assets/icon/avatar3.png";
-import Avatar4 from "../../../assets/icon/avatar4.png";
 import BackIcon from "../../../assets/back.png";
 import AdminNavBar from "../../../components/AdminNavBar";
 import { useAdminChatMessages } from "../../../hooks/useAdminQueries";
@@ -21,10 +17,24 @@ const AdminChatDetailPage: React.FC = () => {
   const messages = data?.messages || [];
   const matchProfiles = data?.matchProfiles || null;
 
-  // 아바타 이미지 매핑
-  const getAvatarImage = (profileId: number) => {
-    const avatars = [Avatar1, Avatar2, Avatar3, Avatar4];
-    return avatars[profileId % avatars.length];
+  // 닉네임 기반 아바타 생성
+  const getAvatarColor = (nickname: string) => {
+    const colors = [
+      "#FF6B6B",
+      "#4ECDC4",
+      "#45B7D1",
+      "#FFA07A",
+      "#98D8C8",
+      "#F7DC6F",
+      "#BB8FCE",
+      "#85C1E2",
+    ];
+    const charCode = nickname.charCodeAt(0);
+    return colors[charCode % colors.length];
+  };
+
+  const getInitial = (nickname: string) => {
+    return nickname.charAt(0).toUpperCase();
   };
 
   // 메시지 목록이 업데이트되면 스크롤 하단으로
@@ -66,18 +76,20 @@ const AdminChatDetailPage: React.FC = () => {
   if (isLoading) {
     return (
       <S.ChatPageWrapper>
-        <div style={{ 
-          width: "100%", 
-          maxWidth: "390px", 
-          height: "100vh",
-          margin: "0 auto",
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          background: "#ffffff",
-          boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)"
-        }}>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "390px",
+            height: "100vh",
+            margin: "0 auto",
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            background: "#ffffff",
+            boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <Loading message="채팅 내역을 불러오는 중..." />
         </div>
       </S.ChatPageWrapper>
@@ -109,194 +121,239 @@ const AdminChatDetailPage: React.FC = () => {
   return (
     <S.ChatPageWrapper>
       <S.ChatPageContainer>
-      <S.ChatHeader>
-        <S.HeaderContent>
-          <S.UserInfoSection>
-            <S.BackButton
-              src={BackIcon}
-              alt="뒤로가기"
-              onClick={() => navigate("/admin/chat-list")}
-              style={{ cursor: "pointer" }}
-            />
-            <S.Avatar
-              src={getAvatarImage(matchProfiles.profile1.profileId)}
-              alt="프로필1"
-            />
-            <S.UserDetails>
-              <S.UserName>
-                {matchProfiles.profile1.nickname} 💑{" "}
-                {matchProfiles.profile2.nickname}
-              </S.UserName>
-              <S.OnlineStatus>
-                {matchProfiles.profile1.mbti} · {matchProfiles.profile2.mbti}
-              </S.OnlineStatus>
-            </S.UserDetails>
-          </S.UserInfoSection>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "4px 12px",
-              backgroundColor: "#9B7EBD",
-              color: "white",
-              borderRadius: "12px",
-              fontSize: "12px",
-              fontWeight: 600,
-            }}
-          >
-            읽기 전용
-          </div>
-        </S.HeaderContent>
-      </S.ChatHeader>
+        <S.ChatHeader>
+          <S.HeaderContent>
+            <S.UserInfoSection>
+              <S.BackButton
+                src={BackIcon}
+                alt="뒤로가기"
+                onClick={() => navigate("/admin/chat-list")}
+                style={{ cursor: "pointer" }}
+              />
+              <div
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  backgroundColor: getAvatarColor(
+                    matchProfiles.profile1.nickname
+                  ),
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "white",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  flexShrink: 0,
+                }}
+              >
+                {getInitial(matchProfiles.profile1.nickname)}
+              </div>
+              <S.UserDetails>
+                <S.UserName>
+                  {matchProfiles.profile1.nickname} 💑{" "}
+                  {matchProfiles.profile2.nickname}
+                </S.UserName>
+                <S.OnlineStatus>
+                  {matchProfiles.profile1.mbti} · {matchProfiles.profile2.mbti}
+                </S.OnlineStatus>
+              </S.UserDetails>
+            </S.UserInfoSection>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "4px 12px",
+                backgroundColor: "#9B7EBD",
+                color: "white",
+                borderRadius: "12px",
+                fontSize: "12px",
+                fontWeight: 600,
+              }}
+            >
+              읽기 전용
+            </div>
+          </S.HeaderContent>
+        </S.ChatHeader>
 
-      <S.MessagesContainer>
-        {messages.length === 0 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-              color: "#999",
-            }}
-          >
-            아직 메시지가 없습니다.
-          </div>
-        ) : (
-          messages.map((msg, index) => {
-            const showDateDivider = shouldShowDateDivider(
-              msg,
-              messages[index - 1]
-            );
+        <S.MessagesContainer>
+          {messages.length === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                color: "#999",
+              }}
+            >
+              아직 메시지가 없습니다.
+            </div>
+          ) : (
+            messages.map((msg, index) => {
+              const showDateDivider = shouldShowDateDivider(
+                msg,
+                messages[index - 1]
+              );
 
-            // senderProfileId로 profile1인지 profile2인지 판단
-            const isProfile1 =
-              msg.senderProfileId === matchProfiles.profile1.profileId;
-            const senderProfile = isProfile1
-              ? matchProfiles.profile1
-              : matchProfiles.profile2;
-            const senderColor = isProfile1 ? "#5B9BD5" : "#ED7D95";
+              // senderProfileId로 profile1인지 profile2인지 판단
+              const isProfile1 =
+                msg.senderProfileId === matchProfiles.profile1.profileId;
+              const senderProfile = isProfile1
+                ? matchProfiles.profile1
+                : matchProfiles.profile2;
+              const senderColor = isProfile1 ? "#5B9BD5" : "#ED7D95";
 
-            return (
-              <React.Fragment key={msg.id}>
-                {showDateDivider && (
-                  <S.DateDivider>
-                    <S.DateBadge>
-                      <S.DateText>{formatDate(msg.sentAt)}</S.DateText>
-                    </S.DateBadge>
-                  </S.DateDivider>
-                )}
+              return (
+                <React.Fragment key={msg.id}>
+                  {showDateDivider && (
+                    <S.DateDivider>
+                      <S.DateBadge>
+                        <S.DateText>{formatDate(msg.sentAt)}</S.DateText>
+                      </S.DateBadge>
+                    </S.DateDivider>
+                  )}
 
-                {isProfile1 ? (
-                  // Profile1 메시지 - 오른쪽에 표시
-                  <S.MessageRowRight>
-                    <S.MessageContent style={{ alignItems: "flex-end" }}>
+                  {isProfile1 ? (
+                    // Profile1 메시지 - 오른쪽에 표시
+                    <S.MessageRowRight>
+                      <S.MessageContent style={{ alignItems: "flex-end" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            justifyContent: "flex-end",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              color: senderColor,
+                              fontWeight: 600,
+                            }}
+                          >
+                            {senderProfile.nickname}
+                          </div>
+                          <div
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              borderRadius: "50%",
+                              backgroundColor: getAvatarColor(
+                                senderProfile.nickname
+                              ),
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "white",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                              flexShrink: 0,
+                            }}
+                          >
+                            {getInitial(senderProfile.nickname)}
+                          </div>
+                        </div>
+                        <S.MessageBubbleSent>
+                          <S.MessageTextSent>{msg.content}</S.MessageTextSent>
+                        </S.MessageBubbleSent>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            marginTop: "4px",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <S.TimeStampRight>
+                            {formatTime(msg.sentAt)}
+                          </S.TimeStampRight>
+                          {msg.isRead && (
+                            <S.TimeStampRight style={{ color: "#9B7EBD" }}>
+                              · 읽음
+                            </S.TimeStampRight>
+                          )}
+                        </div>
+                      </S.MessageContent>
+                    </S.MessageRowRight>
+                  ) : (
+                    // Profile2 메시지 - 왼쪽에 표시
+                    <S.MessageRow>
                       <div
                         style={{
+                          width: "32px",
+                          height: "32px",
+                          borderRadius: "50%",
+                          backgroundColor: getAvatarColor(
+                            senderProfile.nickname
+                          ),
                           display: "flex",
                           alignItems: "center",
-                          gap: "8px",
-                          justifyContent: "flex-end",
-                          marginBottom: "4px",
+                          justifyContent: "center",
+                          color: "white",
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                          flexShrink: 0,
                         }}
                       >
+                        {getInitial(senderProfile.nickname)}
+                      </div>
+                      <S.MessageContent>
                         <div
                           style={{
                             fontSize: "12px",
                             color: senderColor,
                             fontWeight: 600,
+                            marginBottom: "4px",
                           }}
                         >
                           {senderProfile.nickname}
                         </div>
-                        <S.SmallAvatar
-                          src={getAvatarImage(senderProfile.profileId)}
-                          alt="프로필1"
-                        />
-                      </div>
-                      <S.MessageBubbleSent>
-                        <S.MessageTextSent>{msg.content}</S.MessageTextSent>
-                      </S.MessageBubbleSent>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          marginTop: "4px",
-                          justifyContent: "flex-end",
-                        }}
-                      >
-                        <S.TimeStampRight>
-                          {formatTime(msg.sentAt)}
-                        </S.TimeStampRight>
-                        {msg.isRead && (
-                          <S.TimeStampRight style={{ color: "#9B7EBD" }}>
-                            · 읽음
-                          </S.TimeStampRight>
-                        )}
-                      </div>
-                    </S.MessageContent>
-                  </S.MessageRowRight>
-                ) : (
-                  // Profile2 메시지 - 왼쪽에 표시
-                  <S.MessageRow>
-                    <S.SmallAvatar
-                      src={getAvatarImage(senderProfile.profileId)}
-                      alt="프로필2"
-                    />
-                    <S.MessageContent>
-                      <div
-                        style={{
-                          fontSize: "12px",
-                          color: senderColor,
-                          fontWeight: 600,
-                          marginBottom: "4px",
-                        }}
-                      >
-                        {senderProfile.nickname}
-                      </div>
-                      <S.MessageBubble>
-                        <S.MessageText>{msg.content}</S.MessageText>
-                      </S.MessageBubble>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          marginTop: "4px",
-                        }}
-                      >
-                        <S.TimeStamp>{formatTime(msg.sentAt)}</S.TimeStamp>
-                        {msg.isRead && (
-                          <S.TimeStamp style={{ color: "#9B7EBD" }}>
-                            · 읽음
-                          </S.TimeStamp>
-                        )}
-                      </div>
-                    </S.MessageContent>
-                  </S.MessageRow>
-                )}
-              </React.Fragment>
-            );
-          })
-        )}
-        <div ref={messagesEndRef} />
-      </S.MessagesContainer>
+                        <S.MessageBubble>
+                          <S.MessageText>{msg.content}</S.MessageText>
+                        </S.MessageBubble>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            marginTop: "4px",
+                          }}
+                        >
+                          <S.TimeStamp>{formatTime(msg.sentAt)}</S.TimeStamp>
+                          {msg.isRead && (
+                            <S.TimeStamp style={{ color: "#9B7EBD" }}>
+                              · 읽음
+                            </S.TimeStamp>
+                          )}
+                        </div>
+                      </S.MessageContent>
+                    </S.MessageRow>
+                  )}
+                </React.Fragment>
+              );
+            })
+          )}
+          <div ref={messagesEndRef} />
+        </S.MessagesContainer>
 
-      {/* 읽기 전용 안내 */}
-      <div
-        style={{
-          padding: "16px 20px",
-          backgroundColor: "#F8F9FA",
-          borderTop: "1px solid #E9ECEF",
-          textAlign: "center",
-          color: "#666",
-          fontSize: "13px",
-        }}
-      >
-        🔒 어드민 모드 - 읽기 전용 (메시지 전송 불가)
-      </div>
+        {/* 읽기 전용 안내 */}
+        <div
+          style={{
+            padding: "16px 20px",
+            backgroundColor: "#F8F9FA",
+            borderTop: "1px solid #E9ECEF",
+            textAlign: "center",
+            color: "#666",
+            fontSize: "13px",
+          }}
+        >
+          🔒 어드민 모드 - 읽기 전용 (메시지 전송 불가)
+        </div>
       </S.ChatPageContainer>
 
       <AdminNavBar />

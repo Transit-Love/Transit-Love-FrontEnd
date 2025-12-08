@@ -7,10 +7,6 @@ import PageHeader from "../../../components/PageHeader";
 import Loading from "../../../components/Loading";
 import { useAdminMatchList } from "../../../hooks/useAdminQueries";
 import MessageCircleIcon from "../../../assets/icon/message-circle.svg";
-import Avatar1 from "../../../assets/icon/avatar1.png";
-import Avatar2 from "../../../assets/icon/avatar2.png";
-import Avatar3 from "../../../assets/icon/avatar3.png";
-import Avatar4 from "../../../assets/icon/avatar4.png";
 
 // Mobile-responsive container
 const MobileContainer = styled.div`
@@ -87,10 +83,24 @@ const AdminChatListPage: React.FC = () => {
   const { data, isLoading, error } = useAdminMatchList(showInactive);
   const matches = data?.matches || [];
 
-  // 아바타 이미지 매핑
-  const getAvatarImage = (profileId: number) => {
-    const avatars = [Avatar1, Avatar2, Avatar3, Avatar4];
-    return avatars[profileId % avatars.length];
+  // 닉네임 기반 아바타 생성
+  const getAvatarColor = (nickname: string) => {
+    const colors = [
+      "#FF6B6B",
+      "#4ECDC4",
+      "#45B7D1",
+      "#FFA07A",
+      "#98D8C8",
+      "#F7DC6F",
+      "#BB8FCE",
+      "#85C1E2",
+    ];
+    const charCode = nickname.charCodeAt(0);
+    return colors[charCode % colors.length];
+  };
+
+  const getInitial = (nickname: string) => {
+    return nickname.charAt(0).toUpperCase();
   };
 
   // 채팅방으로 이동
@@ -102,18 +112,20 @@ const AdminChatListPage: React.FC = () => {
   if (isLoading) {
     return (
       <S.ChatWrapper>
-        <div style={{ 
-          width: "100%", 
-          maxWidth: "390px", 
-          height: "100vh",
-          margin: "0 auto",
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          background: "#ffffff",
-          boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)"
-        }}>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "390px",
+            height: "100vh",
+            margin: "0 auto",
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            background: "#ffffff",
+            boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <Loading message="채팅 목록을 불러오는 중..." />
         </div>
       </S.ChatWrapper>
@@ -142,208 +154,240 @@ const AdminChatListPage: React.FC = () => {
 
       <S.ChatContainer>
         <MobileContainer>
-        <ContentWrapper>
-          <div style={{ fontSize: "14px", color: "#666" }}>
-            전체 매칭: {matches.length}개
-          </div>
-          <ButtonGroup>
-            <FilterButton
-              onClick={() => setShowInactive(false)}
-              $active={!showInactive}
-            >
-              활성 매칭 ({activeMatches.length})
-            </FilterButton>
-            <FilterButton
-              onClick={() => setShowInactive(true)}
-              $active={showInactive}
-            >
-              전체 보기 ({matches.length})
-            </FilterButton>
-          </ButtonGroup>
-        </ContentWrapper>
-
-        <SectionWrapper>
-          {/* 활성 매칭 목록 */}
-          <StyledCoupleSection>
-            <S.CoupleLabel>
-              {showInactive ? "모든 매칭" : "활성 매칭"}
-            </S.CoupleLabel>
-
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                width: "100%",
-              }}
-            >
-              {(showInactive ? matches : activeMatches).length === 0 ? (
-                <div
-                  style={{
-                    textAlign: "center",
-                    padding: "20px",
-                    color: "#999",
-                  }}
-                >
-                  매칭이 없습니다.
-                </div>
-              ) : (
-                (showInactive ? matches : activeMatches).map((match) => (
-                  <S.UserCard key={match.matchId} isCouple>
-                    <div style={{ display: "flex", gap: "8px", flex: 1 }}>
-                      <S.UserImage
-                        src={getAvatarImage(match.profile1.profileId)}
-                        alt="프로필1"
-                      />
-                      <S.UserInfo>
-                        <S.UserName>{match.profile1.nickname}</S.UserName>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "4px",
-                            flexWrap: "wrap",
-                          }}
-                        >
-                        </div>
-                      </S.UserInfo>
-                    </div>
-
-                    <div style={{ fontSize: "16px", color: "#fab0b8" }}>💑</div>
-
-                    <div style={{ display: "flex", gap: "8px", flex: 1 }}>
-                      <S.UserImage
-                        src={getAvatarImage(match.profile2.profileId)}
-                        alt="프로필2"
-                      />
-                      <S.UserInfo>
-                        <S.UserName>{match.profile2.nickname}</S.UserName>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "4px",
-                            flexWrap: "wrap",
-                          }}
-                        >
-                        </div>
-                      </S.UserInfo>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
-                    >
-                      <div style={{ position: "relative" }}>
-                        <img
-                          src={MessageCircleIcon}
-                          alt="메시지"
-                          style={{
-                            width: "19px",
-                            height: "19px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleViewChat(match.matchId)}
-                        />
-                        {match.totalMessageCount > 0 && (
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: "-8px",
-                              right: "-8px",
-                              backgroundColor: "#FFC6B6",
-                              color: "white",
-                              borderRadius: "50%",
-                              minWidth: "18px",
-                              height: "18px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "10px",
-                              fontWeight: "bold",
-                              padding: "0 4px",
-                            }}
-                          >
-                            {match.totalMessageCount}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </S.UserCard>
-                ))
-              )}
+          <ContentWrapper>
+            <div style={{ fontSize: "14px", color: "#666" }}>
+              전체 매칭: {matches.length}개
             </div>
-          </StyledCoupleSection>
+            <ButtonGroup>
+              <FilterButton
+                onClick={() => setShowInactive(false)}
+                $active={!showInactive}
+              >
+                활성 매칭 ({activeMatches.length})
+              </FilterButton>
+              <FilterButton
+                onClick={() => setShowInactive(true)}
+                $active={showInactive}
+              >
+                전체 보기 ({matches.length})
+              </FilterButton>
+            </ButtonGroup>
+          </ContentWrapper>
 
-          {/* 매칭 상세 정보 */}
-          {(showInactive ? matches : activeMatches).length > 0 && (
+          <SectionWrapper>
+            {/* 활성 매칭 목록 */}
             <StyledCoupleSection>
-              <S.CoupleLabel>매칭 상세 정보</S.CoupleLabel>
+              <S.CoupleLabel>
+                {showInactive ? "모든 매칭" : "활성 매칭"}
+              </S.CoupleLabel>
+
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "16px",
+                  gap: "8px",
                   width: "100%",
                 }}
               >
-                {(showInactive ? matches : activeMatches).map((match) => (
+                {(showInactive ? matches : activeMatches).length === 0 ? (
                   <div
-                    key={match.matchId}
                     style={{
-                      display: "flex",
+                      textAlign: "center",
                       padding: "20px",
-                      alignItems: "center",
-                      gap: "12px",
-                      borderRadius: "16px",
-                      backgroundColor: "#F8F9FA",
+                      color: "#999",
                     }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "24px",
-                        height: "24px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: "6px",
-                        backgroundColor: match.isActive ? "#FFC6B6" : "#E0E0E0",
-                      }}
-                    >
-                      <span style={{ color: "white", fontSize: "16px" }}>
-                        ✓
-                      </span>
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div
-                        style={{
-                          color: "#000",
-                          fontSize: "16px",
-                          fontWeight: 500,
-                          marginBottom: "4px",
-                        }}
-                      >
-                        {match.profile1.nickname} ↔ {match.profile2.nickname}
-                      </div>
-                      <div
-                        style={{
-                          color: "#666",
-                          fontSize: "13px",
-                        }}
-                      >
-                        유사도: {match.similarityScore.toFixed(1)}점 · 메시지:{" "}
-                        {match.totalMessageCount}개
-                      </div>
-                    </div>
+                    매칭이 없습니다.
                   </div>
-                ))}
+                ) : (
+                  (showInactive ? matches : activeMatches).map((match) => (
+                    <S.UserCard key={match.matchId} isCouple>
+                      <div style={{ display: "flex", gap: "8px", flex: 1 }}>
+                        <div
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            borderRadius: "50%",
+                            backgroundColor: getAvatarColor(
+                              match.profile1.nickname
+                            ),
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "white",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            flexShrink: 0,
+                          }}
+                        >
+                          {getInitial(match.profile1.nickname)}
+                        </div>
+                        <S.UserInfo>
+                          <S.UserName>{match.profile1.nickname}</S.UserName>
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "4px",
+                              flexWrap: "wrap",
+                            }}
+                          ></div>
+                        </S.UserInfo>
+                      </div>
+
+                      <div style={{ fontSize: "16px", color: "#fab0b8" }}>
+                        💑
+                      </div>
+
+                      <div style={{ display: "flex", gap: "8px", flex: 1 }}>
+                        <div
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            borderRadius: "50%",
+                            backgroundColor: getAvatarColor(
+                              match.profile2.nickname
+                            ),
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "white",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            flexShrink: 0,
+                          }}
+                        >
+                          {getInitial(match.profile2.nickname)}
+                        </div>
+                        <S.UserInfo>
+                          <S.UserName>{match.profile2.nickname}</S.UserName>
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "4px",
+                              flexWrap: "wrap",
+                            }}
+                          ></div>
+                        </S.UserInfo>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        <div style={{ position: "relative" }}>
+                          <img
+                            src={MessageCircleIcon}
+                            alt="메시지"
+                            style={{
+                              width: "19px",
+                              height: "19px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleViewChat(match.matchId)}
+                          />
+                          {match.totalMessageCount > 0 && (
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: "-8px",
+                                right: "-8px",
+                                backgroundColor: "#FFC6B6",
+                                color: "white",
+                                borderRadius: "50%",
+                                minWidth: "18px",
+                                height: "18px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                padding: "0 4px",
+                              }}
+                            >
+                              {match.totalMessageCount}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </S.UserCard>
+                  ))
+                )}
               </div>
             </StyledCoupleSection>
-          )}
-        </SectionWrapper>
-      </MobileContainer>
+
+            {/* 매칭 상세 정보 */}
+            {(showInactive ? matches : activeMatches).length > 0 && (
+              <StyledCoupleSection>
+                <S.CoupleLabel>매칭 상세 정보</S.CoupleLabel>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "16px",
+                    width: "100%",
+                  }}
+                >
+                  {(showInactive ? matches : activeMatches).map((match) => (
+                    <div
+                      key={match.matchId}
+                      style={{
+                        display: "flex",
+                        padding: "20px",
+                        alignItems: "center",
+                        gap: "12px",
+                        borderRadius: "16px",
+                        backgroundColor: "#F8F9FA",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "24px",
+                          height: "24px",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "6px",
+                          backgroundColor: match.isActive
+                            ? "#FFC6B6"
+                            : "#E0E0E0",
+                        }}
+                      >
+                        <span style={{ color: "white", fontSize: "16px" }}>
+                          ✓
+                        </span>
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div
+                          style={{
+                            color: "#000",
+                            fontSize: "16px",
+                            fontWeight: 500,
+                            marginBottom: "4px",
+                          }}
+                        >
+                          {match.profile1.nickname} ↔ {match.profile2.nickname}
+                        </div>
+                        <div
+                          style={{
+                            color: "#666",
+                            fontSize: "13px",
+                          }}
+                        >
+                          유사도: {match.similarityScore.toFixed(1)}점 · 메시지:{" "}
+                          {match.totalMessageCount}개
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </StyledCoupleSection>
+            )}
+          </SectionWrapper>
+        </MobileContainer>
       </S.ChatContainer>
 
       <AdminNavBar />

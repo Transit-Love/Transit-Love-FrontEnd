@@ -139,6 +139,15 @@ const ProfilePage: React.FC = () => {
           </S.AvatarContainer>
           <S.ProfileInfo>
             <S.ProfileName>{myProfile.nickname}</S.ProfileName>
+            <S.EditButton
+              onClick={() =>
+                navigate("/profile/setting", {
+                  state: { profile: myProfile, isEdit: true },
+                })
+              }
+            >
+              프로필 수정
+            </S.EditButton>
           </S.ProfileInfo>
         </S.AvatarSection>
 

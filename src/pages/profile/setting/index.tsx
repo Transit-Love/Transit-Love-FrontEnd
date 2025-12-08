@@ -1,23 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./style";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import NavBar from "../../../components/NavBar";
 import PageHeader from "../../../components/PageHeader";
 import profileService from "../../../api/profileService";
-import type { CreateProfileRequest } from "../../../api/profileService";
+import type {
+  CreateProfileRequest,
+  Profile,
+} from "../../../api/profileService";
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { profile, isEdit } =
+    (location.state as { profile?: Profile; isEdit?: boolean }) || {};
+
   const [nickname, setNickname] = useState("");
   const [mbti, setMbti] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string>("");
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  const [selectedKeywords, setSelectedKeywords] = useState<
+    { id: number; name: string }[]
+  >([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: number | null;
   }>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // 수정 모드일 때 기존 데이터 로드
+  useEffect(() => {
+    if (isEdit && profile) {
+      setNickname(profile.nickname);
+      setMbti(profile.mbti || "");
+
+      // 키워드 로드 (ID와 함께)
+      setSelectedKeywords(profile.keywords);
+
+      // 밸런스게임 답변 로드
+      const answers: { [key: number]: number | null } = {};
+      profile.balanceGameAnswers.forEach((answer, index) => {
+        answers[index] = answer.selectedOption - 1; // 1-based를 0-based로 변환
+      });
+      setSelectedAnswers(answers);
+    }
+  }, [isEdit, profile]);
 
   const balanceGameQuestions = [
     {
@@ -57,21 +84,22 @@ const ProfileSettingPage: React.FC = () => {
     },
   ];
 
-  const availableKeywords: string[] = [
-    "영화광",
-    "게임러버",
-    "독서광",
-    "여행러버",
-    "음식러버",
-    "운동러버",
-    "음악러버",
-    "예술러버",
-    "반려동물러버",
+  const availableKeywords = [
+    { id: 1, name: "운동" },
+    { id: 2, name: "영화감상" },
+    { id: 3, name: "음악듣기" },
+    { id: 4, name: "독서" },
+    { id: 5, name: "여행" },
+    { id: 6, name: "요리" },
+    { id: 7, name: "사진찍기" },
+    { id: 8, name: "게임" },
+    { id: 9, name: "맛집탐방" },
+    { id: 10, name: "반려동물러버" },
   ];
 
-  const handleKeywordToggle = (keyword: string) => {
-    if (selectedKeywords.includes(keyword)) {
-      setSelectedKeywords(selectedKeywords.filter((k) => k !== keyword));
+  const handleKeywordToggle = (keyword: { id: number; name: string }) => {
+    if (selectedKeywords.some((k) => k.id === keyword.id)) {
+      setSelectedKeywords(selectedKeywords.filter((k) => k.id !== keyword.id));
     } else if (selectedKeywords.length < 4) {
       setSelectedKeywords([...selectedKeywords, keyword]);
     }
@@ -173,10 +201,8 @@ const ProfileSettingPage: React.FC = () => {
       selectedOption: (selectedAnswers[idx] as number) + 1, // 0-based index를 1-based로 변환
     }));
 
-    // 키워드 ID는 임시로 인덱스+1을 사용 (실제로는 백엔드에서 제공되는 ID를 사용해야 함)
-    const keywordIds = selectedKeywords.map(
-      (keyword) => availableKeywords.indexOf(keyword) + 1
-    );
+    // 선택된 키워드의 실제 ID 사용
+    const keywordIds = selectedKeywords.map((keyword) => keyword.id);
 
     const profileData: CreateProfileRequest = {
       nickname: nickname.trim(),
@@ -188,12 +214,23 @@ const ProfileSettingPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const createdProfile = await profileService.createProfile(profileData);
-      console.log("프로필 생성 성공:", createdProfile);
-      alert("프로필이 생성되었습니다!");
-      navigate("/countdown");
+      if (isEdit) {
+        // 수정 모드
+        const updatedProfile = await profileService.updateMyProfile(
+          profileData
+        );
+        console.log("프로필 수정 성공:", updatedProfile);
+        alert("프로필이 수정되었습니다!");
+        navigate("/profile");
+      } else {
+        // 생성 모드
+        const createdProfile = await profileService.createProfile(profileData);
+        console.log("프로필 생성 성공:", createdProfile);
+        alert("프로필이 생성되었습니다!");
+        navigate("/countdown");
+      }
     } catch (error: any) {
-      console.error("프로필 생성 실패:", error);
+      console.error(isEdit ? "프로필 수정 실패:" : "프로필 생성 실패:", error);
 
       if (error.response?.status === 409) {
         alert("이미 프로필이 존재합니다. 수정 페이지로 이동합니다.");
@@ -204,7 +241,11 @@ const ProfileSettingPage: React.FC = () => {
         alert("로그인이 필요합니다.");
         navigate("/login");
       } else {
-        alert("프로필 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+        alert(
+          `프로필 ${
+            isEdit ? "수정" : "생성"
+          } 중 오류가 발생했습니다. 다시 시도해주세요.`
+        );
       }
     } finally {
       setIsLoading(false);
@@ -215,9 +256,9 @@ const ProfileSettingPage: React.FC = () => {
     <S.ProfileContainer>
       <S.BackgroundImage />
       <PageHeader
-        title="프로필 설정"
+        title={isEdit ? "프로필 수정" : "프로필 설정"}
         backgroundColor="#fab0b8"
-        showBackButton={false}
+        showBackButton={isEdit}
       />
 
       <S.ProfileImageSection>
@@ -337,20 +378,22 @@ const ProfileSettingPage: React.FC = () => {
         </S.SectionHeader>
 
         <S.KeywordsGrid>
-          {availableKeywords.map((keyword, index) => (
+          {availableKeywords.map((keyword) => (
             <S.KeywordButton
-              key={index}
-              selected={selectedKeywords.includes(keyword)}
+              key={keyword.id}
+              selected={selectedKeywords.some((k) => k.id === keyword.id)}
               onClick={() => handleKeywordToggle(keyword)}
             >
-              {keyword}
+              {keyword.name}
             </S.KeywordButton>
           ))}
         </S.KeywordsGrid>
       </S.KeywordsSection>
 
       <S.NextButton onClick={handleNextStep} disabled={isLoading}>
-        <S.NextButtonText>{isLoading ? "저장 중..." : "완료"}</S.NextButtonText>
+        <S.NextButtonText>
+          {isLoading ? "저장 중..." : isEdit ? "수정 완료" : "완료"}
+        </S.NextButtonText>
       </S.NextButton>
 
       <NavBar />
