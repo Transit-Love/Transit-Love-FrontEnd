@@ -59,7 +59,7 @@ const FinalResultPage: React.FC = () => {
     );
   }
 
-  const { currentMatch, chatPartners } = choiceOptions;
+  const { currentMatch } = choiceOptions;
 
   const keywords = ["ENFP", "영화광", "운동", "우웅?"];
 

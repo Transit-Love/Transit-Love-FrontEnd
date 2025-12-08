@@ -1,6 +1,5 @@
 import React from "react";
 import * as S from "./style";
-import { useNavigate } from "react-router-dom";
 import AdminNavBar from "../../../components/AdminNavBar";
 import PageHeader from "../../../components/PageHeader";
 import Loading from "../../../components/Loading";
