@@ -3,10 +3,12 @@ import styled from "@emotion/styled";
 import BackIcon from "../assets/back.png";
 
 const Header = styled.div`
-  position: absolute;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 390px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 390px;
   height: 100px;
   background: var(--primary, #fab0b8);
   z-index: 200;
@@ -16,16 +18,20 @@ const Header = styled.div`
   align-items: center;
   gap: 12px;
   padding: 24px 24px 16px;
+  margin: 0 auto;
 `;
 
 const NavBar = styled.div`
   display: flex;
   align-items: center;
-  gap: 104px;
+  justify-content: center;
   width: 100%;
+  position: relative;
 `;
 
 const BackButton = styled.button`
+  position: absolute;
+  left: 0;
   background: none;
   border: none;
   cursor: pointer;
@@ -42,6 +48,7 @@ const HeaderTitle = styled.div`
   font-size: 24px;
   line-height: 0.9em;
   color: #ffffff;
+  text-align: center;
 `;
 
 interface CommonHeaderProps {
