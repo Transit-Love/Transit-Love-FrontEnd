@@ -22,6 +22,8 @@ import {
 } from "../../api/chatService";
 import type { ChatMessageResponse } from "../../types/chat";
 import { isApiError } from "../../types/error";
+import profileService from "../../api/profileService";
+import type { MatchedProfile } from "../../api/profileService";
 
 const ChatPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,6 +39,9 @@ const ChatPage: React.FC = () => {
   const [message, setMessage] = useState("");
   const [localMessages, setLocalMessages] = useState<ChatMessageResponse[]>([]);
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [matchedProfile, setMatchedProfile] = useState<MatchedProfile | null>(
+    null
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // React Query로 메시지 가져오기 (자동 캐싱)
@@ -63,6 +68,31 @@ const ChatPage: React.FC = () => {
       setCurrentUserId(Number(userId));
     }
   }, []);
+
+  // 매칭된 상대 프로필 정보 가져오기
+  useEffect(() => {
+    const fetchMatchedProfile = async () => {
+      try {
+        const matched = await profileService.getMatchedProfile();
+        if (matched && Array.isArray(matched) && matched.length > 0) {
+          // otherProfileId와 일치하는 프로필 찾기
+          const foundProfile = matched.find((p) => p.id === otherProfileId);
+          if (foundProfile) {
+            setMatchedProfile(foundProfile);
+          } else {
+            // 못 찾으면 첫 번째 프로필 사용
+            setMatchedProfile(matched[0]);
+          }
+        }
+      } catch (error) {
+        console.error("매칭된 상대 조회 실패:", error);
+      }
+    };
+
+    if (otherProfileId) {
+      fetchMatchedProfile();
+    }
+  }, [otherProfileId]);
 
   // 아바타 이미지 매핑
   const getAvatarImage = (profileId: number) => {
@@ -262,6 +292,11 @@ const ChatPage: React.FC = () => {
       ? messages.find((m) => m.senderProfileId !== currentUserId)
       : null;
 
+  // 매칭된 프로필 정보가 있으면 그것을 사용, 없으면 메시지에서 추출
+  const displayName =
+    matchedProfile?.nickname || otherProfile?.senderNickname || "상대방";
+  const displayMbti = matchedProfile?.mbti;
+
   return (
     <S.ChatPageContainer>
       <S.ChatHeader>
@@ -276,7 +311,18 @@ const ChatPage: React.FC = () => {
             <S.Avatar src={getAvatarImage(otherProfileId)} alt="프로필" />
             <S.UserDetails>
               <S.UserName>
-                {otherProfile?.senderNickname || "상대방"}
+                {displayName}
+                {displayMbti && (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      marginLeft: "8px",
+                      color: "#999",
+                    }}
+                  >
+                    ({displayMbti})
+                  </span>
+                )}
               </S.UserName>
               <S.OnlineStatus>
                 {isConnected ? "온라인" : "오프라인"}

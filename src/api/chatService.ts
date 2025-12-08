@@ -13,8 +13,13 @@ import type {
  * 채팅 목록 조회 (매칭된 커플 + 일반 프로필)
  */
 export const getChatList = async (): Promise<ChatListResponse> => {
-  const response = await apiClient.get("/api/chat/list");
-  return response.data;
+  try {
+    const response = await apiClient.get("/api/chat/list");
+    return response.data;
+  } catch (error: any) {
+    console.error("getChatList 에러:", error.response?.data || error.message);
+    throw error;
+  }
 };
 
 /**

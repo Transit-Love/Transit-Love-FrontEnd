@@ -156,6 +156,108 @@ export const KeywordsSection = styled.div`
   z-index: 100;
 `;
 
+export const MatchSection = styled.div`
+  position: absolute;
+  left: 24px;
+  top: 500px;
+  width: 342px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 100;
+`;
+
+export const MatchedCard = styled.div`
+  padding: 20px;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffe8ec 100%);
+  border: 2px solid #fab0b8;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(250, 176, 184, 0.3);
+  }
+`;
+
+export const MatchedInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const MatchedName = styled.div`
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2em;
+  color: #000000;
+`;
+
+export const MatchedMBTI = styled.div`
+  padding: 4px 12px;
+  background: #fab0b8;
+  border-radius: 12px;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #ffffff;
+`;
+
+export const MatchedKeywords = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+
+export const MatchedKeywordTag = styled.div`
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid #fab0b8;
+  border-radius: 12px;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #fab0b8;
+`;
+
+export const MatchInfo = styled.div`
+  padding: 24px;
+  background: #f8fafc;
+  border: 1px dashed #fab0b8;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+`;
+
+export const MatchStatusText = styled.div`
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4em;
+  color: #6b7280;
+`;
+
+export const MatchStatusSubText = styled.div`
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4em;
+  color: #9ca3af;
+`;
+
 export const SectionTitle = styled.div`
   font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
@@ -190,7 +292,7 @@ export const KeywordTag = styled.div`
 export const BalanceResults = styled.div`
   position: absolute;
   left: 25px;
-  top: 469px;
+  top: 660px;
   width: 342px;
   display: flex;
   flex-direction: column;

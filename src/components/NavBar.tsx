@@ -28,21 +28,21 @@ const Items = styled.div`
   gap: 30px;
 `;
 
-const Item = styled(Link)<{ active?: boolean }>`
+const Item = styled(Link)<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50px;
   height: 49px;
   border-radius: 12px;
-  background: ${({ active }) =>
-    active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
+  background: ${({ $active }) =>
+    $active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
 `;
 
-const Icon = styled.img<{ active?: boolean }>`
+const Icon = styled.img<{ $active?: boolean }>`
   width: 24px;
   height: 24px;
-  opacity: ${({ active }) => (active ? 1 : 0.6)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
 `;
 
 const NavBar: React.FC = () => {
@@ -57,21 +57,21 @@ const NavBar: React.FC = () => {
   return (
     <Bar>
       <Items>
-        <Item to="/countdown" active={isCountdown} aria-label="home">
-          <Icon src={HomeIcon} active={isCountdown} />
+        <Item to="/countdown" $active={isCountdown} aria-label="home">
+          <Icon src={HomeIcon} $active={isCountdown} />
         </Item>
-        <Item to="/chat-list" active={isChatList} aria-label="chat">
-          <Icon src={MessageIcon} active={isChatList} />
+        <Item to="/chat-list" $active={isChatList} aria-label="chat">
+          <Icon src={MessageIcon} $active={isChatList} />
         </Item>
         <Item
           to="/message"
-          active={isAnonymousMessage}
+          $active={isAnonymousMessage}
           aria-label="anonymous-message"
         >
-          <Icon src={AnonymousMessageIcon} active={isAnonymousMessage} />
+          <Icon src={AnonymousMessageIcon} $active={isAnonymousMessage} />
         </Item>
-        <Item to="/profile" active={isProfile} aria-label="profile">
-          <Icon src={ProfileIcon} active={isProfile} />
+        <Item to="/profile" $active={isProfile} aria-label="profile">
+          <Icon src={ProfileIcon} $active={isProfile} />
         </Item>
       </Items>
     </Bar>
