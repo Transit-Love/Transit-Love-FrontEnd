@@ -3,20 +3,11 @@ import * as S from "./style";
 import Logo from "../../assets/logo.svg";
 import GoogleIcon from "../../assets/icon/google-logo.png";
 import { useNavigate } from "react-router-dom";
-import authService from "../../api/authService";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
   const googleAuthUrl = `${API_BASE_URL}/oauth2/authorize/google`;
-
-  const handleGoogleLogin = () => {
-    // 방법 1: 직접 리다이렉트 (현재 방식)
-    authService.loginWithGoogle();
-
-    // 방법 2: 만약 위 방식이 안되면 아래 방식 시도
-    // window.location.href = googleAuthUrl;
-  };
 
   return (
     <S.LoginContainer>

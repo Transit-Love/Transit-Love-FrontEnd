@@ -1,6 +1,5 @@
 import React from "react";
 import * as S from "./style.ts";
-import { useNavigate } from "react-router-dom";
 import Heart from "../../assets/icon/heart.svg";
 import AdminNavBar from "../AdminNavBar";
 import PageHeader from "../PageHeader";
@@ -17,8 +16,6 @@ const CoupleListLayout: React.FC<CoupleListLayoutProps> = ({
   sectionTitle = "커플 목록",
   couples,
 }) => {
-  const navigate = useNavigate();
-
   return (
     <S.Container>
       <S.BackgroundImage />

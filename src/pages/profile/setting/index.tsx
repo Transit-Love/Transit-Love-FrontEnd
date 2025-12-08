@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import * as S from './style';
-import { useNavigate } from 'react-router-dom';
-import NavBar from '../../../components/NavBar';
-import PageHeader from '../../../components/PageHeader';
-import profileService from '../../../api/profileService';
-import type { CreateProfileRequest } from '../../../api/profileService';
+import React, { useState } from "react";
+import * as S from "./style";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../../../components/NavBar";
+import PageHeader from "../../../components/PageHeader";
+import profileService from "../../../api/profileService";
+import type { CreateProfileRequest } from "../../../api/profileService";
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -77,12 +77,6 @@ const ProfileSettingPage: React.FC = () => {
     }
   };
 
-  const handleNextQuestion = () => {
-    if (currentQuestion < balanceGameQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    }
-  };
-
   const handlePreviousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
@@ -94,18 +88,18 @@ const ProfileSettingPage: React.FC = () => {
     if (file) {
       // 파일 크기 체크 (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('이미지 크기는 5MB 이하여야 합니다.');
+        alert("이미지 크기는 5MB 이하여야 합니다.");
         return;
       }
-      
+
       // 파일 타입 체크
-      if (!file.type.startsWith('image/')) {
-        alert('이미지 파일만 업로드 가능합니다.');
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 업로드 가능합니다.");
         return;
       }
-      
+
       setProfileImage(file);
-      
+
       // 미리보기 생성
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -120,7 +114,7 @@ const ProfileSettingPage: React.FC = () => {
       ...prev,
       [questionIndex]: optionIndex,
     }));
-    
+
     // 답변 선택 후 자동으로 다음 질문으로 이동
     if (questionIndex < balanceGameQuestions.length - 1) {
       setTimeout(() => {
@@ -132,43 +126,44 @@ const ProfileSettingPage: React.FC = () => {
   const handleNextStep = async () => {
     // 유효성 검사
     if (!profileImage) {
-      alert('프로필 이미지를 업로드해주세요.');
+      alert("프로필 이미지를 업로드해주세요.");
       return;
     }
 
     if (!nickname.trim()) {
-      alert('닉네임을 입력해주세요.');
+      alert("닉네임을 입력해주세요.");
       return;
     }
-    
+
     if (nickname.length > 50) {
-      alert('닉네임은 50자 이하로 입력해주세요.');
+      alert("닉네임은 50자 이하로 입력해주세요.");
       return;
     }
 
     if (!mbti.trim()) {
-      alert('MBTI를 입력해주세요.');
+      alert("MBTI를 입력해주세요.");
       return;
     }
 
     if (selectedKeywords.length === 0) {
-      alert('키워드를 최소 1개 이상 선택해주세요.');
+      alert("키워드를 최소 1개 이상 선택해주세요.");
       return;
     }
 
     // 모든 밸런스게임 답변이 있는지 확인
-    const allAnswered = balanceGameQuestions.every((_, idx) => 
-      selectedAnswers[idx] !== null && selectedAnswers[idx] !== undefined
+    const allAnswered = balanceGameQuestions.every(
+      (_, idx) =>
+        selectedAnswers[idx] !== null && selectedAnswers[idx] !== undefined
     );
 
     if (!allAnswered) {
-      alert('모든 밸런스게임 질문에 답변해주세요.');
+      alert("모든 밸런스게임 질문에 답변해주세요.");
       return;
     }
 
     // MBTI 형식 검증 (선택사항)
     if (mbti && mbti.length !== 4) {
-      alert('MBTI는 4자로 입력해주세요. (예: ENFP)');
+      alert("MBTI는 4자로 입력해주세요. (예: ENFP)");
       return;
     }
 
@@ -179,8 +174,8 @@ const ProfileSettingPage: React.FC = () => {
     }));
 
     // 키워드 ID는 임시로 인덱스+1을 사용 (실제로는 백엔드에서 제공되는 ID를 사용해야 함)
-    const keywordIds = selectedKeywords.map((keyword) => 
-      availableKeywords.indexOf(keyword) + 1
+    const keywordIds = selectedKeywords.map(
+      (keyword) => availableKeywords.indexOf(keyword) + 1
     );
 
     const profileData: CreateProfileRequest = {
@@ -194,22 +189,22 @@ const ProfileSettingPage: React.FC = () => {
 
     try {
       const createdProfile = await profileService.createProfile(profileData);
-      console.log('프로필 생성 성공:', createdProfile);
-      alert('프로필이 생성되었습니다!');
+      console.log("프로필 생성 성공:", createdProfile);
+      alert("프로필이 생성되었습니다!");
       navigate("/countdown");
     } catch (error: any) {
-      console.error('프로필 생성 실패:', error);
-      
+      console.error("프로필 생성 실패:", error);
+
       if (error.response?.status === 409) {
-        alert('이미 프로필이 존재합니다. 수정 페이지로 이동합니다.');
+        alert("이미 프로필이 존재합니다. 수정 페이지로 이동합니다.");
         // 필요시 수정 페이지로 이동하거나 수정 API 호출
       } else if (error.response?.status === 400) {
-        alert(error.response?.data?.message || '입력 정보를 확인해주세요.');
+        alert(error.response?.data?.message || "입력 정보를 확인해주세요.");
       } else if (error.response?.status === 401) {
-        alert('로그인이 필요합니다.');
-        navigate('/login');
+        alert("로그인이 필요합니다.");
+        navigate("/login");
       } else {
-        alert('프로필 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
+        alert("프로필 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
     } finally {
       setIsLoading(false);
@@ -219,8 +214,12 @@ const ProfileSettingPage: React.FC = () => {
   return (
     <S.ProfileContainer>
       <S.BackgroundImage />
-      <PageHeader title="프로필 설정" backgroundColor="#fab0b8" showBackButton={false} />
-      
+      <PageHeader
+        title="프로필 설정"
+        backgroundColor="#fab0b8"
+        showBackButton={false}
+      />
+
       <S.ProfileImageSection>
         <S.SectionTitle>프로필 이미지</S.SectionTitle>
         <S.ImageUploadContainer>
@@ -242,7 +241,7 @@ const ProfileSettingPage: React.FC = () => {
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
         </S.ImageUploadContainer>
         <S.InputDescription>
@@ -289,21 +288,21 @@ const ProfileSettingPage: React.FC = () => {
           </S.SectionDescription>
         </S.SectionHeader>
 
-
         <S.QuestionCard>
           <S.QuestionHeader>
-            <S.ArrowButton 
+            <S.ArrowButton
               onClick={handlePreviousQuestion}
-              style={{ visibility: currentQuestion > 0 ? 'visible' : 'hidden' }}
+              style={{ visibility: currentQuestion > 0 ? "visible" : "hidden" }}
             >
               ← 이전
             </S.ArrowButton>
-            <S.QuestionNumber>{currentQuestion + 1} / {balanceGameQuestions.length}</S.QuestionNumber>
-            <S.ArrowButton style={{ visibility: 'hidden' }}>
+            <S.QuestionNumber>
+              {currentQuestion + 1} / {balanceGameQuestions.length}
+            </S.QuestionNumber>
+            <S.ArrowButton style={{ visibility: "hidden" }}>
               다음 →
             </S.ArrowButton>
           </S.QuestionHeader>
-
 
           <S.QuestionContent>
             <S.QuestionText>
@@ -337,7 +336,6 @@ const ProfileSettingPage: React.FC = () => {
           </S.SectionDescription>
         </S.SectionHeader>
 
-
         <S.KeywordsGrid>
           {availableKeywords.map((keyword, index) => (
             <S.KeywordButton
@@ -352,7 +350,7 @@ const ProfileSettingPage: React.FC = () => {
       </S.KeywordsSection>
 
       <S.NextButton onClick={handleNextStep} disabled={isLoading}>
-        <S.NextButtonText>{isLoading ? '저장 중...' : '완료'}</S.NextButtonText>
+        <S.NextButtonText>{isLoading ? "저장 중..." : "완료"}</S.NextButtonText>
       </S.NextButton>
 
       <NavBar />

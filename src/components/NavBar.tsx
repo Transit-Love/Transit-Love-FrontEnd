@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import HomeIcon from "../assets/icon/home.png";
+import { Link, useLocation } from "react-router-dom";
 import MessageIcon from "../assets/icon/chat.png";
 import AnonymousMessageIcon from "../assets/icon/message.svg";
 import ProfileIcon from "../assets/icon/profile.png";
-import profileService from "../api/profileService";
 import authService from "../api/authService";
 
 const Bar = styled.nav`
@@ -39,19 +37,6 @@ const Item = styled(Link)<{ $active?: boolean }>`
   border-radius: 12px;
   background: ${({ $active }) =>
     $active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
-`;
-
-const ItemButton = styled.button<{ $active?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 49px;
-  border-radius: 12px;
-  background: ${({ $active }) =>
-    $active ? "rgba(250, 176, 184, 0.24)" : "transparent"};
-  border: none;
-  cursor: pointer;
 `;
 
 const Icon = styled.img<{ $active?: boolean }>`

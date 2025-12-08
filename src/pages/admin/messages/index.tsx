@@ -1,12 +1,9 @@
 import React from "react";
 import * as S from "./style";
-import { useNavigate } from "react-router-dom";
 import AdminNavBar from "../../../components/AdminNavBar";
 import PageHeader from "../../../components/PageHeader";
 
 const AdminMessagesPage: React.FC = () => {
-  const navigate = useNavigate();
-
   const messages = [
     {
       id: 1,

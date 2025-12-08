@@ -1,7 +1,5 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import BackIcon from '../assets/back.png';
+import React from "react";
+import styled from "@emotion/styled";
 
 interface PageHeaderProps {
   title: string;
@@ -15,11 +13,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   subtitle,
   showBackButton = true,
-  backgroundColor = '#fab0b8',
-  onBackClick,
+  backgroundColor = "#fab0b8",
 }) => {
-  const navigate = useNavigate();
-
   return (
     <HeaderContainer backgroundColor={backgroundColor}>
       <HeaderContent>
@@ -63,26 +58,9 @@ const HeaderContent = styled.div`
   position: relative;
 `;
 
-const BackButton = styled.button`
-  position: absolute;
-  left: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 7px;
-    height: 14px;
-  }
-`;
-
 const HeaderTitle = styled.span<{ hasBackButton: boolean }>`
   color: #fff;
-  font-family: 'Ownglyph PDH';
+  font-family: "Ownglyph PDH";
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -100,7 +78,7 @@ const SubtitleSection = styled.div`
 
 const SubtitleText = styled.span`
   color: #fff;
-  font-family: 'Ownglyph PDH';
+  font-family: "Ownglyph PDH";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

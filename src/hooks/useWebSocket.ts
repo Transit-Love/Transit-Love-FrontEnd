@@ -148,7 +148,7 @@ export const useWebSocket = ({
           onErrorRef.current?.(frame);
         }
       },
-      onWebSocketError: (event) => {
+      onWebSocketError: () => {
         // 최대 재연결 시도 횟수 초과 시에만 로그 출력
         if (reconnectAttempts.current >= maxReconnectAttempts) {
           console.error("❌ WebSocket 연결 실패: 최대 재연결 시도 초과");

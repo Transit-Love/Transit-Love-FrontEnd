@@ -95,7 +95,8 @@ const ChatListPage: React.FC = () => {
           navigate("/login");
         } else if (err.response?.status === 400) {
           const errorMsg =
-            err.response?.data?.message || "채팅방 생성에 실패했습니다.";
+            (err.response?.data as { message?: string })?.message ||
+            "채팅방 생성에 실패했습니다.";
           alert(errorMsg);
         } else {
           alert("채팅방 생성에 실패했습니다. 다시 시도해주세요.");
@@ -163,106 +164,227 @@ const ChatListPage: React.FC = () => {
         </S.InfoCard>
       </S.HeaderInfo>
       <S.ChatContainer>
-
-      <div
-        style={{
-          padding: "24px 20px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "24px",
-        }}
-      >
-        {/* 매칭된 커플 */}
-        {matchedProfile && (
-          <S.CoupleSection>
-            <S.CoupleLabel>커플 상대</S.CoupleLabel>
-            <S.UserCard isCouple>
-              <S.UserImage
-                src={getAvatarImage(matchedProfile.profileId)}
-                alt="프로필"
-              />
-              <S.UserInfo>
-                <S.UserName>{matchedProfile.nickname}</S.UserName>
-                <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
-                  <S.UserTag isCouple>
-                    <S.InfoText
-                      style={{ fontSize: "12px", lineHeight: "normal" }}
-                    >
-                      {matchedProfile.mbti}
-                    </S.InfoText>
-                  </S.UserTag>
-                  {matchedProfile.lastMessage && (
-                    <S.InfoText
+        <div
+          style={{
+            padding: "24px 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
+          {/* 매칭된 커플 */}
+          {matchedProfile && (
+            <S.CoupleSection>
+              <S.CoupleLabel>커플 상대</S.CoupleLabel>
+              <S.UserCard isCouple>
+                <S.UserImage
+                  src={getAvatarImage(matchedProfile.profileId)}
+                  alt="프로필"
+                />
+                <S.UserInfo>
+                  <S.UserName>{matchedProfile.nickname}</S.UserName>
+                  <div
+                    style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}
+                  >
+                    <S.UserTag isCouple>
+                      <S.InfoText
+                        style={{ fontSize: "12px", lineHeight: "normal" }}
+                      >
+                        {matchedProfile.mbti}
+                      </S.InfoText>
+                    </S.UserTag>
+                    {matchedProfile.lastMessage && (
+                      <S.InfoText
+                        style={{
+                          fontSize: "12px",
+                          color: "#666",
+                          maxWidth: "150px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {matchedProfile.lastMessage}
+                      </S.InfoText>
+                    )}
+                  </div>
+                </S.UserInfo>
+                <div style={{ position: "relative" }}>
+                  <img
+                    src={MessageCircleIcon}
+                    alt="메시지"
+                    style={{ width: "19px", height: "19px", cursor: "pointer" }}
+                    onClick={() =>
+                      handleNavigateToChat(
+                        matchedProfile.matchId,
+                        matchedProfile.profileId
+                      )
+                    }
+                  />
+                  {matchedProfile.unreadMessageCount > 0 && (
+                    <div
                       style={{
-                        fontSize: "12px",
-                        color: "#666",
-                        maxWidth: "150px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        backgroundColor: "#FF6B6B",
+                        color: "white",
+                        borderRadius: "50%",
+                        width: "18px",
+                        height: "18px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "10px",
+                        fontWeight: "bold",
                       }}
                     >
-                      {matchedProfile.lastMessage}
-                    </S.InfoText>
+                      {matchedProfile.unreadMessageCount}
+                    </div>
                   )}
                 </div>
-              </S.UserInfo>
-              <div style={{ position: "relative" }}>
-                <img
-                  src={MessageCircleIcon}
-                  alt="메시지"
-                  style={{ width: "19px", height: "19px", cursor: "pointer" }}
-                  onClick={() =>
-                    handleNavigateToChat(
-                      matchedProfile.matchId,
-                      matchedProfile.profileId
-                    )
-                  }
-                />
-                {matchedProfile.unreadMessageCount > 0 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "-8px",
-                      right: "-8px",
-                      backgroundColor: "#FF6B6B",
-                      color: "white",
-                      borderRadius: "50%",
-                      width: "18px",
-                      height: "18px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "10px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {matchedProfile.unreadMessageCount}
-                  </div>
-                )}
+              </S.UserCard>
+            </S.CoupleSection>
+          )}
+
+          {/* 매칭된 커플이 없을 때 */}
+          {!matchedProfile && (
+            <S.CoupleSection>
+              <S.CoupleLabel>커플 상대</S.CoupleLabel>
+              <div
+                style={{ textAlign: "center", padding: "20px", color: "#999" }}
+              >
+                아직 매칭된 커플이 없습니다.
               </div>
-            </S.UserCard>
-          </S.CoupleSection>
-        )}
+            </S.CoupleSection>
+          )}
 
-        {/* 매칭된 커플이 없을 때 */}
-        {!matchedProfile && (
-          <S.CoupleSection>
-            <S.CoupleLabel>커플 상대</S.CoupleLabel>
-            <div
-              style={{ textAlign: "center", padding: "20px", color: "#999" }}
-            >
-              아직 매칭된 커플이 없습니다.
-            </div>
-          </S.CoupleSection>
-        )}
+          {/* 진행 중인 채팅방 (2시간 제한) */}
+          {chatRoomList && chatRoomList.unmatchedRooms.length > 0 && (
+            <S.CoupleSection>
+              <S.OtherLabel>
+                <S.OtherTitle>진행 중인 대화</S.OtherTitle>
+                <S.OtherCount>
+                  {chatRoomList.unmatchedRooms.length}
+                </S.OtherCount>
+              </S.OtherLabel>
 
-        {/* 진행 중인 채팅방 (2시간 제한) */}
-        {chatRoomList && chatRoomList.unmatchedRooms.length > 0 && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                  width: "100%",
+                }}
+              >
+                {chatRoomList.unmatchedRooms.map((room: ChatRoomListItem) => {
+                  const remaining = getRemainingMinutes(room.expiresAt);
+                  const isExpired = remaining !== null && remaining <= 0;
+
+                  return (
+                    <S.UserCard
+                      key={room.chatRoomId}
+                      style={{ opacity: isExpired ? 0.5 : 1 }}
+                    >
+                      <S.UserImage
+                        src={getAvatarImage(room.otherProfileId)}
+                        alt="프로필"
+                      />
+                      <S.UserInfo>
+                        <S.UserName>{room.otherNickname}</S.UserName>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "4px",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                          }}
+                        >
+                          <S.UserTag>
+                            <S.InfoText
+                              style={{ fontSize: "12px", lineHeight: "normal" }}
+                            >
+                              {room.otherMbti}
+                            </S.InfoText>
+                          </S.UserTag>
+                          {remaining !== null && (
+                            <S.InfoText
+                              style={{
+                                fontSize: "11px",
+                                color: remaining <= 30 ? "#FF6B6B" : "#FF9800",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {getRemainingTimeText(remaining)}
+                            </S.InfoText>
+                          )}
+                        </div>
+                        {room.lastMessage && (
+                          <S.InfoText
+                            style={{
+                              fontSize: "12px",
+                              color: "#666",
+                              maxWidth: "200px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {room.lastMessage}
+                          </S.InfoText>
+                        )}
+                      </S.UserInfo>
+                      <div style={{ position: "relative" }}>
+                        <img
+                          src={MessageCircleIcon}
+                          alt="메시지"
+                          style={{
+                            width: "19px",
+                            height: "19px",
+                            cursor: isExpired ? "not-allowed" : "pointer",
+                          }}
+                          onClick={() =>
+                            !isExpired &&
+                            handleNavigateToChatRoom(
+                              room.chatRoomId,
+                              room.otherProfileId
+                            )
+                          }
+                        />
+                        {room.unreadMessageCount > 0 && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "-8px",
+                              right: "-8px",
+                              backgroundColor: "#FF6B6B",
+                              color: "white",
+                              borderRadius: "50%",
+                              width: "18px",
+                              height: "18px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontSize: "10px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {room.unreadMessageCount}
+                          </div>
+                        )}
+                      </div>
+                    </S.UserCard>
+                  );
+                })}
+              </div>
+            </S.CoupleSection>
+          )}
+
+          {/* 다른 참가자 목록 */}
           <S.CoupleSection>
             <S.OtherLabel>
-              <S.OtherTitle>진행 중인 대화</S.OtherTitle>
-              <S.OtherCount>{chatRoomList.unmatchedRooms.length}</S.OtherCount>
+              <S.OtherTitle>다른 참가자</S.OtherTitle>
+              <S.OtherCount>{otherProfiles.length}</S.OtherCount>
             </S.OtherLabel>
 
             <div
@@ -273,170 +395,60 @@ const ChatListPage: React.FC = () => {
                 width: "100%",
               }}
             >
-              {chatRoomList.unmatchedRooms.map((room: ChatRoomListItem) => {
-                const remaining = getRemainingMinutes(room.expiresAt);
-                const isExpired = remaining !== null && remaining <= 0;
-
-                return (
-                  <S.UserCard
-                    key={room.chatRoomId}
-                    style={{ opacity: isExpired ? 0.5 : 1 }}
-                  >
+              {otherProfiles.length === 0 ? (
+                <div
+                  style={{
+                    textAlign: "center",
+                    padding: "20px",
+                    color: "#999",
+                  }}
+                >
+                  다른 참가자가 없습니다.
+                </div>
+              ) : (
+                otherProfiles.map((profile: ChatProfile) => (
+                  <S.UserCard key={profile.profileId}>
                     <S.UserImage
-                      src={getAvatarImage(room.otherProfileId)}
+                      src={getAvatarImage(profile.profileId)}
                       alt="프로필"
                     />
                     <S.UserInfo>
-                      <S.UserName>{room.otherNickname}</S.UserName>
+                      <S.UserName>{profile.nickname}</S.UserName>
                       <div
                         style={{
                           display: "flex",
                           gap: "4px",
                           flexWrap: "wrap",
-                          alignItems: "center",
                         }}
                       >
                         <S.UserTag>
                           <S.InfoText
                             style={{ fontSize: "12px", lineHeight: "normal" }}
                           >
-                            {room.otherMbti}
+                            {profile.mbti}
                           </S.InfoText>
                         </S.UserTag>
-                        {remaining !== null && (
-                          <S.InfoText
-                            style={{
-                              fontSize: "11px",
-                              color: remaining <= 30 ? "#FF6B6B" : "#FF9800",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {getRemainingTimeText(remaining)}
-                          </S.InfoText>
-                        )}
                       </div>
-                      {room.lastMessage && (
-                        <S.InfoText
-                          style={{
-                            fontSize: "12px",
-                            color: "#666",
-                            maxWidth: "200px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {room.lastMessage}
-                        </S.InfoText>
-                      )}
                     </S.UserInfo>
-                    <div style={{ position: "relative" }}>
-                      <img
-                        src={MessageCircleIcon}
-                        alt="메시지"
-                        style={{
-                          width: "19px",
-                          height: "19px",
-                          cursor: isExpired ? "not-allowed" : "pointer",
-                        }}
-                        onClick={() =>
-                          !isExpired &&
-                          handleNavigateToChatRoom(
-                            room.chatRoomId,
-                            room.otherProfileId
-                          )
-                        }
-                      />
-                      {room.unreadMessageCount > 0 && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "-8px",
-                            right: "-8px",
-                            backgroundColor: "#FF6B6B",
-                            color: "white",
-                            borderRadius: "50%",
-                            width: "18px",
-                            height: "18px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "10px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {room.unreadMessageCount}
-                        </div>
-                      )}
-                    </div>
+                    <img
+                      src={MessageCircleFilledIcon}
+                      alt="메시지"
+                      style={{
+                        width: "19px",
+                        height: "19px",
+                        cursor: "pointer",
+                        opacity: 1,
+                      }}
+                      onClick={() =>
+                        handleStartChatWithProfile(profile.profileId)
+                      }
+                    />
                   </S.UserCard>
-                );
-              })}
+                ))
+              )}
             </div>
           </S.CoupleSection>
-        )}
-
-        {/* 다른 참가자 목록 */}
-        <S.CoupleSection>
-          <S.OtherLabel>
-            <S.OtherTitle>다른 참가자</S.OtherTitle>
-            <S.OtherCount>{otherProfiles.length}</S.OtherCount>
-          </S.OtherLabel>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              width: "100%",
-            }}
-          >
-            {otherProfiles.length === 0 ? (
-              <div
-                style={{ textAlign: "center", padding: "20px", color: "#999" }}
-              >
-                다른 참가자가 없습니다.
-              </div>
-            ) : (
-              otherProfiles.map((profile: ChatProfile) => (
-                <S.UserCard key={profile.profileId}>
-                  <S.UserImage
-                    src={getAvatarImage(profile.profileId)}
-                    alt="프로필"
-                  />
-                  <S.UserInfo>
-                    <S.UserName>{profile.nickname}</S.UserName>
-                    <div
-                      style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}
-                    >
-                      <S.UserTag>
-                        <S.InfoText
-                          style={{ fontSize: "12px", lineHeight: "normal" }}
-                        >
-                          {profile.mbti}
-                        </S.InfoText>
-                      </S.UserTag>
-                    </div>
-                  </S.UserInfo>
-                  <img
-                    src={MessageCircleFilledIcon}
-                    alt="메시지"
-                    style={{
-                      width: "19px",
-                      height: "19px",
-                      cursor: "pointer",
-                      opacity: 1,
-                    }}
-                    onClick={() =>
-                      handleStartChatWithProfile(profile.profileId)
-                    }
-                  />
-                </S.UserCard>
-              ))
-            )}
-          </div>
-        </S.CoupleSection>
-      </div>
+        </div>
       </S.ChatContainer>
       <NavBar />
     </S.ChatWrapper>

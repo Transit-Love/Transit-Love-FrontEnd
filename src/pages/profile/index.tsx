@@ -7,7 +7,6 @@ import Users from "../../assets/icon/users.svg";
 import NavBar from "../../components/NavBar";
 import PageHeader from "../../components/PageHeader";
 import Loading from "../../components/Loading";
-import type { Profile } from "../../types/profile";
 import { BalanceItem } from "../../components/BalanceItem";
 import profileService from "../../api/profileService";
 import authService from "../../api/authService";
@@ -111,9 +110,9 @@ const ProfilePage: React.FC = () => {
         <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
         <S.ProfileContainer>
           <S.BackgroundImage />
-        <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
-          {error || "프로필을 불러올 수 없습니다."}
-        </div>
+          <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
+            {error || "프로필을 불러올 수 없습니다."}
+          </div>
         </S.ProfileContainer>
         <NavBar />
       </S.ProfileWrapper>
@@ -132,76 +131,78 @@ const ProfilePage: React.FC = () => {
       <S.ProfileContainer>
         <S.BackgroundImage />
         <S.AvatarSection>
-        <S.AvatarContainer>
-          <S.Avatar src={Avatar1} alt="프로필" />
-        </S.AvatarContainer>
-        <S.ProfileInfo>
-          <S.ProfileName>{myProfile.nickname}</S.ProfileName>
-        </S.ProfileInfo>
-      </S.AvatarSection>
+          <S.AvatarContainer>
+            <S.Avatar src={Avatar1} alt="프로필" />
+          </S.AvatarContainer>
+          <S.ProfileInfo>
+            <S.ProfileName>{myProfile.nickname}</S.ProfileName>
+          </S.ProfileInfo>
+        </S.AvatarSection>
 
-      <S.KeywordsSection>
-        <S.SectionTitle>이런 사람이에요</S.SectionTitle>
-        <S.KeywordsGrid>
-          {displayKeywords.map((keyword, index) => (
-            <S.KeywordTag key={index}>{keyword}</S.KeywordTag>
-          ))}
-        </S.KeywordsGrid>
-      </S.KeywordsSection>
+        <S.KeywordsSection>
+          <S.SectionTitle>이런 사람이에요</S.SectionTitle>
+          <S.KeywordsGrid>
+            {displayKeywords.map((keyword, index) => (
+              <S.KeywordTag key={index}>{keyword}</S.KeywordTag>
+            ))}
+          </S.KeywordsGrid>
+        </S.KeywordsSection>
 
-      {/* 매칭된 상대 섹션 */}
-      <S.MatchSection>
-        <S.SectionTitle>내 매칭 상대</S.SectionTitle>
-        {matchedProfile ? (
-          <S.MatchedCard
-            onClick={() => navigate(`/profile/${matchedProfile.id}`, {
-              state: { profile: matchedProfile }
+        {/* 매칭된 상대 섹션 */}
+        <S.MatchSection>
+          <S.SectionTitle>내 매칭 상대</S.SectionTitle>
+          {matchedProfile ? (
+            <S.MatchedCard
+              onClick={() =>
+                navigate(`/profile/${matchedProfile.id}`, {
+                  state: { profile: matchedProfile },
+                })
+              }
+            >
+              <S.MatchedInfo>
+                <S.MatchedName>{matchedProfile.nickname}</S.MatchedName>
+                {matchedProfile.mbti && (
+                  <S.MatchedMBTI>{matchedProfile.mbti}</S.MatchedMBTI>
+                )}
+              </S.MatchedInfo>
+              <S.MatchedKeywords>
+                {matchedProfile.keywords.slice(0, 3).map((keyword) => (
+                  <S.MatchedKeywordTag key={keyword.id}>
+                    {keyword.name}
+                  </S.MatchedKeywordTag>
+                ))}
+              </S.MatchedKeywords>
+            </S.MatchedCard>
+          ) : (
+            <S.MatchInfo>
+              <S.MatchStatusText>아직 매칭된 상대가 없습니다</S.MatchStatusText>
+              <S.MatchStatusSubText>
+                곧 특별한 인연을 만날 수 있을 거예요! 💕
+              </S.MatchStatusSubText>
+            </S.MatchInfo>
+          )}
+        </S.MatchSection>
+
+        <S.BalanceResults>
+          <S.SectionTitle>밸런스게임 결과</S.SectionTitle>
+          <S.BalanceItems>
+            {myProfile.balanceGameAnswers.map((answer, index) => {
+              // 아이콘은 인덱스에 따라 번갈아 표시
+              const icon = index % 2 === 0 ? Heart : Users;
+              const selectedAnswer =
+                answer.selectedOption === 1 ? answer.option1 : answer.option2;
+
+              return (
+                <BalanceItem
+                  key={answer.balanceGameId}
+                  icon={icon}
+                  category={answer.question || `질문 ${answer.balanceGameId}`}
+                  result={selectedAnswer || `선택 ${answer.selectedOption}`}
+                />
+              );
             })}
-          >
-            <S.MatchedInfo>
-              <S.MatchedName>{matchedProfile.nickname}</S.MatchedName>
-              {matchedProfile.mbti && (
-                <S.MatchedMBTI>{matchedProfile.mbti}</S.MatchedMBTI>
-              )}
-            </S.MatchedInfo>
-            <S.MatchedKeywords>
-              {matchedProfile.keywords.slice(0, 3).map((keyword) => (
-                <S.MatchedKeywordTag key={keyword.id}>
-                  {keyword.name}
-                </S.MatchedKeywordTag>
-              ))}
-            </S.MatchedKeywords>
-          </S.MatchedCard>
-        ) : (
-          <S.MatchInfo>
-            <S.MatchStatusText>아직 매칭된 상대가 없습니다</S.MatchStatusText>
-            <S.MatchStatusSubText>
-              곧 특별한 인연을 만날 수 있을 거예요! 💕
-            </S.MatchStatusSubText>
-          </S.MatchInfo>
-        )}
-      </S.MatchSection>
-
-      <S.BalanceResults>
-        <S.SectionTitle>밸런스게임 결과</S.SectionTitle>
-        <S.BalanceItems>
-          {myProfile.balanceGameAnswers.map((answer, index) => {
-            // 아이콘은 인덱스에 따라 번갈아 표시
-            const icon = index % 2 === 0 ? Heart : Users;
-            const selectedAnswer =
-              answer.selectedOption === 1 ? answer.option1 : answer.option2;
-
-            return (
-              <BalanceItem
-                key={answer.balanceGameId}
-                icon={icon}
-                category={answer.question || `질문 ${answer.balanceGameId}`}
-                result={selectedAnswer || `선택 ${answer.selectedOption}`}
-              />
-            );
-          })}
-        </S.BalanceItems>
-      </S.BalanceResults>
+          </S.BalanceItems>
+        </S.BalanceResults>
       </S.ProfileContainer>
       <NavBar />
     </S.ProfileWrapper>
