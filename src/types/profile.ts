@@ -1,4 +1,5 @@
 export interface Profile {
+  id?: number;
   avatar: string;
   name: string;
   keywords: string[];
