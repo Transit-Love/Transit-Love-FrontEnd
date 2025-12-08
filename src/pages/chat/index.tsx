@@ -11,6 +11,7 @@ import MoreVerticalIcon from "../../assets/icon/more-vertical.svg";
 import PlusIcon from "../../assets/icon/plus.svg";
 import SendIcon from "../../assets/icon/send.svg";
 import NavBar from "../../components/NavBar";
+import Loading from "../../components/Loading";
 import { useWebSocket } from "../../hooks/useWebSocket";
 import {
   useChatMessages,
@@ -265,7 +266,7 @@ const ChatPage: React.FC = () => {
   if (isLoading) {
     return (
       <S.ChatPageContainer>
-        <div style={{ padding: "24px", textAlign: "center" }}>로딩 중...</div>
+        <Loading message="채팅을 불러오는 중..." />
         <NavBar />
       </S.ChatPageContainer>
     );

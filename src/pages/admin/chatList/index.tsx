@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as S from "../../chatList/style"; // 사용자 채팅 스타일 재활용
 import AdminNavBar from "../../../components/AdminNavBar";
 import PageHeader from "../../../components/PageHeader";
+import Loading from "../../../components/Loading";
 import { useAdminMatchList } from "../../../hooks/useAdminQueries";
 import MessageCircleIcon from "../../../assets/icon/message-circle.svg";
 import Avatar1 from "../../../assets/icon/avatar1.png";
@@ -45,7 +46,7 @@ const AdminChatListPage: React.FC = () => {
     return (
       <S.ChatContainer>
         <PageHeader title="어드민 - 채팅 목록" backgroundColor="#FFC6B6" />
-        <div style={{ padding: "24px", textAlign: "center" }}>로딩 중...</div>
+        <Loading message="채팅 목록을 불러오는 중..." />
         <AdminNavBar />
       </S.ChatContainer>
     );
