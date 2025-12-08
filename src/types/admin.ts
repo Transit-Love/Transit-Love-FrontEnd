@@ -59,3 +59,25 @@ export interface AdminChatMessagesResponse {
   messages: AdminChatMessage[];
   totalMessageCount: number;
 }
+
+// 속마음 문자 프로필 정보
+export interface HeartMessageProfile {
+  id: number;
+  nickname: string;
+  profileImageUrl: string;
+}
+
+// 속마음 문자 (Admin용)
+export interface AdminHeartMessage {
+  id: number;
+  senderProfile: HeartMessageProfile;
+  receiverProfile: HeartMessageProfile;
+  content: string;
+  sentAt: string;
+}
+
+// 속마음 문자 목록 응답
+export interface AdminHeartMessagesResponse {
+  totalMessages: number;
+  messages: AdminHeartMessage[];
+}

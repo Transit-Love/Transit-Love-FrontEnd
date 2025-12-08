@@ -99,7 +99,17 @@ const MessagePage: React.FC = () => {
       <S.BackgroundImage />
 
       {isLoading ? (
-        <Loading />
+        <div style={{ 
+          width: "100%", 
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          zIndex: 100
+        }}>
+          <Loading message="메시지를 불러오는 중..." />
+        </div>
       ) : (
         <>
           <PageHeader

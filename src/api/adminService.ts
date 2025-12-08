@@ -2,6 +2,7 @@ import apiClient from "./client";
 import type {
   AdminMatchListResponse,
   AdminChatMessagesResponse,
+  AdminHeartMessagesResponse,
 } from "../types/admin";
 
 /**
@@ -32,5 +33,13 @@ export const getAdminChatMessages = async (
   const response = await apiClient.get(
     `/api/admin/chat/matches/${matchId}/messages`
   );
+  return response.data;
+};
+
+/**
+ * 어드민 - 모든 속마음 문자 목록 조회
+ */
+export const getAdminHeartMessages = async (): Promise<AdminHeartMessagesResponse> => {
+  const response = await apiClient.get("/api/admin/heart-messages");
   return response.data;
 };
