@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 
-export const ChatContainer = styled.div`
+export const ChatWrapper = styled.div`
   width: 390px;
   min-height: 100vh;
   background: transparent;
   position: relative;
-  overflow-y: auto;
   margin: 0 auto;
-  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: 391px) {
     background: #ffffff;
@@ -15,14 +15,25 @@ export const ChatContainer = styled.div`
   }
 `;
 
+export const ChatContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 export const HeaderInfo = styled.div`
-  width: 390px;
+  width: 100%;
   padding: 0 24px 16px 24px;
   background: var(--Color-2, #ffc6b6);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 `;
 
 export const InfoCard = styled.div`

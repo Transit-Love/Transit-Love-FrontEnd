@@ -114,11 +114,13 @@ const ChatListPage: React.FC = () => {
   // 로딩 중
   if (loading) {
     return (
-      <S.ChatContainer>
+      <S.ChatWrapper>
         <PageHeader title="채팅" backgroundColor="#FFC6B6" />
-        <Loading message="채팅 목록을 불러오는 중..." />
+        <S.ChatContainer>
+          <Loading message="채팅 목록을 불러오는 중..." />
+        </S.ChatContainer>
         <NavBar />
-      </S.ChatContainer>
+      </S.ChatWrapper>
     );
   }
 
@@ -130,13 +132,15 @@ const ChatListPage: React.FC = () => {
         : "채팅 목록을 불러오는데 실패했습니다.";
 
     return (
-      <S.ChatContainer>
+      <S.ChatWrapper>
         <PageHeader title="채팅" backgroundColor="#FFC6B6" />
-        <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
-          {errorMessage}
-        </div>
+        <S.ChatContainer>
+          <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
+            {errorMessage}
+          </div>
+        </S.ChatContainer>
         <NavBar />
-      </S.ChatContainer>
+      </S.ChatWrapper>
     );
   }
 
@@ -144,9 +148,8 @@ const ChatListPage: React.FC = () => {
   const otherProfiles = chatList?.otherProfiles || [];
 
   return (
-    <S.ChatContainer>
+    <S.ChatWrapper>
       <PageHeader title="채팅" backgroundColor="#FFC6B6" />
-
       <S.HeaderInfo>
         <S.InfoCard>
           <img
@@ -159,6 +162,7 @@ const ChatListPage: React.FC = () => {
           </S.InfoText>
         </S.InfoCard>
       </S.HeaderInfo>
+      <S.ChatContainer>
 
       <div
         style={{
@@ -433,9 +437,9 @@ const ChatListPage: React.FC = () => {
           </div>
         </S.CoupleSection>
       </div>
-
+      </S.ChatContainer>
       <NavBar />
-    </S.ChatContainer>
+    </S.ChatWrapper>
   );
 };
 

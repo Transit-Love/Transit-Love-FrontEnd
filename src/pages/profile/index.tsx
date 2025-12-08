@@ -93,26 +93,30 @@ const ProfilePage: React.FC = () => {
   // 로딩 중
   if (loading) {
     return (
-      <S.ProfileContainer>
-        <S.BackgroundImage />
+      <S.ProfileWrapper>
         <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
-        <Loading message="프로필을 불러오는 중..." />
+        <S.ProfileContainer>
+          <S.BackgroundImage />
+          <Loading message="프로필을 불러오는 중..." />
+        </S.ProfileContainer>
         <NavBar />
-      </S.ProfileContainer>
+      </S.ProfileWrapper>
     );
   }
 
   // 에러 발생
   if (error || !myProfile) {
     return (
-      <S.ProfileContainer>
-        <S.BackgroundImage />
+      <S.ProfileWrapper>
         <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
+        <S.ProfileContainer>
+          <S.BackgroundImage />
         <div style={{ padding: "24px", textAlign: "center", color: "red" }}>
           {error || "프로필을 불러올 수 없습니다."}
         </div>
+        </S.ProfileContainer>
         <NavBar />
-      </S.ProfileContainer>
+      </S.ProfileWrapper>
     );
   }
 
@@ -123,10 +127,11 @@ const ProfilePage: React.FC = () => {
   ];
 
   return (
-    <S.ProfileContainer>
-      <S.BackgroundImage />
+    <S.ProfileWrapper>
       <PageHeader title="내 프로필" backgroundColor="#fab0b8" />
-      <S.AvatarSection>
+      <S.ProfileContainer>
+        <S.BackgroundImage />
+        <S.AvatarSection>
         <S.AvatarContainer>
           <S.Avatar src={Avatar1} alt="프로필" />
         </S.AvatarContainer>
@@ -197,9 +202,9 @@ const ProfilePage: React.FC = () => {
           })}
         </S.BalanceItems>
       </S.BalanceResults>
-
+      </S.ProfileContainer>
       <NavBar />
-    </S.ProfileContainer>
+    </S.ProfileWrapper>
   );
 };
 
