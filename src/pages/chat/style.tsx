@@ -1,14 +1,15 @@
 import styled from "@emotion/styled";
 
 export const ChatPageContainer = styled.div`
-  width: 390px;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 390px;
+  height: 100vh;
   background: #f9fafb;
   position: relative;
-  overflow-y: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   @media (min-width: 391px) {
     background: #ffffff;
@@ -97,6 +98,14 @@ export const MessagesContainer = styled.div`
   flex: 1;
   padding: 16px;
   overflow-y: auto;
+
+  /* 스크롤바 숨김 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 `;
 
 export const DateDivider = styled.div`
