@@ -37,8 +37,9 @@ export const useVoiceChat = ({
   const stompClientRef = useRef<Client | null>(null);
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
-  const remoteStreamRef = useRef<MediaStream | null>(null);
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
   // const soundTouchRef = useRef<any | null>(null);
   const callTimerRef = useRef<number | null>(null);
   const callStartTimeRef = useRef<Date | null>(null); // 통화 시작 시각 저장
@@ -204,8 +205,23 @@ export const useVoiceChat = ({
     };
 
     pc.ontrack = (event) => {
-      console.log("[WebRTC] 원격 스트림 수신");
-      remoteStreamRef.current = event.streams[0];
+      console.log("[WebRTC] 원격 스트림 수신:", event.streams[0]);
+      console.log("[WebRTC] 오디오 트랙:", event.streams[0].getAudioTracks());
+
+      const stream = event.streams[0];
+      const audioTracks = stream.getAudioTracks();
+
+      console.log(`[WebRTC] 오디오 트랙 개수: ${audioTracks.length}`);
+      audioTracks.forEach((track, index) => {
+        console.log(`[WebRTC] 트랙 ${index}:`, {
+          kind: track.kind,
+          enabled: track.enabled,
+          muted: track.muted,
+          readyState: track.readyState,
+        });
+      });
+
+      setRemoteStream(stream);
       setCallStatus(VoiceCallStatus.CONNECTED);
 
       // 통화 시작 시각 기록
@@ -282,6 +298,12 @@ export const useVoiceChat = ({
       localStreamRef.current = null;
     }
 
+    if (remoteAudioRef.current) {
+      remoteAudioRef.current.pause();
+      remoteAudioRef.current.srcObject = null;
+      remoteAudioRef.current = null;
+    }
+
     if (peerConnectionRef.current) {
       peerConnectionRef.current.close();
       peerConnectionRef.current = null;
@@ -292,6 +314,7 @@ export const useVoiceChat = ({
       audioContextRef.current = null;
     }
 
+    setRemoteStream(null);
     setCallDuration(0);
   }, []);
 
@@ -513,16 +536,70 @@ export const useVoiceChat = ({
   );
 
   // 원격 오디오 재생
-  const getRemoteAudio = useCallback(() => {
-    if (remoteStreamRef.current) {
+  useEffect(() => {
+    if (remoteStream) {
+      console.log("[오디오] 원격 스트림 감지됨");
+      console.log("[오디오] 스피커 상태:", isSpeakerOn);
+      console.log("[오디오] 스트림 트랙:", remoteStream.getTracks());
+
+      // 기존 오디오 정리
+      if (remoteAudioRef.current) {
+        console.log("[오디오] 기존 오디오 정리");
+        remoteAudioRef.current.pause();
+        remoteAudioRef.current.srcObject = null;
+      }
+
+      // 새 오디오 요소 생성 및 재생
       const audio = new Audio();
-      audio.srcObject = remoteStreamRef.current;
+      audio.srcObject = remoteStream;
+      audio.autoplay = true;
       audio.volume = isSpeakerOn ? 1.0 : 0;
-      audio.play();
-      return audio;
+
+      console.log("[오디오] 오디오 요소 생성 완료, 재생 시도...");
+
+      audio
+        .play()
+        .then(() => {
+          console.log("[오디오] ✅ 재생 성공!");
+        })
+        .catch((error) => {
+          console.error("[오디오] ❌ 재생 오류:", error);
+          // 사용자 인터랙션 필요한 경우 재시도
+          if (error.name === "NotAllowedError") {
+            console.log("[오디오] 사용자 인터랙션 후 재시도 필요");
+          }
+        });
+
+      remoteAudioRef.current = audio;
+
+      // 오디오 이벤트 리스너
+      audio.onloadedmetadata = () => {
+        console.log("[오디오] 메타데이터 로드됨");
+      };
+
+      audio.onplay = () => {
+        console.log("[오디오] 재생 시작됨");
+      };
+
+      audio.onerror = (e) => {
+        console.error("[오디오] 오류 발생:", e);
+      };
+
+      return () => {
+        console.log("[오디오] cleanup");
+        if (audio) {
+          audio.pause();
+          audio.srcObject = null;
+        }
+      };
+    } else if (!isSpeakerOn && remoteAudioRef.current) {
+      console.log("[오디오] 스피커 끔");
+      remoteAudioRef.current.volume = 0;
+    } else if (isSpeakerOn && remoteAudioRef.current) {
+      console.log("[오디오] 스피커 켬");
+      remoteAudioRef.current.volume = 1.0;
     }
-    return null;
-  }, [isSpeakerOn]);
+  }, [remoteStream, isSpeakerOn]);
 
   // 초기화
   useEffect(() => {
@@ -540,17 +617,6 @@ export const useVoiceChat = ({
       }
     };
   }, [connectWebSocket, cleanup]);
-
-  // 스피커 볼륨 조절
-  useEffect(() => {
-    const audio = getRemoteAudio();
-    return () => {
-      if (audio) {
-        audio.pause();
-        audio.srcObject = null;
-      }
-    };
-  }, [getRemoteAudio]);
 
   return {
     callStatus,
