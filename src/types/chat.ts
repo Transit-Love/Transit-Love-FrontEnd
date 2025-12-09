@@ -1,3 +1,5 @@
+import { MBTIType } from "../api/profileService";
+
 // 채팅 메시지 타입
 export type MessageType = "TEXT" | "IMAGE" | "SYSTEM";
 
@@ -48,7 +50,7 @@ export interface MatchResponse {
   matchId: number;
   otherProfileId: number;
   otherNickname: string;
-  otherMbti: string;
+  otherMbti: MBTIType;
   matchedAt: string;
   unreadMessageCount: number;
   lastMessage?: string;
@@ -60,7 +62,7 @@ export interface MatchedProfile {
   matchId: number;
   profileId: number;
   nickname: string;
-  mbti: string;
+  mbti: MBTIType;
   matchedAt: string;
   unreadMessageCount: number;
   lastMessage?: string;
@@ -71,7 +73,7 @@ export interface MatchedProfile {
 export interface Profile {
   profileId: number;
   nickname: string;
-  mbti: string;
+  mbti: MBTIType;
   createdAt: string;
 }
 
@@ -101,7 +103,7 @@ export interface CreateChatRoomResponse {
   chatRoomId: number;
   otherProfileId: number;
   otherNickname: string;
-  otherMbti: string;
+  otherMbti: MBTIType;
   roomType: RoomType;
   expiresAt?: string;
   unreadMessageCount: number;
@@ -112,7 +114,7 @@ export interface ChatRoomListItem {
   chatRoomId: number;
   otherProfileId: number;
   otherNickname: string;
-  otherMbti: string;
+  otherMbti: MBTIType;
   roomType: RoomType;
   expiresAt?: string;
   unreadMessageCount: number;

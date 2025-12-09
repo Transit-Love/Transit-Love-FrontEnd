@@ -93,7 +93,7 @@ export const HeaderTitle = styled.div`
   font-size: 24px;
   line-height: 0.9em;
   margin-left: 8rem;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const StatusIcons = styled.div`
@@ -145,7 +145,7 @@ export const ImagePreview = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -160,11 +160,11 @@ export const ImagePlaceholder = styled.div`
   justify-content: center;
   gap: 8px;
   color: #9ca3af;
-  
+
   span {
     font-size: 40px;
   }
-  
+
   p {
     font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
       "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
@@ -183,7 +183,7 @@ export const ImageUploadButton = styled.label`
   font-size: 16px;
   cursor: pointer;
   transition: opacity 0.2s;
-  
+
   &:hover {
     opacity: 0.8;
   }
@@ -244,6 +244,25 @@ export const InputText = styled.input`
 
   &::placeholder {
     color: #6b7280;
+  }
+`;
+
+export const SelectField = styled.select`
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: "Ownglyph PDH", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2em;
+  color: #6b7280;
+  outline: none;
+  cursor: pointer;
+
+  option {
+    background: #ffffff;
+    color: #000000;
   }
 `;
 
@@ -333,7 +352,7 @@ export const ArrowButton = styled.button`
   font-weight: 400;
   white-space: nowrap;
   min-width: 50px;
-  
+
   &:hover {
     opacity: 0.7;
   }

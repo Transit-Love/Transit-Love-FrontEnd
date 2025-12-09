@@ -7,7 +7,27 @@ import profileService from "../../../api/profileService";
 import type {
   CreateProfileRequest,
   Profile,
+  MBTIType,
 } from "../../../api/profileService";
+
+const MBTI_TYPES: MBTIType[] = [
+  "ISTJ",
+  "ISFJ",
+  "INFJ",
+  "INTJ",
+  "ISTP",
+  "ISFP",
+  "INFP",
+  "INTP",
+  "ESTP",
+  "ESFP",
+  "ENFP",
+  "ENTP",
+  "ESTJ",
+  "ESFJ",
+  "ENFJ",
+  "ENTJ",
+];
 
 const ProfileSettingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +36,7 @@ const ProfileSettingPage: React.FC = () => {
     (location.state as { profile?: Profile; isEdit?: boolean }) || {};
 
   const [nickname, setNickname] = useState("");
-  const [mbti, setMbti] = useState("");
+  const [mbti, setMbti] = useState<MBTIType | "">("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string>("");
   const [selectedKeywords, setSelectedKeywords] = useState<
@@ -169,7 +189,7 @@ const ProfileSettingPage: React.FC = () => {
     }
 
     if (!mbti.trim()) {
-      alert("MBTI를 입력해주세요.");
+      alert("MBTI를 선택해주세요.");
       return;
     }
 
@@ -186,12 +206,6 @@ const ProfileSettingPage: React.FC = () => {
 
     if (!allAnswered) {
       alert("모든 밸런스게임 질문에 답변해주세요.");
-      return;
-    }
-
-    // MBTI 형식 검증 (선택사항)
-    if (mbti && mbti.length !== 4) {
-      alert("MBTI는 4자로 입력해주세요. (예: ENFP)");
       return;
     }
 
@@ -310,15 +324,21 @@ const ProfileSettingPage: React.FC = () => {
       <S.MBTISection>
         <S.SectionTitle>MBTI</S.SectionTitle>
         <S.InputField>
-          <S.InputText
+          <S.SelectField
             value={mbti}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setMbti(e.target.value)
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setMbti(e.target.value as MBTIType | "")
             }
-            placeholder="MBTI를 입력하세요 (예: ENFP)"
-          />
+          >
+            <option value="">MBTI를 선택하세요</option>
+            {MBTI_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </S.SelectField>
         </S.InputField>
-        <S.InputDescription>자신의 MBTI를 입력해주세요.</S.InputDescription>
+        <S.InputDescription>자신의 MBTI를 선택해주세요.</S.InputDescription>
       </S.MBTISection>
 
       <S.BalanceGameSection>

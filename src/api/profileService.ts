@@ -1,5 +1,23 @@
 import apiClient from "./client";
 
+export type MBTIType =
+  | "ISTJ"
+  | "ISFJ"
+  | "INFJ"
+  | "INTJ"
+  | "ISTP"
+  | "ISFP"
+  | "INFP"
+  | "INTP"
+  | "ESTP"
+  | "ESFP"
+  | "ENFP"
+  | "ENTP"
+  | "ESTJ"
+  | "ESFJ"
+  | "ENFJ"
+  | "ENTJ";
+
 export interface Keyword {
   id: number;
   name: string;
@@ -16,7 +34,7 @@ export interface BalanceGameAnswer {
 export interface Profile {
   id?: number;
   nickname: string;
-  mbti?: string;
+  mbti?: MBTIType;
   keywords: Keyword[];
   balanceGameAnswers: BalanceGameAnswer[];
   createdAt?: string;
@@ -25,7 +43,7 @@ export interface Profile {
 export interface MatchedProfile {
   id: number;
   nickname: string;
-  mbti?: string;
+  mbti?: MBTIType;
   keywords: Keyword[];
   balanceGameAnswers: BalanceGameAnswer[];
   createdAt?: string;
@@ -33,7 +51,7 @@ export interface MatchedProfile {
 
 export interface CreateProfileRequest {
   nickname: string;
-  mbti?: string;
+  mbti?: MBTIType;
   keywordIds: number[];
   balanceGameAnswers: {
     balanceGameId: number;

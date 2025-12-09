@@ -1,10 +1,11 @@
 // 어드민 전용 타입 정의
+import { MBTIType } from "../api/profileService";
 
 // 프로필 정보
 export interface AdminProfile {
   profileId: number;
   nickname: string;
-  mbti: string;
+  mbti: MBTIType;
 }
 
 // 매칭 타입
